@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="cyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00e5ff"/>
+      <stop offset="100%" style="stop-color:#0097a7"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#bg)"/>
+  <rect width="800" height="500" rx="16" fill="url(#grid)"/>
+  <g transform="translate(400,210)" filter="url(#glow)">
+    <polyline points="-120,0 -100,0 -90,-40 -70,30 -50,-20 -30,10 -10,-50 10,20 30,-10 50,40 70,-30 90,0 100,0" fill="none" stroke="url(#cyan)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="-90" cy="-40" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="-70" cy="30" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="-50" cy="-20" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="-30" cy="10" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="-10" cy="-50" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="10" cy="20" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="30" cy="-10" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="50" cy="40" r="4" fill="#00e5ff" opacity="0.8"/>
+    <circle cx="70" cy="-30" r="4" fill="#00e5ff" opacity="0.8"/>
+    <line x1="-120" y1="0" x2="120" y2="0" stroke="#0097a7" stroke-width="1" opacity="0.3"/>
+    <rect x="-120" y="50" width="240" height="30" rx="4" fill="none" stroke="#00e5ff" stroke-width="1.5" opacity="0.4"/>
+    <rect x="-110" y="58" width="40" height="14" rx="2" fill="#00e5ff" opacity="0.2"/>
+    <rect x="-60" y="58" width="60" height="14" rx="2" fill="#00e5ff" opacity="0.15"/>
+    <rect x="10" y="58" width="30" height="14" rx="2" fill="#00e5ff" opacity="0.2"/>
+  </g>
+  <text x="400" y="390" text-anchor="middle" font-family="monospace" font-size="36" font-weight="bold" fill="#00e5ff" filter="url(#glow)" letter-spacing="4">LOGPULSE</text>
+  <text x="400" y="420" text-anchor="middle" font-family="monospace" font-size="12" fill="rgba(0,229,255,0.5)" letter-spacing="6">LOG MONITORING</text>
+</svg>

@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff4444"/>
+      <stop offset="100%" style="stop-color:#ff8800"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#bg)"/>
+  <rect width="800" height="500" rx="16" fill="url(#grid)"/>
+  <g transform="translate(400,210)" filter="url(#glow)">
+    <path d="M0-80 L70-20 L70 40 Q70 90 0 110 Q-70 90-70 40 L-70-20 Z" fill="none" stroke="url(#shield)" stroke-width="4" opacity="0.9"/>
+    <path d="M0-60 L55-15 L55 35 Q55 75 0 92 Q-55 75-55 35 L-55-15 Z" fill="url(#shield)" opacity="0.15"/>
+    <path d="M10-45 L-15 5 L5-5 L-10 45 L15-5 L-5 5 Z" fill="#ffcc00" stroke="#ffaa00" stroke-width="2"/>
+  </g>
+  <text x="400" y="380" text-anchor="middle" font-family="monospace" font-size="36" font-weight="bold" fill="#ff6633" filter="url(#glow)" letter-spacing="4">THREATFORGE</text>
+  <text x="400" y="410" text-anchor="middle" font-family="monospace" font-size="12" fill="rgba(255,100,50,0.5)" letter-spacing="6">THREAT INTELLIGENCE</text>
+</svg>

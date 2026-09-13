@@ -3,2699 +3,505 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Satuarb | Systems Programmer & Security Researcher</title>
-    <meta name="description" content="Portfolio of Satuarb - 15-year-old systems programmer from Kazakhstan building security tools and AI agents.">
+    <title>Ali | Systems Programmer &amp; Security Researcher</title>
+    <meta name="description" content="Portfolio of Ali - Systems programmer from Kazakhstan building security tools, AI agents, and low-level software.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-tertiary: #1a1a25;
-            --glass-bg: rgba(255, 255, 255, 0.03);
-            --glass-border: rgba(255, 255, 255, 0.08);
-            --glass-hover: rgba(255, 255, 255, 0.06);
-            --accent: #6366f1;
-            --accent-glow: rgba(99, 102, 241, 0.3);
-            --accent-secondary: #8b5cf6;
-            --accent-tertiary: #06b6d4;
-            --text-primary: #f1f5f9;
-            --text-secondary: #94a3b8;
-            --text-muted: #64748b;
-            --border-subtle: rgba(255, 255, 255, 0.06);
-            --success: #22c55e;
-            --warning: #f59e0b;
-            --danger: #ef4444;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            scrollbar-width: thin;
-            scrollbar-color: var(--accent) var(--bg-secondary);
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        ::-webkit-scrollbar { width: 6px; }
-        ::-webkit-scrollbar-track { background: var(--bg-secondary); }
-        ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
-
-        /* Loading Screen */
-        #loading-screen {
-            position: fixed;
-            inset: 0;
-            background: var(--bg-primary);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.6s, visibility 0.6s;
-        }
-
-        #loading-screen.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .loader-logo {
-            width: 80px;
-            height: 80px;
-            border: 2px solid var(--glass-border);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--accent);
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            animation: loaderPulse 2s ease-in-out infinite;
-            margin-bottom: 2rem;
-        }
-
-        @keyframes loaderPulse {
-            0%, 100% { box-shadow: 0 0 20px var(--accent-glow); transform: scale(1); }
-            50% { box-shadow: 0 0 40px var(--accent-glow); transform: scale(1.05); }
-        }
-
-        .loader-bar-container {
-            width: 200px;
-            height: 3px;
-            background: var(--bg-tertiary);
-            border-radius: 2px;
-            overflow: hidden;
-        }
-
-        .loader-bar {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
-            border-radius: 2px;
-            width: 0%;
-            animation: loaderFill 2s ease-out forwards;
-        }
-
-        @keyframes loaderFill {
-            to { width: 100%; }
-        }
-
-        .loader-text {
-            margin-top: 1rem;
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-        }
-
-        /* Navigation */
-        .navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            padding: 1rem 2rem;
-            transition: all 0.3s;
-        }
-
-        .navbar.scrolled {
-            background: rgba(10, 10, 15, 0.85);
-            backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-        }
-
-        .nav-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nav-logo {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: var(--accent);
-            text-decoration: none;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border: 1px solid var(--accent);
-            border-radius: 10px;
-            transition: all 0.3s;
-        }
-
-        .nav-logo:hover {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-secondary);
-            font-size: 0.875rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nav-links a:hover,
-        .nav-links a.active {
-            color: var(--text-primary);
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent);
-            transition: width 0.3s;
-        }
-
-        .nav-links a:hover::after,
-        .nav-links a.active::after {
-            width: 100%;
-        }
-
-        .nav-right {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .lang-switcher {
-            display: flex;
-            gap: 0.25rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            padding: 0.25rem;
-        }
-
-        .lang-btn {
-            padding: 0.35rem 0.6rem;
-            border: none;
-            background: transparent;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            font-weight: 600;
-            cursor: pointer;
-            border-radius: 6px;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0.3rem;
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .lang-btn:hover {
-            color: var(--text-primary);
-        }
-
-        .lang-btn.active {
-            background: var(--accent);
-            color: white;
-        }
-
-        .lang-flag {
-            font-size: 0.85rem;
-        }
-
-        .hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            padding: 5px;
-            background: none;
-            border: none;
-        }
-
-        .hamburger span {
-            width: 24px;
-            height: 2px;
-            background: var(--text-primary);
-            transition: all 0.3s;
-        }
-
-        .hamburger.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .hamburger.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .hamburger.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        .mobile-menu {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(10, 10, 15, 0.95);
-            backdrop-filter: blur(20px);
-            z-index: 999;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
-        }
-
-        .mobile-menu.active {
-            display: flex;
-        }
-
-        .mobile-menu a {
-            text-decoration: none;
-            color: var(--text-primary);
-            font-size: 1.5rem;
-            font-weight: 600;
-            transition: color 0.3s;
-        }
-
-        .mobile-menu a:hover {
-            color: var(--accent);
-        }
-
-        /* Hero Section */
-        #hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 6rem 2rem 2rem;
-        }
-
-        #three-canvas {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            text-align: center;
-            max-width: 900px;
-        }
-
-        .hero-ascii {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(1.5rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--accent);
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            text-shadow: 0 0 30px var(--accent-glow);
-            white-space: pre;
-        }
-
-        .hero-tagline {
-            font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            min-height: 2rem;
-        }
-
-        .typing-cursor {
-            display: inline-block;
-            width: 2px;
-            height: 1.2em;
-            background: var(--accent);
-            margin-left: 2px;
-            animation: blink 1s infinite;
-            vertical-align: text-bottom;
-        }
-
-        @keyframes blink {
-            0%, 50% { opacity: 1; }
-            51%, 100% { opacity: 0; }
-        }
-
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 3rem;
-        }
-
-        .hero-stat {
-            text-align: center;
-        }
-
-        .hero-stat-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--text-primary);
-        }
-
-        .hero-stat-label {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .hero-buttons {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 0.85rem 2rem;
-            border-radius: 12px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            border: none;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .btn-primary {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
-        .btn-secondary {
-            background: var(--glass-bg);
-            color: var(--text-primary);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-        }
-
-        .btn-secondary:hover {
-            background: var(--glass-hover);
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .scroll-indicator {
-            position: absolute;
-            bottom: 2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.5rem;
-            animation: scrollBounce 2s infinite;
-        }
-
-        .scroll-indicator span {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-        }
-
-        .scroll-arrow {
-            width: 20px;
-            height: 20px;
-            border-right: 2px solid var(--text-muted);
-            border-bottom: 2px solid var(--text-muted);
-            transform: rotate(45deg);
-        }
-
-        @keyframes scrollBounce {
-            0%, 100% { transform: translateX(-50%) translateY(0); }
-            50% { transform: translateX(-50%) translateY(10px); }
-        }
-
-        /* Sections */
-        section {
-            padding: 6rem 2rem;
-            position: relative;
-        }
-
-        .section-container {
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        .section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .section-label {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.75rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 0.75rem;
-        }
-
-        .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 800;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, var(--text-primary), var(--text-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .section-description {
-            color: var(--text-secondary);
-            max-width: 600px;
-            margin: 0 auto;
-        }
-
-        /* About Section */
-        #about {
-            background: var(--bg-secondary);
-        }
-
-        .about-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            align-items: center;
-        }
-
-        .about-photo {
-            position: relative;
-        }
-
-        .photo-frame {
-            width: 300px;
-            height: 350px;
-            margin: 0 auto;
-            border-radius: 20px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(10px);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-
-        .photo-frame::before {
-            content: '';
-            position: absolute;
-            inset: -2px;
-            border-radius: 22px;
-            background: linear-gradient(135deg, var(--accent), transparent, var(--accent-secondary));
-            z-index: -1;
-            opacity: 0.5;
-        }
-
-        .photo-placeholder {
-            font-size: 4rem;
-            color: var(--text-muted);
-        }
-
-        .about-text h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .about-text p {
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.8;
-        }
-
-        .about-details {
-            display: flex;
-            gap: 2rem;
-            margin-top: 1.5rem;
-        }
-
-        .about-detail {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .about-detail-icon {
-            color: var(--accent);
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-            gap: 1rem;
-            margin-top: 2rem;
-        }
-
-        .skill-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1.25rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-            cursor: default;
-        }
-
-        .skill-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.15);
-        }
-
-        .skill-icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-name {
-            font-size: 0.85rem;
-            font-weight: 600;
-        }
-
-        .skill-level {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 0.25rem;
-        }
-
-        /* Projects Section */
-        #projects {
-            background: var(--bg-primary);
-        }
-
-        .filter-bar {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .filter-btn {
-            padding: 0.5rem 1.25rem;
-            border: 1px solid var(--glass-border);
-            border-radius: 8px;
-            background: var(--glass-bg);
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Inter', sans-serif;
-        }
-
-        .filter-btn:hover,
-        .filter-btn.active {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .project-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 1.75rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-            cursor: default;
-        }
-
-        .project-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-
-        .project-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
-        }
-
-        .project-card:hover::before {
-            opacity: 1;
-        }
-
-        .project-header {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            margin-bottom: 1rem;
-        }
-
-        .project-icon {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            background: rgba(99, 102, 241, 0.1);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .project-links {
-            display: flex;
-            gap: 0.5rem;
-            opacity: 0;
-            transform: translateX(10px);
-            transition: all 0.3s;
-        }
-
-        .project-card:hover .project-links {
-            opacity: 1;
-            transform: translateX(0);
-        }
-
-        .project-link {
-            width: 32px;
-            height: 32px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            text-decoration: none;
-            font-size: 0.85rem;
-            transition: all 0.3s;
-        }
-
-        .project-link:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-        }
-
-        .project-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .project-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .project-tags {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-        }
-
-        .project-tag {
-            font-size: 0.7rem;
-            padding: 0.25rem 0.6rem;
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--accent);
-            border-radius: 6px;
-            font-family: 'JetBrains Mono', monospace;
-            font-weight: 500;
-        }
-
-        .project-lang {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            display: inline-block;
-            margin-right: 0.25rem;
-        }
-
-        /* Skills Progress */
-        #skills {
-            background: var(--bg-secondary);
-        }
-
-        .skills-categories {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-        }
-
-        .skill-category {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 2rem;
-            backdrop-filter: blur(10px);
-        }
-
-        .category-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            margin-bottom: 1.5rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .category-icon {
-            color: var(--accent);
-        }
-
-        .progress-item {
-            margin-bottom: 1.25rem;
-        }
-
-        .progress-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-        }
-
-        .progress-name {
-            font-size: 0.85rem;
-            font-weight: 500;
-        }
-
-        .progress-percent {
-            font-size: 0.8rem;
-            color: var(--accent);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .progress-bar {
-            height: 6px;
-            background: var(--bg-tertiary);
-            border-radius: 3px;
-            overflow: hidden;
-        }
-
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, var(--accent), var(--accent-secondary));
-            border-radius: 3px;
-            width: 0%;
-            transition: width 1.5s ease-out;
-        }
-
-        /* Stats Section */
-        #stats {
-            background: var(--bg-primary);
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .stat-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            padding: 2.5rem 1.5rem;
-            text-align: center;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-
-        .stat-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(99, 102, 241, 0.1);
-        }
-
-        .stat-icon {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-        }
-
-        .stat-number {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 3rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
-
-        .stat-label {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* Timeline Section */
-        #timeline {
-            background: var(--bg-secondary);
-        }
-
-        .timeline {
-            position: relative;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-
-        .timeline::before {
-            content: '';
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 2px;
-            height: 100%;
-            background: linear-gradient(to bottom, var(--accent), var(--accent-secondary), transparent);
-        }
-
-        .timeline-item {
-            display: flex;
-            justify-content: flex-end;
-            padding-right: calc(50% + 2rem);
-            position: relative;
-            margin-bottom: 3rem;
-        }
-
-        .timeline-item:nth-child(even) {
-            justify-content: flex-start;
-            padding-right: 0;
-            padding-left: calc(50% + 2rem);
-        }
-
-        .timeline-dot {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 16px;
-            height: 16px;
-            background: var(--accent);
-            border-radius: 50%;
-            border: 3px solid var(--bg-secondary);
-            z-index: 1;
-        }
-
-        .timeline-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            max-width: 350px;
-            transition: all 0.3s;
-        }
-
-        .timeline-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        .timeline-year {
-            font-family: 'JetBrains Mono', monospace;
-            font-size: 0.8rem;
-            color: var(--accent);
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-title {
-            font-size: 1rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .timeline-desc {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
-
-        /* Contact Section */
-        #contact {
-            background: var(--bg-primary);
-        }
-
-        .contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-        }
-
-        .contact-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-        }
-
-        .form-group {
-            position: relative;
-        }
-
-        .form-input,
-        .form-textarea {
-            width: 100%;
-            padding: 1rem 1.25rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 0.9rem;
-            font-family: 'Inter', sans-serif;
-            transition: all 0.3s;
-            backdrop-filter: blur(10px);
-        }
-
-        .form-input:focus,
-        .form-textarea:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-glow);
-        }
-
-        .form-input::placeholder,
-        .form-textarea::placeholder {
-            color: var(--text-muted);
-        }
-
-        .form-textarea {
-            min-height: 150px;
-            resize: vertical;
-        }
-
-        .contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .contact-card {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 1.5rem;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s;
-        }
-
-        .contact-card:hover {
-            border-color: var(--accent);
-        }
-
-        .contact-card-icon {
-            font-size: 1.5rem;
-            margin-bottom: 0.75rem;
-        }
-
-        .contact-card-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            margin-bottom: 0.5rem;
-        }
-
-        .contact-card-value {
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .contact-card-value a {
-            color: var(--text-primary);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .contact-card-value a:hover {
-            color: var(--accent);
-        }
-
-        .social-links {
-            display: flex;
-            gap: 1rem;
-            margin-top: 1rem;
-        }
-
-        .social-link {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            font-size: 1.2rem;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .social-link:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* Footer */
-        footer {
-            background: var(--bg-secondary);
-            border-top: 1px solid var(--glass-border);
-            padding: 2rem;
-        }
-
-        .footer-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .footer-copyright {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-        }
-
-        .footer-social {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .footer-social a {
-            color: var(--text-muted);
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .footer-social a:hover {
-            color: var(--accent);
-        }
-
-        .back-to-top {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-secondary);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 1.2rem;
-        }
-
-        .back-to-top:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            transform: translateY(-2px);
-        }
-
-        /* Animations */
-        .fade-in {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s, transform 0.6s;
-        }
-
-        .fade-in.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-
-            .hamburger {
-                display: flex;
-            }
-
-            .about-grid {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .stats-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .contact-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-stats {
-                gap: 1.5rem;
-            }
-
-            .timeline::before {
-                left: 20px;
-            }
-
-            .timeline-item,
-            .timeline-item:nth-child(even) {
-                padding-left: 50px;
-                padding-right: 0;
-                justify-content: flex-start;
-            }
-
-            .timeline-dot {
-                left: 20px;
-            }
-
-            .footer-container {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .stats-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .hero-stat-number {
-                font-size: 1.5rem;
-            }
-
-            .filter-bar {
-                gap: 0.35rem;
-            }
-
-            .filter-btn {
-                padding: 0.4rem 0.8rem;
-                font-size: 0.7rem;
-            }
-        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        :root { --bg:#06060a; --bg2:rgba(255,255,255,0.025); --border:rgba(255,255,255,0.07); --accent:#6366f1; --accent-g:rgba(99,102,241,0.25); --accent2:#8b5cf6; --txt:#e2e8f0; --txt2:#94a3b8; --txt3:#475569; --r:14px; }
+        html { scroll-behavior: smooth; }
+        body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--txt); overflow-x:hidden; line-height:1.65; }
+        ::-webkit-scrollbar { width:5px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+        #loader { position:fixed; inset:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; transition:opacity 0.5s,visibility 0.5s; }
+        #loader.hide { opacity:0; visibility:hidden; }
+        .loader-ring { width:56px; height:56px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; }
+        .loader-text { margin-top:1.2rem; font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--txt3); letter-spacing:0.15em; text-transform:uppercase; }
+        @keyframes spin { to { transform:rotate(360deg); } }
+        .nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0.9rem 2rem; transition:background 0.3s,backdrop-filter 0.3s; }
+        .nav.scrolled { background:rgba(6,6,10,0.82); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
+        .nav-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+        .nav-logo { font-family:'JetBrains Mono',monospace; font-weight:700; font-size:1.3rem; color:var(--accent); text-decoration:none; border:1px solid var(--accent); width:38px; height:38px; display:flex; align-items:center; justify-content:center; border-radius:10px; transition:background 0.3s,color 0.3s; }
+        .nav-logo:hover { background:var(--accent); color:#fff; }
+        .nav-links { display:flex; list-style:none; gap:1.8rem; }
+        .nav-links a { text-decoration:none; color:var(--txt2); font-size:0.85rem; font-weight:500; transition:color 0.25s; }
+        .nav-links a:hover,.nav-links a.active { color:var(--txt); }
+        .nav-right { display:flex; align-items:center; gap:0.75rem; }
+        .lang-bar { display:flex; gap:2px; background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:3px; }
+        .lang-btn { padding:0.3rem 0.55rem; border:none; background:transparent; color:var(--txt3); font-size:0.68rem; font-weight:600; font-family:'JetBrains Mono',monospace; cursor:pointer; border-radius:6px; transition:all 0.25s; }
+        .lang-btn:hover { color:var(--txt); } .lang-btn.on { background:var(--accent); color:#fff; }
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; padding:4px; }
+        .hamburger span { width:22px; height:2px; background:var(--txt); transition:all 0.3s; }
+        .hamburger.on span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+        .hamburger.on span:nth-child(2) { opacity:0; }
+        .hamburger.on span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+        .mobile-nav { display:none; position:fixed; inset:0; background:rgba(6,6,10,0.96); backdrop-filter:blur(20px); z-index:99; flex-direction:column; align-items:center; justify-content:center; gap:2rem; }
+        .mobile-nav.on { display:flex; }
+        .mobile-nav a { text-decoration:none; color:var(--txt); font-size:1.4rem; font-weight:600; }
+        .mobile-nav a:hover { color:var(--accent); }
+        #hero { min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:5rem 2rem 2rem; }
+        #hero-canvas { position:absolute; inset:0; z-index:0; }
+        .hero-content { position:relative; z-index:1; text-align:center; max-width:780px; }
+        .hero-name { font-family:'JetBrains Mono',monospace; font-size:clamp(2.8rem,7vw,5.5rem); font-weight:800; letter-spacing:-0.03em; background:linear-gradient(135deg,var(--accent),var(--accent2),#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:1rem; }
+        .hero-tagline { font-size:clamp(1rem,2vw,1.2rem); color:var(--txt2); margin-bottom:2.5rem; min-height:1.8em; }
+        .cursor { display:inline-block; width:2px; height:1.1em; background:var(--accent); margin-left:2px; vertical-align:text-bottom; animation:blink 1s step-end infinite; }
+        @keyframes blink { 50% { opacity:0; } }
+        .hero-btns { display:flex; gap:0.8rem; justify-content:center; flex-wrap:wrap; }
+        .btn { padding:0.75rem 1.8rem; border-radius:10px; font-size:0.88rem; font-weight:600; text-decoration:none; border:none; cursor:pointer; display:inline-flex; align-items:center; gap:0.45rem; transition:transform 0.25s,box-shadow 0.25s; font-family:'Inter',sans-serif; }
+        .btn:active { transform:scale(0.97); }
+        .btn-p { background:var(--accent); color:#fff; box-shadow:0 4px 20px var(--accent-g); }
+        .btn-p:hover { box-shadow:0 8px 32px var(--accent-g); transform:translateY(-2px); }
+        .btn-o { background:transparent; color:var(--txt); border:1px solid var(--border); }
+        .btn-o:hover { border-color:var(--accent); transform:translateY(-2px); }
+        .scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; animation:bob 2s ease-in-out infinite; }
+        .scroll-hint span { font-size:0.65rem; color:var(--txt3); text-transform:uppercase; letter-spacing:0.12em; }
+        .scroll-hint .arrow { width:16px; height:16px; border-right:1.5px solid var(--txt3); border-bottom:1.5px solid var(--txt3); transform:rotate(45deg); }
+        @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
+        section { padding:5rem 2rem; } .container { max-width:1100px; margin:0 auto; }
+        .sec-head { text-align:center; margin-bottom:3.5rem; }
+        .sec-label { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.18em; margin-bottom:0.6rem; }
+        .sec-title { font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; }
+        .sec-desc { color:var(--txt2); max-width:520px; margin:0.8rem auto 0; font-size:0.95rem; }
+        #about { background:rgba(255,255,255,0.01); }
+        .about-grid { display:grid; grid-template-columns:1fr 1.2fr; gap:3.5rem; align-items:center; }
+        .about-img { width:100%; aspect-ratio:4/5; border-radius:var(--r); background:var(--bg2); border:1px solid var(--border); display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; }
+        .about-img::before { content:''; position:absolute; inset:-1px; border-radius:var(--r); background:linear-gradient(135deg,var(--accent),transparent,var(--accent2)); opacity:0.35; z-index:-1; }
+        .about-text h3 { font-size:1.4rem; margin-bottom:0.8rem; }
+        .about-text p { color:var(--txt2); margin-bottom:0.8rem; line-height:1.75; }
+        .about-meta { display:flex; gap:1.8rem; margin-top:1.2rem; flex-wrap:wrap; }
+        .about-meta span { font-size:0.88rem; color:var(--txt2); display:flex; align-items:center; gap:0.4rem; }
+        .about-meta .ic { color:var(--accent); }
+        .skill-chips { display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.5rem; }
+        .chip { padding:0.5rem 1rem; background:var(--bg2); border:1px solid var(--border); border-radius:8px; font-size:0.82rem; font-weight:500; display:flex; align-items:center; gap:0.4rem; transition:border-color 0.25s,transform 0.25s; }
+        .chip:hover { border-color:var(--accent); transform:translateY(-2px); }
+        .filters { display:flex; justify-content:center; gap:0.4rem; margin-bottom:2.5rem; flex-wrap:wrap; }
+        .filter { padding:0.45rem 1rem; border:1px solid var(--border); border-radius:8px; background:var(--bg2); color:var(--txt2); font-size:0.78rem; font-weight:500; cursor:pointer; transition:all 0.25s; font-family:'Inter',sans-serif; }
+        .filter:hover,.filter.on { background:var(--accent); color:#fff; border-color:var(--accent); }
+        .proj-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(320px,1fr)); gap:1.2rem; }
+        .proj-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:1.6rem; transition:all 0.3s; position:relative; overflow:hidden; }
+        .proj-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--accent),var(--accent2)); opacity:0; transition:opacity 0.3s; }
+        .proj-card:hover { border-color:var(--accent); transform:translateY(-4px); box-shadow:0 12px 32px rgba(0,0,0,0.25); }
+        .proj-card:hover::before { opacity:1; }
+        .proj-top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:0.9rem; }
+        .proj-icon { width:44px; height:44px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; background:rgba(99,102,241,0.08); border:1px solid rgba(99,102,241,0.15); }
+        .proj-link { width:30px; height:30px; border-radius:7px; display:flex; align-items:center; justify-content:center; background:var(--bg2); border:1px solid var(--border); color:var(--txt2); text-decoration:none; font-size:0.75rem; font-weight:700; font-family:'JetBrains Mono',monospace; transition:all 0.25s; opacity:0; transform:translateX(8px); }
+        .proj-card:hover .proj-link { opacity:1; transform:translateX(0); }
+        .proj-link:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+        .proj-name { font-size:1.05rem; font-weight:700; margin-bottom:0.4rem; }
+        .proj-desc { font-size:0.82rem; color:var(--txt2); margin-bottom:0.9rem; line-height:1.6; }
+        .proj-tags { display:flex; gap:0.4rem; flex-wrap:wrap; }
+        .proj-tag { font-size:0.68rem; padding:0.2rem 0.55rem; background:rgba(99,102,241,0.08); color:var(--accent); border-radius:5px; font-family:'JetBrains Mono',monospace; font-weight:500; }
+        #skills { background:rgba(255,255,255,0.01); }
+        .skills-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:1.5rem; }
+        .skill-cat { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:1.8rem; }
+        .skill-cat-title { font-size:1rem; font-weight:700; margin-bottom:1.3rem; display:flex; align-items:center; gap:0.5rem; }
+        .skill-cat-title .ic { color:var(--accent); }
+        .prog-item { margin-bottom:1.1rem; }
+        .prog-head { display:flex; justify-content:space-between; margin-bottom:0.4rem; }
+        .prog-name { font-size:0.82rem; font-weight:500; }
+        .prog-pct { font-size:0.75rem; color:var(--accent); font-family:'JetBrains Mono',monospace; }
+        .prog-bar { height:5px; background:rgba(255,255,255,0.05); border-radius:3px; overflow:hidden; }
+        .prog-fill { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); border-radius:3px; width:0%; transition:width 1.2s ease-out; }
+        .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1.5rem; }
+        .stat-card { background:var(--bg2); border:1px solid var(--border); border-radius:var(--r); padding:2rem 1.2rem; text-align:center; transition:all 0.3s; }
+        .stat-card:hover { border-color:var(--accent); transform:translateY(-4px); }
+        .stat-ic { font-size:2rem; margin-bottom:0.8rem; }
+        .stat-num { font-family:'JetBrains Mono',monospace; font-size:2.4rem; font-weight:700; margin-bottom:0.3rem; }
+        .stat-lbl { font-size:0.8rem; color:var(--txt2); text-transform:uppercase; letter-spacing:0.08em; }
+        #timeline { background:rgba(255,255,255,0.01); }
+        .tl { position:relative; max-width:720px; margin:0 auto; }
+        .tl::before { content:''; position:absolute; left:24px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom,var(--accent),var(--accent2),transparent); }
+        .tl-item { position:relative; padding-left:56px; margin-bottom:2.5rem; }
+        .tl-dot { position:absolute; left:17px; top:4px; width:16px; height:16px; background:var(--accent); border-radius:50%; border:3px solid var(--bg); }
+        .tl-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.3rem; transition:border-color 0.25s; }
+        .tl-card:hover { border-color:var(--accent); }
+        .tl-year { font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--accent); margin-bottom:0.4rem; }
+        .tl-title { font-size:0.95rem; font-weight:700; margin-bottom:0.35rem; }
+        .tl-desc { font-size:0.82rem; color:var(--txt2); line-height:1.6; }
+        .contact-grid { display:grid; grid-template-columns:1.1fr 0.9fr; gap:3rem; }
+        .contact-form { display:flex; flex-direction:column; gap:1rem; }
+        .field input,.field textarea { width:100%; padding:0.85rem 1.1rem; background:var(--bg2); border:1px solid var(--border); border-radius:10px; color:var(--txt); font-size:0.88rem; font-family:'Inter',sans-serif; transition:border-color 0.25s,box-shadow 0.25s; }
+        .field input:focus,.field textarea:focus { outline:none; border-color:var(--accent); box-shadow:0 0 0 3px var(--accent-g); }
+        .field input::placeholder,.field textarea::placeholder { color:var(--txt3); }
+        .field textarea { min-height:140px; resize:vertical; }
+        .info-cards { display:flex; flex-direction:column; gap:1.2rem; }
+        .info-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.3rem; transition:border-color 0.25s; }
+        .info-card:hover { border-color:var(--accent); }
+        .info-card .ic { font-size:1.3rem; margin-bottom:0.5rem; }
+        .info-card .lbl { font-size:0.72rem; color:var(--txt3); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:0.3rem; }
+        .info-card .val { font-size:0.92rem; font-weight:600; }
+        .info-card .val a { color:var(--txt); text-decoration:none; transition:color 0.25s; }
+        .info-card .val a:hover { color:var(--accent); }
+        .socials { display:flex; gap:0.8rem; margin-top:1.2rem; }
+        .social-btn { width:42px; height:42px; border-radius:10px; display:flex; align-items:center; justify-content:center; background:var(--bg2); border:1px solid var(--border); color:var(--txt2); font-size:1.1rem; text-decoration:none; transition:all 0.25s; }
+        .social-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); transform:translateY(-2px); }
+        footer { border-top:1px solid var(--border); padding:1.8rem 2rem; }
+        .footer-inner { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; }
+        .footer-copy { font-size:0.78rem; color:var(--txt3); }
+        .footer-links { display:flex; gap:1rem; }
+        .footer-links a { color:var(--txt3); text-decoration:none; transition:color 0.25s; }
+        .footer-links a:hover { color:var(--accent); }
+        .top-btn { width:36px; height:36px; border-radius:8px; display:flex; align-items:center; justify-content:center; background:var(--bg2); border:1px solid var(--border); color:var(--txt3); text-decoration:none; transition:all 0.25s; font-size:1rem; }
+        .top-btn:hover { background:var(--accent); color:#fff; border-color:var(--accent); }
+        .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.55s,transform 0.55s; }
+        .reveal.vis { opacity:1; transform:translateY(0); }
+        @media(max-width:768px){ .nav-links{display:none} .hamburger{display:flex} .about-grid{grid-template-columns:1fr;gap:2rem} .proj-grid{grid-template-columns:1fr} .stats-row{grid-template-columns:repeat(2,1fr)} .contact-grid{grid-template-columns:1fr} .footer-inner{flex-direction:column;gap:0.8rem;text-align:center} }
+        @media(max-width:480px){ .stats-row{grid-template-columns:1fr} .hero-name{font-size:2.4rem} }
     </style>
 </head>
 <body>
 
-    <!-- Loading Screen -->
-    <div id="loading-screen">
-        <div class="loader-logo">S</div>
-        <div class="loader-bar-container">
-            <div class="loader-bar"></div>
+<div id="loader"><div class="loader-ring"></div><p class="loader-text" data-i18n="loading">Loading...</p></div>
+
+<nav class="nav" id="nav">
+    <div class="nav-inner">
+        <a href="#hero" class="nav-logo">A</a>
+        <ul class="nav-links">
+            <li><a href="#hero" class="active" data-i18n="nav.home">Home</a></li>
+            <li><a href="#about" data-i18n="nav.about">About</a></li>
+            <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+            <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
+            <li><a href="#stats" data-i18n="nav.stats">Stats</a></li>
+            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
+        </ul>
+        <div class="nav-right">
+            <div class="lang-bar">
+                <button class="lang-btn on" data-lang="en">EN</button>
+                <button class="lang-btn" data-lang="ru">RU</button>
+                <button class="lang-btn" data-lang="kz">KZ</button>
+            </div>
+            <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
         </div>
-        <p class="loader-text" data-i18n="loading">Loading...</p>
     </div>
+</nav>
 
-    <!-- Navigation -->
-    <nav class="navbar" id="navbar">
-        <div class="nav-container">
-            <a href="#hero" class="nav-logo">S</a>
-            <ul class="nav-links">
-                <li><a href="#hero" class="active" data-i18n="nav.home">Home</a></li>
-                <li><a href="#about" data-i18n="nav.about">About</a></li>
-                <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
-                <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
-                <li><a href="#stats" data-i18n="nav.stats">Stats</a></li>
-                <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-            </ul>
-            <div class="nav-right">
-                <div class="lang-switcher">
-                    <button class="lang-btn active" data-lang="en">
-                        <span class="lang-flag">🇬🇧</span> EN
-                    </button>
-                    <button class="lang-btn" data-lang="ru">
-                        <span class="lang-flag">🇷🇺</span> RU
-                    </button>
-                    <button class="lang-btn" data-lang="kz">
-                        <span class="lang-flag">🇰🇿</span> KZ
-                    </button>
-                </div>
-                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+<div class="mobile-nav" id="mobilenav">
+    <a href="#hero" data-i18n="nav.home">Home</a>
+    <a href="#about" data-i18n="nav.about">About</a>
+    <a href="#projects" data-i18n="nav.projects">Projects</a>
+    <a href="#skills" data-i18n="nav.skills">Skills</a>
+    <a href="#stats" data-i18n="nav.stats">Stats</a>
+    <a href="#contact" data-i18n="nav.contact">Contact</a>
+</div>
+
+<section id="hero">
+    <canvas id="hero-canvas"></canvas>
+    <div class="hero-content">
+        <h1 class="hero-name" data-i18n="hero.name">ALI</h1>
+        <p class="hero-tagline"><span id="typed"></span><span class="cursor"></span></p>
+        <div class="hero-btns">
+            <a href="#projects" class="btn btn-p" data-i18n="hero.viewProjects">View Projects</a>
+            <a href="https://github.com/cokovali10-sketch" target="_blank" class="btn btn-o">GitHub</a>
         </div>
-    </nav>
-
-    <!-- Mobile Menu -->
-    <div class="mobile-menu" id="mobile-menu">
-        <a href="#hero" data-i18n="nav.home">Home</a>
-        <a href="#about" data-i18n="nav.about">About</a>
-        <a href="#projects" data-i18n="nav.projects">Projects</a>
-        <a href="#skills" data-i18n="nav.skills">Skills</a>
-        <a href="#stats" data-i18n="nav.stats">Stats</a>
-        <a href="#contact" data-i18n="nav.contact">Contact</a>
     </div>
+    <div class="scroll-hint"><span data-i18n="hero.scroll">Scroll</span><div class="arrow"></div></div>
+</section>
 
-    <!-- Hero Section -->
-    <section id="hero">
-        <canvas id="three-canvas"></canvas>
-        <div class="hero-content">
-            <div class="hero-ascii" data-i18n="hero.name">SATUARB</div>
-            <p class="hero-tagline">
-                <span id="typing-text"></span><span class="typing-cursor"></span>
-            </p>
-            <div class="hero-stats">
-                <div class="hero-stat">
-                    <div class="hero-stat-number">38</div>
-                    <div class="hero-stat-label" data-i18n="hero.projects">Projects</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-number">6</div>
-                    <div class="hero-stat-label" data-i18n="hero.languages">Languages</div>
-                </div>
-                <div class="hero-stat">
-                    <div class="hero-stat-number">202+</div>
-                    <div class="hero-stat-label" data-i18n="hero.tools">Tools</div>
-                </div>
-            </div>
-            <div class="hero-buttons">
-                <a href="#projects" class="btn btn-primary" data-i18n="hero.viewProjects">View Projects</a>
-                <a href="https://github.com/satuarb" target="_blank" class="btn btn-secondary" data-i18n="hero.github">GitHub</a>
-            </div>
+<section id="about">
+    <div class="container">
+        <div class="sec-head reveal">
+            <div class="sec-label" data-i18n="about.label">// About Me</div>
+            <h2 class="sec-title" data-i18n="about.title">Who I Am</h2>
+            <p class="sec-desc" data-i18n="about.desc">Systems programming, security research, and building tools that matter.</p>
         </div>
-        <div class="scroll-indicator">
-            <span data-i18n="hero.scroll">Scroll Down</span>
-            <div class="scroll-arrow"></div>
-        </div>
-    </section>
-
-    <!-- About Section -->
-    <section id="about">
-        <div class="section-container">
-            <div class="section-header fade-in">
-                <div class="section-label" data-i18n="about.label">// About Me</div>
-                <h2 class="section-title" data-i18n="about.title">Who I Am</h2>
-                <p class="section-description" data-i18n="about.description">Passionate about systems programming, security research, and building tools that make a difference.</p>
-            </div>
-            <div class="about-grid">
-                <div class="about-photo fade-in">
-                    <div class="photo-frame">
-                        <div class="photo-placeholder">📸</div>
-                    </div>
+        <div class="about-grid">
+            <div class="about-img reveal">
+                <div style="text-align:center">
+                    <div style="font-size:3.5rem;margin-bottom:0.5rem">&#128187;</div>
+                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--txt3)">~/Ali</div>
                 </div>
-                <div class="about-text fade-in">
-                    <h3 data-i18n="about.greeting">Hi, I'm Satuarb!</h3>
-                    <p data-i18n="about.bio1">I'm a 15-year-old systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I spend my time building security tools, AI agents, and exploring the depths of systems programming.</p>
-                    <p data-i18n="about.bio2">My journey in programming started at a young age, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.</p>
-                    <div class="about-details">
-                        <div class="about-detail">
-                            <span class="about-detail-icon">📍</span>
-                            <span data-i18n="about.location">Kazakhstan</span>
-                        </div>
-                        <div class="about-detail">
-                            <span class="about-detail-icon">🎂</span>
-                            <span data-i18n="about.age">15 years old</span>
-                        </div>
-                    </div>
-                    <div class="skills-grid">
-                        <div class="skill-card">
-                            <div class="skill-icon">🐍</div>
-                            <div class="skill-name">Python</div>
-                            <div class="skill-level" data-i18n="skills.advanced">Advanced</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🔵</div>
-                            <div class="skill-name">Go</div>
-                            <div class="skill-level" data-i18n="skills.advanced">Advanced</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🦀</div>
-                            <div class="skill-name">Rust</div>
-                            <div class="skill-level" data-i18n="skills.intermediate">Intermediate</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">⚡</div>
-                            <div class="skill-name">C++</div>
-                            <div class="skill-level" data-i18n="skills.advanced">Advanced</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🔷</div>
-                            <div class="skill-name">TypeScript</div>
-                            <div class="skill-level" data-i18n="skills.intermediate">Intermediate</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">☕</div>
-                            <div class="skill-name">Java</div>
-                            <div class="skill-level" data-i18n="skills.intermediate">Intermediate</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🐳</div>
-                            <div class="skill-name">Docker</div>
-                            <div class="skill-level" data-i18n="skills.advanced">Advanced</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🐧</div>
-                            <div class="skill-name">Linux</div>
-                            <div class="skill-level" data-i18n="skills.expert">Expert</div>
-                        </div>
-                        <div class="skill-card">
-                            <div class="skill-icon">🔒</div>
-                            <div class="skill-name">Security</div>
-                            <div class="skill-level" data-i18n="skills.advanced">Advanced</div>
-                        </div>
-                    </div>
+            </div>
+            <div class="about-text reveal">
+                <h3 data-i18n="about.greeting">Hi, I'm Ali!</h3>
+                <p data-i18n="about.bio1">I'm a systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I build security tools, AI agents, and explore the depths of systems programming.</p>
+                <p data-i18n="about.bio2">My journey in programming started years ago, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.</p>
+                <div class="about-meta">
+                    <span><span class="ic">&#128205;</span> <span data-i18n="about.location">Kazakhstan</span></span>
+                    <span><span class="ic">&#128231;</span> cokovali10@gmail.com</span>
+                    <span><span class="ic">&#128222;</span> +7 747 257 93 44</span>
+                </div>
+                <div class="skill-chips">
+                    <div class="chip">&#128013; Python</div>
+                    <div class="chip">&#127919; Go</div>
+                    <div class="chip">&#129518; Rust</div>
+                    <div class="chip">&#9889; C++</div>
+                    <div class="chip">&#128309; TypeScript</div>
+                    <div class="chip">&#9749; Java</div>
+                    <div class="chip">&#128051; Docker</div>
+                    <div class="chip">&#128027; Linux</div>
+                    <div class="chip">&#128274; Security</div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Projects Section -->
-    <section id="projects">
-        <div class="section-container">
-            <div class="section-header fade-in">
-                <div class="section-label" data-i18n="projects.label">// Projects</div>
-                <h2 class="section-title" data-i18n="projects.title">Featured Work</h2>
-                <p class="section-description" data-i18n="projects.description">A collection of projects spanning security, AI, DevOps, and more.</p>
+<section id="projects">
+    <div class="container">
+        <div class="sec-head reveal">
+            <div class="sec-label" data-i18n="projects.label">// Projects</div>
+            <h2 class="sec-title" data-i18n="projects.title">Featured Work</h2>
+            <p class="sec-desc" data-i18n="projects.desc">A collection of projects spanning security, AI, DevOps, and more.</p>
+        </div>
+        <div class="filters reveal">
+            <button class="filter on" data-filter="all" data-i18n="projects.all">All</button>
+            <button class="filter" data-filter="security" data-i18n="projects.security">Security</button>
+            <button class="filter" data-filter="ai" data-i18n="projects.ai">AI/ML</button>
+            <button class="filter" data-filter="devops" data-i18n="projects.devops">DevOps</button>
+            <button class="filter" data-filter="web" data-i18n="projects.web">Web</button>
+            <button class="filter" data-filter="tools" data-i18n="projects.tools">Tools</button>
+        </div>
+        <div class="proj-grid" id="proj-grid">
+            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128737;&#65039;</div><a href="https://github.com/cokovali10-sketch/ThreatForge" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">ThreatForge</h3><p class="proj-desc" data-i18n="proj.threatforge">Advanced SOC platform with threat intelligence and incident response capabilities.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">SOC</span><span class="proj-tag">10K Lines</span></div></div>
+            <div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#128123;</div><a href="https://github.com/cokovali10-sketch/Ghostly" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Ghostly</h3><p class="proj-desc" data-i18n="proj.ghostly">Powerful analytics platform for data visualization and insights generation.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Analytics</span><span class="proj-tag">12K Lines</span></div></div>
+            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#129302;</div><a href="https://github.com/cokovali10-sketch/hermes-studio" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Hermes Studio</h3><p class="proj-desc" data-i18n="proj.hermes">Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">AI</span><span class="proj-tag">202 Tools</span></div></div>
+            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128269;</div><a href="https://github.com/cokovali10-sketch/CoreEDR" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">CoreEDR</h3><p class="proj-desc" data-i18n="proj.coreedr">High-performance Endpoint Detection and Response solution built in Rust.</p><div class="proj-tags"><span class="proj-tag">Rust</span><span class="proj-tag">EDR</span><span class="proj-tag">Security</span></div></div>
+            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#9876;&#65039;</div><a href="https://github.com/cokovali10-sketch/SpectreShield" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">SpectreShield</h3><p class="proj-desc" data-i18n="proj.spectre">eBPF-based network security monitoring and threat detection framework.</p><div class="proj-tags"><span class="proj-tag">C</span><span class="proj-tag">eBPF</span><span class="proj-tag">Security</span></div></div>
+            <div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128230;</div><a href="https://github.com/cokovali10-sketch/NanoContainer" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">NanoContainer</h3><p class="proj-desc" data-i18n="proj.nano">Lightweight container runtime written in Go for minimal overhead deployment.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Containers</span><span class="proj-tag">DevOps</span></div></div>
+            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127963;&#65039;</div><a href="https://github.com/cokovali10-sketch/AegisRuntime" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">AegisRuntime</h3><p class="proj-desc" data-i18n="proj.aegis">Secure AI model sandboxing runtime for safe execution of untrusted models.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">AI</span><span class="proj-tag">Sandbox</span></div></div>
+            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128272;</div><a href="https://github.com/cokovali10-sketch/GoVault" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">GoVault</h3><p class="proj-desc" data-i18n="proj.govault">Encrypted file storage solution with zero-knowledge architecture in Go.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Encryption</span><span class="proj-tag">Storage</span></div></div>
+            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128270;</div><a href="https://github.com/cokovali10-sketch/GoPortScan" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">GoPortScan</h3><p class="proj-desc" data-i18n="proj.goportscan">High-speed concurrent port scanner with service fingerprinting capabilities.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Network</span><span class="proj-tag">Scanner</span></div></div>
+            <div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#128126;</div><a href="https://github.com/cokovali10-sketch/RetroTerm" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">RetroTerm</h3><p class="proj-desc" data-i18n="proj.retroterm">Terminal-based roguelike game with procedural generation and deep gameplay.</p><div class="proj-tags"><span class="proj-tag">C++</span><span class="proj-tag">Roguelike</span><span class="proj-tag">Game</span></div></div>
+            <div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128191;</div><a href="https://github.com/cokovali10-sketch/DiskScope" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">DiskScope</h3><p class="proj-desc" data-i18n="proj.diskscope">Visual disk space analyzer with detailed file system insights and cleanup tools.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">System</span><span class="proj-tag">Analyzer</span></div></div>
+            <div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128202;</div><a href="https://github.com/cokovali10-sketch/LogPulse" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">LogPulse</h3><p class="proj-desc" data-i18n="proj.logpulse">Real-time log analysis engine with anomaly detection and alerting system.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Logs</span><span class="proj-tag">Monitoring</span></div></div>
+            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127760;</div><a href="https://github.com/cokovali10-sketch/AgentMesh" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">AgentMesh</h3><p class="proj-desc" data-i18n="proj.agentmesh">Multi-agent AI orchestration framework for complex task decomposition.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Multi-Agent</span><span class="proj-tag">AI</span></div></div>
+            <div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#127918;</div><a href="https://github.com/cokovali10-sketch/Forge3D" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Forge3D</h3><p class="proj-desc" data-i18n="proj.forge3d">Custom 3D game engine with OpenGL rendering and entity component system.</p><div class="proj-tags"><span class="proj-tag">C++</span><span class="proj-tag">OpenGL</span><span class="proj-tag">Engine</span></div></div>
+            <div class="proj-card reveal" data-cat="web"><div class="proj-top"><div class="proj-icon">&#9749;</div><a href="https://github.com/cokovali10-sketch/caffeine-glass-ui" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">caffeine-glass-ui</h3><p class="proj-desc" data-i18n="proj.caffeine">Modern glassmorphism UI component library for web applications.</p><div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">UI/UX</span><span class="proj-tag">Library</span></div></div>
+            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127183;</div><a href="https://github.com/cokovali10-sketch/flashcard-mcp" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">flashcard-mcp</h3><p class="proj-desc" data-i18n="proj.flashcard">MCP server for intelligent flashcard generation and spaced repetition learning.</p><div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">MCP</span><span class="proj-tag">Education</span></div></div>
+        </div>
+    </div>
+</section>
+
+<section id="skills">
+    <div class="container">
+        <div class="sec-head reveal">
+            <div class="sec-label" data-i18n="skills.label">// Skills</div>
+            <h2 class="sec-title" data-i18n="skills.title">Technical Expertise</h2>
+            <p class="sec-desc" data-i18n="skills.desc">Proficiency levels across technologies and domains.</p>
+        </div>
+        <div class="skills-grid">
+            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128187;</span> <span data-i18n="skills.lang">Languages</span></h3>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Python</span><span class="prog-pct">92%</span></div><div class="prog-bar"><div class="prog-fill" data-w="92"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Go</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Rust</span><span class="prog-pct">75%</span></div><div class="prog-bar"><div class="prog-fill" data-w="75"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">C++</span><span class="prog-pct">80%</span></div><div class="prog-bar"><div class="prog-fill" data-w="80"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">TypeScript</span><span class="prog-pct">70%</span></div><div class="prog-bar"><div class="prog-fill" data-w="70"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Java</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" data-w="65"></div></div></div>
             </div>
-            <div class="filter-bar fade-in">
-                <button class="filter-btn active" data-filter="all" data-i18n="projects.filterAll">All</button>
-                <button class="filter-btn" data-filter="security" data-i18n="projects.filterSecurity">Cyber Security</button>
-                <button class="filter-btn" data-filter="ai" data-i18n="projects.filterAI">AI/ML</button>
-                <button class="filter-btn" data-filter="analytics" data-i18n="projects.filterAnalytics">Analytics</button>
-                <button class="filter-btn" data-filter="devops" data-i18n="projects.filterDevOps">DevOps</button>
-                <button class="filter-btn" data-filter="games" data-i18n="projects.filterGames">Games</button>
-                <button class="filter-btn" data-filter="web" data-i18n="projects.filterWeb">Web</button>
+            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128640;</span> <span data-i18n="skills.fw">Frameworks &amp; Libraries</span></h3>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Django / FastAPI</span><span class="prog-pct">88%</span></div><div class="prog-bar"><div class="prog-fill" data-w="88"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Gin / Fiber</span><span class="prog-pct">82%</span></div><div class="prog-bar"><div class="prog-fill" data-w="82"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Actix Web</span><span class="prog-pct">70%</span></div><div class="prog-bar"><div class="prog-fill" data-w="70"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">OpenGL / Vulkan</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" data-w="65"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">React / Next.js</span><span class="prog-pct">72%</span></div><div class="prog-bar"><div class="prog-fill" data-w="72"></div></div></div>
             </div>
-            <div class="projects-grid" id="projects-grid">
-
-                <!-- ThreatForge -->
-                <div class="project-card fade-in" data-category="security">
-                    <div class="project-header">
-                        <div class="project-icon">🛡️</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/ThreatForge" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">ThreatForge</h3>
-                    <p class="project-desc" data-i18n="projects.threatforge.desc">Advanced SOC platform with threat intelligence and incident response capabilities.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">10K Lines</span>
-                        <span class="project-tag">SOC</span>
-                    </div>
-                </div>
-
-                <!-- Ghostly -->
-                <div class="project-card fade-in" data-category="analytics">
-                    <div class="project-header">
-                        <div class="project-icon">👻</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/Ghostly" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">Ghostly</h3>
-                    <p class="project-desc" data-i18n="projects.ghostly.desc">Powerful analytics platform for data visualization and insights generation.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">12K Lines</span>
-                        <span class="project-tag">Analytics</span>
-                    </div>
-                </div>
-
-                <!-- Hermes Studio -->
-                <div class="project-card fade-in" data-category="ai">
-                    <div class="project-header">
-                        <div class="project-icon">🤖</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/Hermes-Studio" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">Hermes Studio</h3>
-                    <p class="project-desc" data-i18n="projects.hermes.desc">Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">202 Tools</span>
-                        <span class="project-tag">AI</span>
-                    </div>
-                </div>
-
-                <!-- CoreEDR -->
-                <div class="project-card fade-in" data-category="security">
-                    <div class="project-header">
-                        <div class="project-icon">🔍</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/CoreEDR" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">CoreEDR</h3>
-                    <p class="project-desc" data-i18n="projects.coreedr.desc">High-performance Endpoint Detection and Response solution built in Rust.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Rust</span>
-                        <span class="project-tag">EDR</span>
-                        <span class="project-tag">Security</span>
-                    </div>
-                </div>
-
-                <!-- SpectreShield -->
-                <div class="project-card fade-in" data-category="security">
-                    <div class="project-header">
-                        <div class="project-icon">⚔️</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/SpectreShield" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">SpectreShield</h3>
-                    <p class="project-desc" data-i18n="projects.spectre.desc">eBPF-based network security monitoring and threat detection framework.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">C</span>
-                        <span class="project-tag">eBPF</span>
-                        <span class="project-tag">Security</span>
-                    </div>
-                </div>
-
-                <!-- NanoContainer -->
-                <div class="project-card fade-in" data-category="devops">
-                    <div class="project-header">
-                        <div class="project-icon">📦</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/NanoContainer" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">NanoContainer</h3>
-                    <p class="project-desc" data-i18n="projects.nano.desc">Lightweight container runtime written in Go for minimal overhead deployment.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Go</span>
-                        <span class="project-tag">Containers</span>
-                        <span class="project-tag">DevOps</span>
-                    </div>
-                </div>
-
-                <!-- AegisRuntime -->
-                <div class="project-card fade-in" data-category="ai">
-                    <div class="project-header">
-                        <div class="project-icon">🏛️</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/AegisRuntime" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">AegisRuntime</h3>
-                    <p class="project-desc" data-i18n="projects.aegis.desc">Secure AI model sandboxing runtime for safe execution of untrusted models.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">AI</span>
-                        <span class="project-tag">Sandbox</span>
-                    </div>
-                </div>
-
-                <!-- GoVault -->
-                <div class="project-card fade-in" data-category="security">
-                    <div class="project-header">
-                        <div class="project-icon">🔐</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/GoVault" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">GoVault</h3>
-                    <p class="project-desc" data-i18n="projects.govault.desc">Encrypted file storage solution with zero-knowledge architecture in Go.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Go</span>
-                        <span class="project-tag">Encryption</span>
-                        <span class="project-tag">Storage</span>
-                    </div>
-                </div>
-
-                <!-- GoPortScan -->
-                <div class="project-card fade-in" data-category="security">
-                    <div class="project-header">
-                        <div class="project-icon">🔎</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/GoPortScan" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">GoPortScan</h3>
-                    <p class="project-desc" data-i18n="projects.goportscan.desc">High-speed concurrent port scanner with service fingerprinting capabilities.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Go</span>
-                        <span class="project-tag">Network</span>
-                        <span class="project-tag">Scanner</span>
-                    </div>
-                </div>
-
-                <!-- RetroTerm -->
-                <div class="project-card fade-in" data-category="games">
-                    <div class="project-header">
-                        <div class="project-icon">👾</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/RetroTerm" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">RetroTerm</h3>
-                    <p class="project-desc" data-i18n="projects.retroterm.desc">Terminal-based roguelike game with procedural generation and deep gameplay.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">C++</span>
-                        <span class="project-tag">Roguelike</span>
-                        <span class="project-tag">Game</span>
-                    </div>
-                </div>
-
-                <!-- DiskScope -->
-                <div class="project-card fade-in" data-category="devops">
-                    <div class="project-header">
-                        <div class="project-icon">💿</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/DiskScope" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">DiskScope</h3>
-                    <p class="project-desc" data-i18n="projects.diskscope.desc">Visual disk space analyzer with detailed file system insights and cleanup tools.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">System</span>
-                        <span class="project-tag">Analyzer</span>
-                    </div>
-                </div>
-
-                <!-- LogPulse -->
-                <div class="project-card fade-in" data-category="devops">
-                    <div class="project-header">
-                        <div class="project-icon">📊</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/LogPulse" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">LogPulse</h3>
-                    <p class="project-desc" data-i18n="projects.logpulse.desc">Real-time log analysis engine with anomaly detection and alerting system.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Go</span>
-                        <span class="project-tag">Logs</span>
-                        <span class="project-tag">Monitoring</span>
-                    </div>
-                </div>
-
-                <!-- AgentMesh -->
-                <div class="project-card fade-in" data-category="ai">
-                    <div class="project-header">
-                        <div class="project-icon">🕸️</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/AgentMesh" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">AgentMesh</h3>
-                    <p class="project-desc" data-i18n="projects.agentmesh.desc">Multi-agent AI orchestration framework for complex task decomposition.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">Python</span>
-                        <span class="project-tag">Multi-Agent</span>
-                        <span class="project-tag">AI</span>
-                    </div>
-                </div>
-
-                <!-- Forge3D -->
-                <div class="project-card fade-in" data-category="games">
-                    <div class="project-header">
-                        <div class="project-icon">🎮</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/Forge3D" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">Forge3D</h3>
-                    <p class="project-desc" data-i18n="projects.forge3d.desc">Custom 3D game engine with OpenGL rendering and entity component system.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">C++</span>
-                        <span class="project-tag">OpenGL</span>
-                        <span class="project-tag">Engine</span>
-                    </div>
-                </div>
-
-                <!-- caffeine-glass-ui -->
-                <div class="project-card fade-in" data-category="web">
-                    <div class="project-header">
-                        <div class="project-icon">☕</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/caffeine-glass-ui" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">caffeine-glass-ui</h3>
-                    <p class="project-desc" data-i18n="projects.caffeine.desc">Modern glassmorphism UI component library for web applications.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">TypeScript</span>
-                        <span class="project-tag">UI/UX</span>
-                        <span class="project-tag">Library</span>
-                    </div>
-                </div>
-
-                <!-- flashcard-mcp -->
-                <div class="project-card fade-in" data-category="ai">
-                    <div class="project-header">
-                        <div class="project-icon">🃏</div>
-                        <div class="project-links">
-                            <a href="https://github.com/satuarb/flashcard-mcp" target="_blank" class="project-link" title="GitHub">GH</a>
-                        </div>
-                    </div>
-                    <h3 class="project-name">flashcard-mcp</h3>
-                    <p class="project-desc" data-i18n="projects.flashcard.desc">MCP server for intelligent flashcard generation and spaced repetition learning.</p>
-                    <div class="project-tags">
-                        <span class="project-tag">TypeScript</span>
-                        <span class="project-tag">MCP</span>
-                        <span class="project-tag">Education</span>
-                    </div>
-                </div>
-
+            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128274;</span> <span data-i18n="skills.sec">Security</span></h3>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Reverse Engineering</span><span class="prog-pct">78%</span></div><div class="prog-bar"><div class="prog-fill" data-w="78"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Network Security</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Malware Analysis</span><span class="prog-pct">72%</span></div><div class="prog-bar"><div class="prog-fill" data-w="72"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">eBPF / Kernel</span><span class="prog-pct">68%</span></div><div class="prog-bar"><div class="prog-fill" data-w="68"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Cryptography</span><span class="prog-pct">75%</span></div><div class="prog-bar"><div class="prog-fill" data-w="75"></div></div></div>
+            </div>
+            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#9881;&#65039;</span> <span data-i18n="skills.devops">DevOps &amp; Tools</span></h3>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Docker / K8s</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Linux Admin</span><span class="prog-pct">92%</span></div><div class="prog-bar"><div class="prog-fill" data-w="92"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">CI/CD Pipelines</span><span class="prog-pct">80%</span></div><div class="prog-bar"><div class="prog-fill" data-w="80"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Git / GitHub</span><span class="prog-pct">95%</span></div><div class="prog-bar"><div class="prog-fill" data-w="95"></div></div></div>
+                <div class="prog-item"><div class="prog-head"><span class="prog-name">Nginx / Apache</span><span class="prog-pct">78%</span></div><div class="prog-bar"><div class="prog-fill" data-w="78"></div></div></div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Skills Section -->
-    <section id="skills">
-        <div class="section-container">
-            <div class="section-header fade-in">
-                <div class="section-label" data-i18n="skills.label">// Skills</div>
-                <h2 class="section-title" data-i18n="skills.title">Technical Expertise</h2>
-                <p class="section-description" data-i18n="skills.description">Proficiency levels across various technologies and domains.</p>
-            </div>
-            <div class="skills-categories">
+<section id="stats">
+    <div class="container">
+        <div class="sec-head reveal">
+            <div class="sec-label" data-i18n="stats.label">// Stats</div>
+            <h2 class="sec-title" data-i18n="stats.title">By The Numbers</h2>
+            <p class="sec-desc" data-i18n="stats.desc">A snapshot of my journey.</p>
+        </div>
+        <div class="stats-row">
+            <div class="stat-card reveal"><div class="stat-ic">&#128193;</div><div class="stat-num" data-count="38">0</div><div class="stat-lbl" data-i18n="stats.projects">Projects</div></div>
+            <div class="stat-card reveal"><div class="stat-ic">&#128187;</div><div class="stat-num" data-count="6">0</div><div class="stat-lbl" data-i18n="stats.languages">Languages</div></div>
+            <div class="stat-card reveal"><div class="stat-ic">&#128736;&#65039;</div><div class="stat-num" data-count="202">0</div><div class="stat-lbl" data-i18n="stats.tools">Tools Built</div></div>
+            <div class="stat-card reveal"><div class="stat-ic">&#128221;</div><div class="stat-num" data-count="100">0</div><div class="stat-lbl" data-i18n="stats.lines">K+ Lines of Code</div></div>
+        </div>
+    </div>
+</section>
 
-                <!-- Languages -->
-                <div class="skill-category fade-in">
-                    <h3 class="category-title">
-                        <span class="category-icon">💻</span>
-                        <span data-i18n="skills.langTitle">Languages</span>
-                    </h3>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Python</span>
-                            <span class="progress-percent">92%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="92"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Go</span>
-                            <span class="progress-percent">85%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="85"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Rust</span>
-                            <span class="progress-percent">75%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="75"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">C++</span>
-                            <span class="progress-percent">80%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="80"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">TypeScript</span>
-                            <span class="progress-percent">70%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="70"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Java</span>
-                            <span class="progress-percent">65%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="65"></div>
-                        </div>
-                    </div>
-                </div>
+<section id="timeline">
+    <div class="container">
+        <div class="sec-head reveal">
+            <div class="sec-label" data-i18n="timeline.label">// Journey</div>
+            <h2 class="sec-title" data-i18n="timeline.title">Learning Timeline</h2>
+            <p class="sec-desc" data-i18n="timeline.desc">My programming journey from first line of code to today.</p>
+        </div>
+        <div class="tl">
+            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2022</div><h4 class="tl-title" data-i18n="tl.2022.title">The Beginning</h4><p class="tl-desc" data-i18n="tl.2022.desc">Started learning Python and basic programming concepts. Built first simple scripts and automation tools.</p></div></div>
+            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2023</div><h4 class="tl-title" data-i18n="tl.2023.title">Diving Deeper</h4><p class="tl-desc" data-i18n="tl.2023.desc">Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.</p></div></div>
+            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2024</div><h4 class="tl-title" data-i18n="tl.2024.title">Systems Programming</h4><p class="tl-desc" data-i18n="tl.2024.desc">Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.</p></div></div>
+            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2025</div><h4 class="tl-title" data-i18n="tl.2025.title">AI &amp; Scale</h4><p class="tl-desc" data-i18n="tl.2025.desc">Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.</p></div></div>
+            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2026</div><h4 class="tl-title" data-i18n="tl.2026.title">Current Focus</h4><p class="tl-desc" data-i18n="tl.2026.desc">Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.</p></div></div>
+        </div>
+    </div>
+</section>
 
-                <!-- Frameworks -->
-                <div class="skill-category fade-in">
-                    <h3 class="category-title">
-                        <span class="category-icon">🚀</span>
-                        <span data-i18n="skills.fwTitle">Frameworks & Libraries</span>
-                    </h3>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Django / FastAPI</span>
-                            <span class="progress-percent">88%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="88"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Gin / Fiber</span>
-                            <span class="progress-percent">82%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="82"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Actix Web</span>
-                            <span class="progress-percent">70%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="70"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">OpenGL / Vulkan</span>
-                            <span class="progress-percent">65%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="65"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">React / Next.js</span>
-                            <span class="progress-percent">72%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="72"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Security -->
-                <div class="skill-category fade-in">
-                    <h3 class="category-title">
-                        <span class="category-icon">🔒</span>
-                        <span data-i18n="skills.secTitle">Security</span>
-                    </h3>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Reverse Engineering</span>
-                            <span class="progress-percent">78%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="78"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Network Security</span>
-                            <span class="progress-percent">85%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="85"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Malware Analysis</span>
-                            <span class="progress-percent">72%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="72"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">eBPF / Kernel</span>
-                            <span class="progress-percent">68%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="68"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Cryptography</span>
-                            <span class="progress-percent">75%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="75"></div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- DevOps -->
-                <div class="skill-category fade-in">
-                    <h3 class="category-title">
-                        <span class="category-icon">⚙️</span>
-                        <span data-i18n="skills.devopsTitle">DevOps & Tools</span>
-                    </h3>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Docker / K8s</span>
-                            <span class="progress-percent">85%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="85"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Linux Admin</span>
-                            <span class="progress-percent">92%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="92"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">CI/CD Pipelines</span>
-                            <span class="progress-percent">80%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="80"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Git / GitHub</span>
-                            <span class="progress-percent">95%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="95"></div>
-                        </div>
-                    </div>
-                    <div class="progress-item">
-                        <div class="progress-header">
-                            <span class="progress-name">Nginx / Apache</span>
-                            <span class="progress-percent">78%</span>
-                        </div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" data-width="78"></div>
-                        </div>
-                    </div>
-                </div>
-
+<section id="contact">
+    <div class="container">
+        <div class="sec-head reveal">
+            <div class="sec-label" data-i18n="contact.label">// Contact</div>
+            <h2 class="sec-title" data-i18n="contact.title">Get In Touch</h2>
+            <p class="sec-desc" data-i18n="contact.desc">Have a project in mind or want to collaborate? Let's talk.</p>
+        </div>
+        <div class="contact-grid">
+            <form class="contact-form reveal" action="https://formspree.io/f/xpznvgle" method="POST">
+                <div class="field"><input type="text" name="name" placeholder="Your Name" required data-i18n-placeholder="contact.name"></div>
+                <div class="field"><input type="email" name="email" placeholder="Your Email" required data-i18n-placeholder="contact.email"></div>
+                <div class="field"><input type="text" name="subject" placeholder="Subject" data-i18n-placeholder="contact.subject"></div>
+                <div class="field"><textarea name="message" placeholder="Your Message" required data-i18n-placeholder="contact.message"></textarea></div>
+                <button type="submit" class="btn btn-p" style="align-self:flex-start" data-i18n="contact.send">Send Message</button>
+            </form>
+            <div class="info-cards reveal">
+                <div class="info-card"><div class="ic">&#128205;</div><div class="lbl" data-i18n="contact.locLabel">Location</div><div class="val" data-i18n="contact.locVal">Kazakhstan</div></div>
+                <div class="info-card"><div class="ic">&#128231;</div><div class="lbl" data-i18n="contact.emailLabel">Email</div><div class="val"><a href="mailto:cokovali10@gmail.com">cokovali10@gmail.com</a></div></div>
+                <div class="info-card"><div class="ic">&#128222;</div><div class="lbl" data-i18n="contact.phoneLabel">Phone</div><div class="val"><a href="tel:+77472579344">+7 747 257 93 44</a></div></div>
+                <div class="info-card"><div class="ic">&#128025;</div><div class="lbl" data-i18n="contact.ghLabel">GitHub</div><div class="val"><a href="https://github.com/cokovali10-sketch" target="_blank">github.com/cokovali10-sketch</a></div></div>
+                <div class="socials"><a href="https://github.com/cokovali10-sketch" target="_blank" class="social-btn" title="GitHub">&#128025;</a><a href="mailto:cokovali10@gmail.com" class="social-btn" title="Email">&#128231;</a></div>
             </div>
         </div>
-    </section>
+    </div>
+</section>
 
-    <!-- Stats Section -->
-    <section id="stats">
-        <div class="section-container">
-            <div class="section-header fade-in">
-                <div class="section-label" data-i18n="stats.label">// Stats</div>
-                <h2 class="section-title" data-i18n="stats.title">By The Numbers</h2>
-                <p class="section-description" data-i18n="stats.description">A snapshot of my journey and contributions.</p>
-            </div>
-            <div class="stats-grid">
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">📁</div>
-                    <div class="stat-number" data-count="38">0</div>
-                    <div class="stat-label" data-i18n="stats.projects">Projects</div>
-                </div>
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">💻</div>
-                    <div class="stat-number" data-count="6">0</div>
-                    <div class="stat-label" data-i18n="stats.languages">Languages</div>
-                </div>
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">🛠️</div>
-                    <div class="stat-number" data-count="202">0</div>
-                    <div class="stat-label" data-i18n="stats.tools">Tools Built</div>
-                </div>
-                <div class="stat-card fade-in">
-                    <div class="stat-icon">📝</div>
-                    <div class="stat-number" data-count="100">0</div>
-                    <div class="stat-label" data-i18n="stats.lines">K+ Lines of Code</div>
-                </div>
-            </div>
-        </div>
-    </section>
+<footer><div class="footer-inner"><div class="footer-copy" data-i18n="footer.copy">&copy; 2026 Ali. All rights reserved.</div><div class="footer-links"><a href="https://github.com/cokovali10-sketch" target="_blank">GitHub</a><a href="mailto:cokovali10@gmail.com">Email</a></div><a href="#hero" class="top-btn" title="Top">&#8593;</a></div></footer>
 
-    <!-- Timeline Section -->
-    <section id="timeline">
-        <div class="section-container">
-            <div class="section-header fade-in">
-                <div class="section-label" data-i18n="timeline.label">// Journey</div>
-                <h2 class="section-title" data-i18n="timeline.title">Learning Timeline</h2>
-                <p class="section-description" data-i18n="timeline.description">My programming journey from first line of code to today.</p>
-            </div>
-            <div class="timeline">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+var T={en:{loading:"Loading...","nav.home":"Home","nav.about":"About","nav.projects":"Projects","nav.skills":"Skills","nav.stats":"Stats","nav.contact":"Contact","hero.name":"ALI","hero.tagline1":"Systems Programmer & Security Researcher","hero.tagline2":"Building security tools and AI agents","hero.tagline3":"Low-level programming enthusiast from Kazakhstan","hero.tagline4":"Open source contributor","hero.tagline5":"Exploring the depths of systems programming","hero.viewProjects":"View Projects","hero.github":"GitHub","hero.scroll":"Scroll","about.label":"// About Me","about.title":"Who I Am","about.desc":"Systems programming, security research, and building tools that matter.","about.greeting":"Hi, I'm Ali!","about.bio1":"I'm a systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I build security tools, AI agents, and explore the depths of systems programming.","about.bio2":"My journey in programming started years ago, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.","about.location":"Kazakhstan","projects.label":"// Projects","projects.title":"Featured Work","projects.desc":"A collection of projects spanning security, AI, DevOps, and more.","projects.all":"All","projects.security":"Security","projects.ai":"AI/ML","projects.devops":"DevOps","projects.web":"Web","projects.tools":"Tools","proj.threatforge":"Advanced SOC platform with threat intelligence and incident response capabilities.","proj.ghostly":"Powerful analytics platform for data visualization and insights generation.","proj.hermes":"Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.","proj.coreedr":"High-performance Endpoint Detection and Response solution built in Rust.","proj.spectre":"eBPF-based network security monitoring and threat detection framework.","proj.nano":"Lightweight container runtime written in Go for minimal overhead deployment.","proj.aegis":"Secure AI model sandboxing runtime for safe execution of untrusted models.","proj.govault":"Encrypted file storage solution with zero-knowledge architecture in Go.","proj.goportscan":"High-speed concurrent port scanner with service fingerprinting capabilities.","proj.retroterm":"Terminal-based roguelike game with procedural generation and deep gameplay.","proj.diskscope":"Visual disk space analyzer with detailed file system insights and cleanup tools.","proj.logpulse":"Real-time log analysis engine with anomaly detection and alerting system.","proj.agentmesh":"Multi-agent AI orchestration framework for complex task decomposition.","proj.forge3d":"Custom 3D game engine with OpenGL rendering and entity component system.","proj.caffeine":"Modern glassmorphism UI component library for web applications.","proj.flashcard":"MCP server for intelligent flashcard generation and spaced repetition learning.","skills.label":"// Skills","skills.title":"Technical Expertise","skills.desc":"Proficiency levels across technologies and domains.","skills.lang":"Languages","skills.fw":"Frameworks & Libraries","skills.sec":"Security","skills.devops":"DevOps & Tools","stats.label":"// Stats","stats.title":"By The Numbers","stats.desc":"A snapshot of my journey.","stats.projects":"Projects","stats.languages":"Languages","stats.tools":"Tools Built","stats.lines":"K+ Lines of Code","timeline.label":"// Journey","timeline.title":"Learning Timeline","timeline.desc":"My programming journey from first line of code to today.","tl.2022.title":"The Beginning","tl.2022.desc":"Started learning Python and basic programming concepts. Built first simple scripts and automation tools.","tl.2023.title":"Diving Deeper","tl.2023.desc":"Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.","tl.2024.title":"Systems Programming","tl.2024.desc":"Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.","tl.2025.title":"AI & Scale","tl.2025.desc":"Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.","tl.2026.title":"Current Focus","tl.2026.desc":"Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.","contact.label":"// Contact","contact.title":"Get In Touch","contact.desc":"Have a project in mind or want to collaborate? Let's talk.","contact.name":"Your Name","contact.email":"Your Email","contact.subject":"Subject","contact.message":"Your Message","contact.send":"Send Message","contact.locLabel":"Location","contact.locVal":"Kazakhstan","contact.emailLabel":"Email","contact.phoneLabel":"Phone","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 Ali. All rights reserved."},
+ru:{loading:"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430...","nav.home":"\u0413\u043b\u0430\u0432\u043d\u0430\u044f","nav.about":"\u041e\u0431\u043e \u043c\u043d\u0435","nav.projects":"\u041f\u0440\u043e\u0435\u043a\u0442\u044b","nav.skills":"\u041d\u0430\u0432\u044b\u043a\u0438","nav.stats":"\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","nav.contact":"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b","hero.name":"\u0410\u041b\u0418","hero.tagline1":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438","hero.tagline2":"\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u0438 \u0418\u0418 \u0430\u0433\u0435\u043d\u0442\u043e\u0432","hero.tagline3":"\u042d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442 \u043d\u0438\u0437\u043a\u043e\u0443\u0440\u043e\u0432\u043d\u043e\u0433\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430","hero.tagline4":"\u041a\u043e\u043d\u0442\u0440\u0438\u0431\u044c\u044e\u0442\u043e\u0440 open source","hero.tagline5":"\u0418\u0441\u0441\u043b\u0435\u0434\u0443\u044e \u0433\u043b\u0443\u0431\u0438\u043d\u044b \u0441\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0433\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f","hero.viewProjects":"\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0435\u043a\u0442\u044b","hero.github":"GitHub","hero.scroll":"\u0412\u043d\u0438\u0437","about.label":"// \u041e\u0431\u043e \u043c\u043d\u0435","about.title":"\u041a\u0442\u043e \u044f","about.desc":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435, \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438.","about.greeting":"\u041f\u0440\u0438\u0432\u0435\u0442, \u044f \u0410\u043b\u0438!","about.bio1":"\u042f \u0441\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430 \u0441 \u0433\u043b\u0443\u0431\u043e\u043a\u043e\u0439 \u0441\u0442\u0440\u0430\u0441\u0442\u044c\u044e \u043a \u043d\u0438\u0437\u043a\u043e\u0443\u0440\u043e\u0432\u043d\u043e\u043c\u0443 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044e, \u043a\u0438\u0431\u0435\u0440\u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u0438 \u0418\u0418.","about.bio2":"\u041c\u043e\u0439 \u043f\u0443\u0442\u044c \u0432 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0438 \u043d\u0430\u0447\u0430\u043b\u0441\u044f \u0434\u0430\u0432\u043d\u043e, \u0438 \u044f \u043b\u044e\u0431\u043b\u044e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b.","about.location":"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d","projects.label":"// \u041f\u0440\u043e\u0435\u043a\u0442\u044b","projects.title":"\u0418\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0440\u0430\u0431\u043e\u0442\u044b","projects.desc":"\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0432.","projects.all":"\u0412\u0441\u0435","projects.security":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c","projects.ai":"\u0418\u0418/ML","projects.devops":"DevOps","projects.web":"\u0412\u0435\u0431","projects.tools":"\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b","proj.threatforge":"\u041f\u0440\u043e\u0434\u0432\u0438\u043d\u0443\u0442\u0430\u044f SOC \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.ghostly":"\u041c\u043e\u0449\u043d\u0430\u044f \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.hermes":"\u041a\u043e\u043c\u043f\u043b\u0435\u043a\u0441\u043d\u044b\u0439 \u043d\u0430\u0431\u043e\u0440 \u0418\u0418 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u043e\u0432.","proj.coreedr":"\u0412\u044b\u0441\u043e\u043a\u043e\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0435 EDR \u043d\u0430 Rust.","proj.spectre":"eBPF \u043d\u0435\u0433\u0456\u0437\u0431\u0435\u0433\u0456 \u043c\u043e\u043d\u0438\u0442\u043e\u0440\u0438\u043d\u0433 \u0444\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u044b.","proj.nano":"Go \u0442\u0456\u043b\u0456\u043d\u0434\u0435 \u0436\u0430\u0437\u044b\u043b\u0433\u0430\u043d \u043a\u043e\u043d\u0442\u0435\u0439\u043d\u0435\u0440 \u0440\u0430\u043d\u0442\u0430\u0439\u043c\u044b.","proj.aegis":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u0430\u044f \u0441\u0440\u0435\u0434\u0430 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u044f \u043c\u043e\u0434\u0435\u043b\u0435\u0439 \u0418\u0418.","proj.govault":"\u0428\u0438\u0444\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0435 \u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0435 \u0444\u0430\u0439\u043b\u043e\u0432 \u043d\u0430 Go.","proj.goportscan":"\u0412\u044b\u0441\u043e\u043a\u043e\u0441\u043a\u043e\u0440\u043e\u0441\u0442\u043d\u043e\u0439 \u0441\u043a\u0430\u043d\u0435\u0440 \u043f\u043e\u0440\u0442\u043e\u0432.","proj.retroterm":"\u0420\u043e\u0433\u0430\u043b\u0438\u043a \u0432 \u0442\u0435\u0440\u043c\u0438\u043d\u0430\u043b\u0435.","proj.diskscope":"\u0410\u043d\u0430\u043b\u0438\u0437\u0430\u0442\u043e\u0440 \u0434\u0438\u0441\u043a\u043e\u0432\u043e\u0433\u043e \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u0430.","proj.logpulse":"\u0414\u0432\u0438\u0436\u043e\u043a \u0430\u043d\u0430\u043b\u0438\u0437\u0430 \u043b\u043e\u0433\u043e\u0432.","proj.agentmesh":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a \u043c\u0443\u043b\u044c\u0442\u0438\u0430\u0433\u0435\u043d\u0442\u043d\u043e\u0439 \u0418\u0418.","proj.forge3d":"3D \u0438\u0433\u0440\u043e\u0432\u043e\u0439 \u0434\u0432\u0438\u0436\u043e\u043a.","proj.caffeine":"UI \u043a\u043e\u043c\u043f\u043e\u043d\u0435\u043d\u0442\u043e\u0432 \u043a\u0438\u0442\u0430\u043f\u0445\u0430\u0441\u044b.","proj.flashcard":"MCP \u0441\u0435\u0440\u0432\u0435\u0440 \u0434\u043b\u044f \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f.","skills.label":"// \u041d\u0430\u0432\u044b\u043a\u0438","skills.title":"\u0422\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u044d\u043a\u0441\u043f\u0435\u0440\u0442\u0438\u0437\u0430","skills.desc":"\u0423\u0440\u043e\u0432\u043d\u0438 \u0432\u043b\u0430\u0434\u0435\u043d\u0438\u044f.","skills.lang":"\u042f\u0437\u044b\u043a\u0438","skills.fw":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u0438","skills.sec":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c","skills.devops":"DevOps","stats.label":"// \u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","stats.title":"\u0426\u0438\u0444\u0440\u044b","stats.desc":"\u041e\u0431\u0437\u043e\u0440.","stats.projects":"\u041f\u0440\u043e\u0435\u043a\u0442\u044b","stats.languages":"\u042f\u0437\u044b\u043a\u0438","stats.tools":"\u0421\u043e\u0437\u0434\u0430\u043d\u043d\u044b\u0445","stats.lines":"\u0422\u044b\u0441. \u0441\u0442\u0440\u043e\u043a","timeline.label":"// \u041f\u0443\u0442\u044c","timeline.title":"\u0425\u0440\u043e\u043d\u043e\u043b\u043e\u0433\u0438\u044f","timeline.desc":"\u041c\u043e\u0439 \u043f\u0443\u0442\u044c.","tl.2022.title":"\u041d\u0430\u0447\u0430\u043b\u043e","tl.2022.desc":"\u041d\u0430\u0447\u0430\u043b \u0438\u0437\u0443\u0447\u0430\u0442\u044c Python.","tl.2023.title":"\u041f\u043e\u0433\u0440\u0443\u0436\u0435\u043d\u0438\u0435","tl.2023.desc":"\u0418\u0437\u0443\u0447\u0438\u043b Go \u0438 C++. \u041d\u0430\u0447\u0430\u043b \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b.","tl.2024.title":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435","tl.2024.desc":"Rust, eBPF. CoreEDR \u0438 SpectreShield.","tl.2025.title":"\u0418\u0418","tl.2025.desc":"AgentMesh \u0438 Hermes Studio.","tl.2026.title":"\u0422\u0435\u043a\u0443\u0449\u0438\u0439","tl.2026.desc":"ThreatForge SOC.","contact.label":"// \u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b","contact.title":"\u0421\u0432\u044f\u0436\u0438\u0442\u0435\u0441\u044c","contact.desc":"\u0414\u0430\u0432\u0430\u0439\u0442\u0435 \u043f\u043e\u0433\u043e\u0432\u043e\u0440\u0438\u043c.","contact.name":"\u0418\u043c\u044f","contact.email":"Email","contact.subject":"\u0422\u0435\u043c\u0430","contact.message":"\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435","contact.send":"\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c","contact.locLabel":"\u041c\u0435\u0441\u0442\u043e","contact.locVal":"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d","contact.emailLabel":"Email","contact.phoneLabel":"\u0422\u0435\u043b\u0435\u0444\u043e\u043d","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 \u0410\u043b\u0438."},
+kz:{loading:"\u0416\u04af\u043a\u0442\u0435\u043b\u0443\u0434\u0435...","nav.home":"\u0411\u0430\u0441\u0442\u044b","nav.about":"\u041c\u0435\u043d \u0442\u0443\u0440\u0430\u043b\u044b","nav.projects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","nav.skills":"\u0414\u0430\u0433\u0434\u044b\u043b\u0430\u0440","nav.stats":"\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","nav.contact":"\u0411\u0430\u0439\u043b\u0430\u043d\u044b\u0441","hero.name":"\u0410\u041b\u0418","hero.tagline1":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","hero.tagline2":"\u041a\u04d9\u043f\u0430\u043b\u0434\u044b\u043b\u044b\u043c\u0435\u043d \u0416\u0418 \u0430\u0433\u0435\u043d\u0442\u0442\u0435\u0440\u0456\u043d","hero.tagline3":"\u0411\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b \u044d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442\u044b","hero.tagline4":"Open source","hero.tagline5":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a","hero.viewProjects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440\u0434\u044b","hero.github":"GitHub","hero.scroll":"\u0422\u04d9\u043c\u0435\u043d","about.label":"// \u041c\u0435\u043d \u0442\u0443\u0440\u0430\u043b\u044b","about.title":"\u041c\u0435\u043d \u043a\u0456\u043c\u043c\u0456\u043d","about.desc":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u043b\u0430\u0443.","about.greeting":"\u0421\u04d9\u043b\u0435\u043c, \u043c\u0435\u043d \u0410\u043b\u0438!","about.bio1":"\u041c\u0435\u043d \u049b\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d\u043d\u0430\u043d \u0436\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043c\u0430\u0448\u044b\u043c\u044b\u043d.","about.bio2":"\u041c\u0435\u043d\u0456\u043d \u0436\u043e\u043b\u044b\u043c \u0431\u0430\u0441\u0442\u0430\u043b\u0434\u044b.","about.location":"\u041a\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d","projects.label":"// \u0416\u043e\u0431\u0430\u043b\u0430\u0440","projects.title":"\u0422\u0430\u043d\u0434\u0430\u043b\u0433\u0430\u043d","projects.desc":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440 \u0436\u0438\u043d\u0430\u0433\u044b.","projects.all":"\u0411\u04d9\u0440\u0456","projects.security":"\u041a\u0430\u0443\u0456\u043f\u0441\u0456\u0437","projects.ai":"\u0416\u0418/ML","projects.devops":"DevOps","projects.web":"\u0412\u0435\u0431","projects.tools":"\u049a\u04b1\u0440\u0430\u043b","proj.threatforge":"SOC \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430\u0441\u044b.","proj.ghostly":"\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0430\u043b\u044b\u049b \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.hermes":"202 \u049b\u04b1\u0440\u0430\u043b\u043c\u0435\u043d \u0416\u0418.","proj.coreedr":"Rust EDR.","proj.spectre":"eBPF \u043a\u04d9\u043f\u0430\u043b\u0441\u044b\u0437\u0434\u044b\u043a.","proj.nano":"Go \u043a\u043e\u043d\u0442\u0435\u0439\u043d\u0435\u0440.","proj.aegis":"\u0416\u0418 \u043c\u043e\u0434\u0435\u043b\u0434\u0435\u0440\u0456\u043d \u043a\u043e\u0440\u0448\u0430\u0443.","proj.govault":"\u0428\u0438\u0444\u0440\u043b\u0435\u043d\u0433\u0435\u043d \u0444\u0430\u0439\u043b.","proj.goportscan":"\u041f\u043e\u0440\u0442 \u0441\u043a\u0430\u043d\u0435\u0440\u0456.","proj.retroterm":"\u0420\u043e\u0433\u0430\u043b\u0438\u043a.","proj.diskscope":"\u0414\u0438\u0441\u043a \u0442\u0430\u043b\u0434\u0430\u0443.","proj.logpulse":"\u041b\u043e\u0433 \u0442\u0430\u043b\u0434\u0430\u0443.","proj.agentmesh":"\u0416\u0438 \u043e\u0440\u043a\u0435\u0441\u0442\u0440\u0430\u0446\u0438\u044f.","proj.forge3d":"3D \u043e\u0439\u044b\u043d.","proj.caffeine":"UI \u043a\u0456\u0442\u0430\u043f\u0445\u0430.","proj.flashcard":"MCP \u0441\u0435\u0440\u0432\u0435\u0440\u0456.","skills.label":"// \u0414\u0430\u0433\u0434\u044b\u043b\u0430\u0440","skills.title":"\u0422\u0435\u0445\u043d\u0438\u043a\u0430\u043b\u044b\u043a","skills.desc":"\u041c\u0435\u043d\u0441\u0435\u0440\u0434\u0435\u0433\u0435\u0439\u043b\u0435\u0440\u0456.","skills.lang":"\u0422\u0456\u043b\u0434\u0435\u0440","skills.fw":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u0442\u0430\u0440","skills.sec":"\u041a\u0430\u0443\u0456\u043f\u0441\u0456\u0437","skills.devops":"DevOps","stats.label":"// \u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","stats.title":"\u0421\u0430\u043d\u0434\u0430\u0440","stats.desc":"\u0416\u043e\u043b.","stats.projects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","stats.languages":"\u0422\u0456\u043b\u0434\u0435\u0440","stats.tools":"\u049a\u04b1\u0440\u0430\u043b\u0434\u0430\u0440","stats.lines":"\u041c\u044b\u043d\u0433 \u043a\u043e\u0434","timeline.label":"// \u0416\u043e\u043b","timeline.title":"\u041e\u049b\u0443","timeline.desc":"\u0416\u043e\u043b\u044b\u043c.","tl.2022.title":"\u0411\u0430\u0441\u0442\u0430\u043c\u0430","tl.2022.desc":"Python.","tl.2023.title":"\u0422\u0435\u0440\u0435\u043d\u0456\u0440\u0435\u043a","tl.2023.desc":"Go \u0436\u04d9\u043d\u0435 C++.","tl.2024.title":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a","tl.2024.desc":"Rust \u0436\u04d9\u043d\u0435 eBPF.","tl.2025.title":"\u0416\u0418","tl.2025.desc":"AgentMesh \u0436\u04d9\u043d\u0435 Hermes Studio.","tl.2026.title":"\u041a\u0430\u0437\u0456\u0440\u0433\u0456","tl.2026.desc":"ThreatForge SOC.","contact.label":"// \u0411\u0430\u0439\u043b\u0430\u043d\u044b\u0441","contact.title":"\u0425\u0430\u0431\u0430\u0440\u043b\u0430\u0441\u044b\u043d\u044b\u0437","contact.desc":"\u0421\u04d9\u0439\u043b\u0435\u0441\u0435\u0439\u0456\u043a.","contact.name":"\u0410\u0442\u044b\u043d\u044b\u0437","contact.email":"Email","contact.subject":"\u0422\u0430\u049b\u044b\u0440\u044b\u043f","contact.message":"\u0425\u0430\u0431\u0430\u0440\u043b\u0430\u043c\u0430","contact.send":"\u0416\u0456\u0431\u0435\u0440\u0443","contact.locLabel":"\u041e\u0440\u043d\u0430\u043b\u044b","contact.locVal":"\u041a\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d","contact.emailLabel":"Email","contact.phoneLabel":"\u0422\u0435\u043b\u0435\u0444\u043e\u043d","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 \u0410\u043b\u0438."}};
 
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-year">2022</div>
-                        <h4 class="timeline-title" data-i18n="timeline.2022.title">The Beginning</h4>
-                        <p class="timeline-desc" data-i18n="timeline.2022.desc">Started learning Python and basic programming concepts. Built first simple scripts and automation tools.</p>
-                    </div>
-                </div>
+var lang=localStorage.getItem('lang')||'en';
+function setLang(l){lang=l;localStorage.setItem('lang',l);document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(T[l]&&T[l][k])e.textContent=T[l][k]});document.querySelectorAll('[data-i18n-placeholder]').forEach(function(e){var k=e.getAttribute('data-i18n-placeholder');if(T[l]&&T[l][k])e.placeholder=T[l][k]});document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('on',b.dataset.lang===l)});document.documentElement.lang=l}
+document.querySelectorAll('.lang-btn').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang)})});
+setLang(lang);
 
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-year">2023</div>
-                        <h4 class="timeline-title" data-i18n="timeline.2023.title">Diving Deeper</h4>
-                        <p class="timeline-desc" data-i18n="timeline.2023.desc">Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.</p>
-                    </div>
-                </div>
+window.addEventListener('load',function(){setTimeout(function(){document.getElementById('loader').classList.add('hide')},1800)});
 
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-year">2024</div>
-                        <h4 class="timeline-title" data-i18n="timeline.2024.title">Systems Programming</h4>
-                        <p class="timeline-desc" data-i18n="timeline.2024.desc">Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.</p>
-                    </div>
-                </div>
+/* Three.js DNA Helix */
+(function(){
+var canvas=document.getElementById('hero-canvas');
+var scene=new THREE.Scene();
+var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);
+var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+renderer.setSize(window.innerWidth,window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
 
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-year">2025</div>
-                        <h4 class="timeline-title" data-i18n="timeline.2025.title">AI & Scale</h4>
-                        <p class="timeline-desc" data-i18n="timeline.2025.desc">Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.</p>
-                    </div>
-                </div>
+var mouse={x:0,y:0},target={x:0,y:0};
+document.addEventListener('mousemove',function(e){target.x=(e.clientX/window.innerWidth-0.5)*2;target.y=(e.clientY/window.innerHeight-0.5)*2});
 
-                <div class="timeline-item fade-in">
-                    <div class="timeline-dot"></div>
-                    <div class="timeline-card">
-                        <div class="timeline-year">2026</div>
-                        <h4 class="timeline-title" data-i18n="timeline.2026.title">Current Focus</h4>
-                        <p class="timeline-desc" data-i18n="timeline.2026.desc">Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.</p>
-                    </div>
-                </div>
+var helix=new THREE.Group();
+scene.add(helix);
 
-            </div>
-        </div>
-    </section>
+var N=120,R=2,H=18,TW=1.2;
+var sGeo=new THREE.SphereGeometry(0.07,8,8);
+var m1=new THREE.MeshBasicMaterial({color:0x6366f1,transparent:true,opacity:0.85});
+var m2=new THREE.MeshBasicMaterial({color:0x06b6d4,transparent:true,opacity:0.85});
+var bMat=new THREE.MeshBasicMaterial({color:0x6366f1,transparent:true,opacity:0.2});
 
-    <!-- Contact Section -->
-    <section id="contact">
-        <div class="section-container">
-            <div class="section-header fade-in">
-                <div class="section-label" data-i18n="contact.label">// Contact</div>
-                <h2 class="section-title" data-i18n="contact.title">Get In Touch</h2>
-                <p class="section-description" data-i18n="contact.description">Have a project in mind or want to collaborate? Let's talk.</p>
-            </div>
-            <div class="contact-grid">
+var lp1=[],lp2=[];
+for(var i=0;i<N;i++){
+    var t=i/N,y=t*H-H/2,a=t*N*TW;
+    var p1=new THREE.Vector3(Math.cos(a)*R,y,Math.sin(a)*R);
+    var p2=new THREE.Vector3(Math.cos(a+Math.PI)*R,y,Math.sin(a+Math.PI)*R);
+    lp1.push(p1);lp2.push(p2);
+    var s1=new THREE.Mesh(sGeo,m1);s1.position.copy(p1);helix.add(s1);
+    var s2=new THREE.Mesh(sGeo,m2);s2.position.copy(p2);helix.add(s2);
+    if(i%4===0){
+        var dir=new THREE.Vector3().subVectors(p2,p1);var len=dir.length();
+        var bg=new THREE.CylinderGeometry(0.012,0.012,len,4);
+        var bond=new THREE.Mesh(bg,bMat);bond.position.copy(p1).add(dir.multiplyScalar(0.5));
+        bond.lookAt(p2);bond.rotateX(Math.PI/2);helix.add(bond);
+    }
+}
 
-                <form class="contact-form fade-in" id="contact-form">
-                    <div class="form-group">
-                        <input type="text" class="form-input" placeholder="Your Name" required data-i18n-placeholder="contact.namePlaceholder">
-                    </div>
-                    <div class="form-group">
-                        <input type="email" class="form-input" placeholder="Your Email" required data-i18n-placeholder="contact.emailPlaceholder">
-                    </div>
-                    <div class="form-group">
-                        <input type="text" class="form-input" placeholder="Subject" data-i18n-placeholder="contact.subjectPlaceholder">
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-textarea" placeholder="Your Message" required data-i18n-placeholder="contact.messagePlaceholder"></textarea>
-                    </div>
-                    <button type="submit" class="btn btn-primary" style="align-self: flex-start;" data-i18n="contact.send">Send Message</button>
-                </form>
+var curve1=new THREE.CatmullRomCurve3(lp1);
+var curve2=new THREE.CatmullRomCurve3(lp2);
+var tubeGeo1=new THREE.TubeGeometry(curve1,200,0.025,6,false);
+var tubeGeo2=new THREE.TubeGeometry(curve2,200,0.025,6,false);
+var tubeMat=new THREE.LineBasicMaterial({color:0x6366f1,transparent:true,opacity:0.5});
+helix.add(new THREE.LineSegments(new THREE.WireframeGeometry(tubeGeo1),tubeMat));
+helix.add(new THREE.LineSegments(new THREE.WireframeGeometry(tubeGeo2),new THREE.LineBasicMaterial({color:0x06b6d4,transparent:true,opacity:0.5})));
 
-                <div class="contact-info fade-in">
-                    <div class="contact-card">
-                        <div class="contact-card-icon">📍</div>
-                        <div class="contact-card-title" data-i18n="contact.locationLabel">Location</div>
-                        <div class="contact-card-value" data-i18n="contact.locationValue">Kazakhstan</div>
-                    </div>
-                    <div class="contact-card">
-                        <div class="contact-card-icon">📧</div>
-                        <div class="contact-card-title" data-i18n="contact.emailLabel">Email</div>
-                        <div class="contact-card-value">
-                            <a href="mailto:satuarb@proton.me">satuarb@proton.me</a>
-                        </div>
-                    </div>
-                    <div class="contact-card">
-                        <div class="contact-card-icon">🐙</div>
-                        <div class="contact-card-title" data-i18n="contact.githubLabel">GitHub</div>
-                        <div class="contact-card-value">
-                            <a href="https://github.com/satuarb" target="_blank">github.com/satuarb</a>
-                        </div>
-                    </div>
-                    <div class="social-links">
-                        <a href="https://github.com/satuarb" target="_blank" class="social-link" title="GitHub">
-                            <span>🐙</span>
-                        </a>
-                        <a href="mailto:satuarb@proton.me" class="social-link" title="Email">
-                            <span>📧</span>
-                        </a>
-                        <a href="https://x.com/satuarb" target="_blank" class="social-link" title="X/Twitter">
-                            <span>🐦</span>
-                        </a>
-                    </div>
-                </div>
+var pCount=300,pPos=new Float32Array(pCount*3);
+for(var i=0;i<pCount*3;i++)pPos[i]=(Math.random()-0.5)*25;
+var pGeo=new THREE.BufferGeometry();
+pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
+scene.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0x6366f1,size:0.025,transparent:true,opacity:0.4})));
 
-            </div>
-        </div>
-    </section>
+camera.position.z=12;
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-container">
-            <div class="footer-copyright">
-                <span data-i18n="footer.copyright">&copy; 2026 Satuarb. All rights reserved.</span>
-            </div>
-            <div class="footer-social">
-                <a href="https://github.com/satuarb" target="_blank" title="GitHub">🐙</a>
-                <a href="mailto:satuarb@proton.me" title="Email">📧</a>
-                <a href="https://x.com/satuarb" target="_blank" title="X/Twitter">🐦</a>
-            </div>
-            <a href="#hero" class="back-to-top" title="Back to top">↑</a>
-        </div>
-    </footer>
+function animate(){
+    requestAnimationFrame(animate);
+    mouse.x+=(target.x-mouse.x)*0.05;
+    mouse.y+=(target.y-mouse.y)*0.05;
+    helix.rotation.y+=0.003;
+    helix.rotation.x=mouse.y*0.3;
+    helix.rotation.z=mouse.x*0.15;
+    renderer.render(scene,camera);
+}
+animate();
 
-    <!-- Three.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+window.addEventListener('resize',function(){
+    camera.aspect=window.innerWidth/window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth,window.innerHeight);
+});
+})();
 
-    <script>
-        // ==========================================
-        // TRANSLATIONS
-        // ==========================================
-        const translations = {
-            en: {
-                loading: "Loading...",
-                "nav.home": "Home",
-                "nav.about": "About",
-                "nav.projects": "Projects",
-                "nav.skills": "Skills",
-                "nav.stats": "Stats",
-                "nav.contact": "Contact",
-                "hero.name": "SATUARB",
-                "hero.tagline1": "Systems Programmer & Security Researcher",
-                "hero.tagline2": "Building security tools and AI agents",
-                "hero.tagline3": "15-year-old hacker from Kazakhstan",
-                "hero.projects": "Projects",
-                "hero.languages": "Languages",
-                "hero.tools": "Tools",
-                "hero.viewProjects": "View Projects",
-                "hero.github": "GitHub",
-                "hero.scroll": "Scroll Down",
-                "about.label": "// About Me",
-                "about.title": "Who I Am",
-                "about.description": "Passionate about systems programming, security research, and building tools that make a difference.",
-                "about.greeting": "Hi, I'm Satuarb!",
-                "about.bio1": "I'm a 15-year-old systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I spend my time building security tools, AI agents, and exploring the depths of systems programming.",
-                "about.bio2": "My journey in programming started at a young age, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.",
-                "about.location": "Kazakhstan",
-                "about.age": "15 years old",
-                "skills.advanced": "Advanced",
-                "skills.intermediate": "Intermediate",
-                "skills.expert": "Expert",
-                "skills.label": "// Skills",
-                "skills.title": "Technical Expertise",
-                "skills.description": "Proficiency levels across various technologies and domains.",
-                "skills.langTitle": "Languages",
-                "skills.fwTitle": "Frameworks & Libraries",
-                "skills.secTitle": "Security",
-                "skills.devopsTitle": "DevOps & Tools",
-                "projects.label": "// Projects",
-                "projects.title": "Featured Work",
-                "projects.description": "A collection of projects spanning security, AI, DevOps, and more.",
-                "projects.filterAll": "All",
-                "projects.filterSecurity": "Cyber Security",
-                "projects.filterAI": "AI/ML",
-                "projects.filterAnalytics": "Analytics",
-                "projects.filterDevOps": "DevOps",
-                "projects.filterGames": "Games",
-                "projects.filterWeb": "Web",
-                "projects.threatforge.desc": "Advanced SOC platform with threat intelligence and incident response capabilities.",
-                "projects.ghostly.desc": "Powerful analytics platform for data visualization and insights generation.",
-                "projects.hermes.desc": "Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.",
-                "projects.coreedr.desc": "High-performance Endpoint Detection and Response solution built in Rust.",
-                "projects.spectre.desc": "eBPF-based network security monitoring and threat detection framework.",
-                "projects.nano.desc": "Lightweight container runtime written in Go for minimal overhead deployment.",
-                "projects.aegis.desc": "Secure AI model sandboxing runtime for safe execution of untrusted models.",
-                "projects.govault.desc": "Encrypted file storage solution with zero-knowledge architecture in Go.",
-                "projects.goportscan.desc": "High-speed concurrent port scanner with service fingerprinting capabilities.",
-                "projects.retroterm.desc": "Terminal-based roguelike game with procedural generation and deep gameplay.",
-                "projects.diskscope.desc": "Visual disk space analyzer with detailed file system insights and cleanup tools.",
-                "projects.logpulse.desc": "Real-time log analysis engine with anomaly detection and alerting system.",
-                "projects.agentmesh.desc": "Multi-agent AI orchestration framework for complex task decomposition.",
-                "projects.forge3d.desc": "Custom 3D game engine with OpenGL rendering and entity component system.",
-                "projects.caffeine.desc": "Modern glassmorphism UI component library for web applications.",
-                "projects.flashcard.desc": "MCP server for intelligent flashcard generation and spaced repetition learning.",
-                "stats.label": "// Stats",
-                "stats.title": "By The Numbers",
-                "stats.description": "A snapshot of my journey and contributions.",
-                "stats.projects": "Projects",
-                "stats.languages": "Languages",
-                "stats.tools": "Tools Built",
-                "stats.lines": "K+ Lines of Code",
-                "timeline.label": "// Journey",
-                "timeline.title": "Learning Timeline",
-                "timeline.description": "My programming journey from first line of code to today.",
-                "timeline.2022.title": "The Beginning",
-                "timeline.2022.desc": "Started learning Python and basic programming concepts. Built first simple scripts and automation tools.",
-                "timeline.2023.title": "Diving Deeper",
-                "timeline.2023.desc": "Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.",
-                "timeline.2024.title": "Systems Programming",
-                "timeline.2024.desc": "Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.",
-                "timeline.2025.title": "AI & Scale",
-                "timeline.2025.desc": "Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.",
-                "timeline.2026.title": "Current Focus",
-                "timeline.2026.desc": "Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.",
-                "contact.label": "// Contact",
-                "contact.title": "Get In Touch",
-                "contact.description": "Have a project in mind or want to collaborate? Let's talk.",
-                "contact.namePlaceholder": "Your Name",
-                "contact.emailPlaceholder": "Your Email",
-                "contact.subjectPlaceholder": "Subject",
-                "contact.messagePlaceholder": "Your Message",
-                "contact.send": "Send Message",
-                "contact.locationLabel": "Location",
-                "contact.locationValue": "Kazakhstan",
-                "contact.emailLabel": "Email",
-                "contact.githubLabel": "GitHub",
-                "footer.copyright": "© 2026 Satuarb. All rights reserved."
-            },
-            ru: {
-                loading: "Загрузка...",
-                "nav.home": "Главная",
-                "nav.about": "Обо мне",
-                "nav.projects": "Проекты",
-                "nav.skills": "Навыки",
-                "nav.stats": "Статистика",
-                "nav.contact": "Контакты",
-                "hero.name": "САТУАРБ",
-                "hero.tagline1": "Системный программист и исследователь безопасности",
-                "hero.tagline2": "Создаю инструменты безопасности и ИИ агентов",
-                "hero.tagline3": "15-летний хакер из Казахстана",
-                "hero.projects": "Проекты",
-                "hero.languages": "Языки",
-                "hero.tools": "Инструменты",
-                "hero.viewProjects": "Смотреть проекты",
-                "hero.github": "GitHub",
-                "hero.scroll": "Листай вниз",
-                "about.label": "// Обо мне",
-                "about.title": "Кто я",
-                "about.description": "Увлечён системным программированием, исследованием безопасности и созданием полезных инструментов.",
-                "about.greeting": "Привет, я Сатуарб!",
-                "about.bio1": "Мне 15 лет, я системный программист из Казахстана с глубокой страстью к низкоуровневому программированию, кибербезопасности и искусственному интеллекту. Я создаю инструменты безопасности, ИИ агентов и исследую глубины системного программирования.",
-                "about.bio2": "Мой путь в программировании начался в раннем возрасте, и с тех пор я не могу остановиться. Я люблю создавать инструменты, которые решают реальные проблемы и вносят вклад в open-source сообщество.",
-                "about.location": "Казахстан",
-                "about.age": "15 лет",
-                "skills.advanced": "Продвинутый",
-                "skills.intermediate": "Средний",
-                "skills.expert": "Эксперт",
-                "skills.label": "// Навыки",
-                "skills.title": "Техническая экспертиза",
-                "skills.description": "Уровни владения различными технологиями и областями.",
-                "skills.langTitle": "Языки",
-                "skills.fwTitle": "Фреймворки и библиотеки",
-                "skills.secTitle": "Безопасность",
-                "skills.devopsTitle": "DevOps и инструменты",
-                "projects.label": "// Проекты",
-                "projects.title": "Избранные работы",
-                "projects.description": "Коллекция проектов в области безопасности, ИИ, DevOps и многого другого.",
-                "projects.filterAll": "Все",
-                "projects.filterSecurity": "Кибербезопасность",
-                "projects.filterAI": "ИИ/ML",
-                "projects.filterAnalytics": "Аналитика",
-                "projects.filterDevOps": "DevOps",
-                "projects.filterGames": "Игры",
-                "projects.filterWeb": "Веб",
-                "projects.threatforge.desc": "Продвинутая платформа SOC с функциями разведки угроз и реагирования на инциденты.",
-                "projects.ghostly.desc": "Мощная аналитическая платформа для визуализации данных и генерации инсайтов.",
-                "projects.hermes.desc": "Комплексный набор ИИ инструментов с 202 инструментами для автоматизации и ML.",
-                "projects.coreedr.desc": "Высокопроизводительное решение EDR для обнаружения и реагирования на конечных точках, написанное на Rust.",
-                "projects.spectre.desc": "Фреймворк мониторинга сетевой безопасности и обнаружения угроз на основе eBPF.",
-                "projects.nano.desc": "Легкий контейнерный рантайм на Go для развёртывания с минимальными накладными расходами.",
-                "projects.aegis.desc": "Безопасная среда выполнения моделей ИИ для запуска недоверенных моделей.",
-                "projects.govault.desc": "Решение зашифрованного хранения файлов с архитектурой нулевого доверия на Go.",
-                "projects.goportscan.desc": "Высокоскоростной параллельный сканер портов с функцией fingerprinting сервисов.",
-                "projects.retroterm.desc": "Рогалик в терминале с процедурной генерацией и глубоким геймплеем.",
-                "projects.diskscope.desc": "Визуальный анализатор дискового пространства с подробной информацией о файловой системе.",
-                "projects.logpulse.desc": "Движок анализа логов в реальном времени с обнаружением аномалий и системой оповещений.",
-                "projects.agentmesh.desc": "Фреймворк оркестрации мультиагентных ИИ для сложной декомпозиции задач.",
-                "projects.forge3d.desc": "Пользовательский 3D игровой движок с рендерингом на OpenGL и ECS.",
-                "projects.caffeine.desc": "Современная библиотека UI компонентов с глитч-морфизмом для веб-приложений.",
-                "projects.flashcard.desc": "MCP сервер для умной генерации карточек и обучения с интервальным повторением.",
-                "stats.label": "// Статистика",
-                "stats.title": "Цифры",
-                "stats.description": "Обзор моего пути и вклада.",
-                "stats.projects": "Проекты",
-                "stats.languages": "Языки",
-                "stats.tools": "Созданных инструментов",
-                "stats.lines": "Тысяч строк кода",
-                "timeline.label": "// Путь",
-                "timeline.title": "Таймлайн обучения",
-                "timeline.description": "Мой путь в программировании от первой строки кода до сегодняшнего дня.",
-                "timeline.2022.title": "Начало",
-                "timeline.2022.desc": "Начал изучать Python и основы программирования. Создал первые скрипты и инструменты автоматизации.",
-                "timeline.2023.title": "Погружение глубже",
-                "timeline.2023.desc": "Изучил Go и C++. Исследовал внутренности Linux и начал создавать инструменты безопасности. Первые вклады в open source.",
-                "timeline.2024.title": "Системное программирование",
-                "timeline.2024.desc": "Погрузился в Rust и eBPF. Создал CoreEDR и SpectreShield. Углубил знания в кибербезопасности и реверс-инжиниринге.",
-                "timeline.2025.title": "ИИ и масштаб",
-                "timeline.2025.desc": "Исследовал ИИ/ML с AgentMesh и Hermes Studio. Создавал контейнерные рантаймы и изучал распределённые системы.",
-                "timeline.2026.title": "Текущий фокус",
-                "timeline.2026.desc": "Разработка платформы ThreatForge SOC, вклад в исследование безопасности и развитие ИИ агентов.",
-                "contact.label": "// Контакты",
-                "contact.title": "Свяжитесь со мной",
-                "contact.description": "Есть проект или хотите сотрудничать? Давайте поговорим.",
-                "contact.namePlaceholder": "Ваше имя",
-                "contact.emailPlaceholder": "Ваш Email",
-                "contact.subjectPlaceholder": "Тема",
-                "contact.messagePlaceholder": "Ваше сообщение",
-                "contact.send": "Отправить",
-                "contact.locationLabel": "Местоположение",
-                "contact.locationValue": "Казахстан",
-                "contact.emailLabel": "Email",
-                "contact.githubLabel": "GitHub",
-                "footer.copyright": "© 2026 Сатуарб. Все права защищены."
-            },
-            kz: {
-                loading: "Жүктелуде...",
-                "nav.home": "Басты бет",
-                "nav.about": "Мен туралы",
-                "nav.projects": "Жобалар",
-                "nav.skills": "Дағдылар",
-                "nav.stats": "Статистика",
-                "nav.contact": "Байланыс",
-                "hero.name": "СӘТУӘРБ",
-                "hero.tagline1": "Жүйелік бағдарламашы және қауіпсіздік зерттеушісі",
-                "hero.tagline2": "Қауіпсіздік құралдары мен ЖИ агенттерін жасаймын",
-                "hero.tagline3": "Қазақстаннан 15 жастағы хакер",
-                "hero.projects": "Жобалар",
-                "hero.languages": "Тілдер",
-                "hero.tools": "Құралдар",
-                "hero.viewProjects": "Жобаларды көру",
-                "hero.github": "GitHub",
-                "hero.scroll": "Төмен айналдыру",
-                "about.label": "// Мен туралы",
-                "about.title": "Мен кіммін",
-                "about.description": "Жүйелік бағдарламалау, қауіпсіздік зерттеуі және пайдалы құралдар жасауға құмармын.",
-                "about.greeting": "Сәлем, мен Сәтүәрб!",
-                "about.bio1": "Мен Қазақстаннан 15 жастағы жүйелік бағдарламашымын, төменгі деңгейлі бағдарламалау, киберқауіпсіздік және жасанды интеллектке терең құмармын. Мен қауіпсіздік құралдарын, ЖИ агенттерін жасаймын және жүйелік бағдарламалау түкпірлерін зерттеймін.",
-                "about.bio2": "Менің бағдарламалау жолым ерте жаста басталды, содан бері тоқтай алмаймын. Настоящие мәселелерді шешетін және open-source қоғамына үлес қосатын құралдар жасағанды жақсы көремін.",
-                "about.location": "Қазақстан",
-                "about.age": "15 жаста",
-                "skills.advanced": "Жоғары",
-                "skills.intermediate": "Орташа",
-                "skills.expert": "Маман",
-                "skills.label": "// Дағдылар",
-                "skills.title": "Техникалық білім",
-                "skills.description": "Әртүрлі технологиялар мен салалар бойынша меңгеру деңгейлері.",
-                "skills.langTitle": "Тілдер",
-                "skills.fwTitle": "Фреймворктар мен кітапханалар",
-                "skills.secTitle": "Қауіпсіздік",
-                "skills.devopsTitle": "DevOps және құралдар",
-                "projects.label": "// Жобалар",
-                "projects.title": "Таңдалған жұмыстар",
-                "projects.description": "Қауіпсіздік, ЖИ, DevOps және басқа да салалардағы жобалар жинағы.",
-                "projects.filterAll": "Бәрі",
-                "projects.filterSecurity": "Киберқауіпсіздік",
-                "projects.filterAI": "ЖИ/ML",
-                "projects.filterAnalytics": "Аналитика",
-                "projects.filterDevOps": "DevOps",
-                "projects.filterGames": "Ойындар",
-                "projects.filterWeb": "Веб",
-                "projects.threatforge.desc": "Қауіптер разведкасы және оқиғаларға жауап беру мүмкіндіктері бар жетілдірілген SOC платформасы.",
-                "projects.ghostly.desc": "Деректерді визуализациялау және түсініктер генерациялау үшін қуатты аналитикалық платформа.",
-                "projects.hermes.desc": "Автоматтандыру және ML жұмыс ағындары үшін 202 құралы бар кешенді ЖИ құралдар жинағы.",
-                "projects.coreedr.desc": "Rust тілінде жазылған жоғары өнімді EDR шешімі.",
-                "projects.spectre.desc": "eBPF негізіндегі желілік қауіпсіздік мониторингі және қауіптерді анықтау фреймворкы.",
-                "projects.nano.desc": "Минималды шығынмен орнату үшін Go тілінде жазылған жеңіл контейнер рантаймы.",
-                "projects.aegis.desc": "Сенімсіз модельдерді қауіпсіз орындау үшін ЖИ модельдерін қоршау ортасы.",
-                "projects.govault.desc": "Go тіліндегі нөлдік сенім архитектурасы бар шифрленген файл сақтау шешімі.",
-                "projects.goportscan.desc": "Қызмет көрсету fingerprinting мүмкіндіктері бар жоғары жылдамдықты параллель порт сканері.",
-                "projects.retroterm.desc": "Процедуралық генерация және терең геймплейі бар терминалдағы рогалик ойыны.",
-                "projects.diskscope.desc": "Толық файлдық жүйе түсініктері бар көру дискі орын талдауышы.",
-                "projects.logpulse.desc": "Аномалияларды анықтау және хабарлау жүйесі бар нақты уақыттағы журнал талдау қозғалтқышы.",
-                "projects.agentmesh.desc": "Күрделі тапсырмаларды бөлу үшін көп агентті ЖИ оркестрация фреймворкы.",
-                "projects.forge3d.desc": "OpenGL рендерингі және ECS бар теңшелмелі 3D ойын қозғалтқышы.",
-                "projects.caffeine.desc": "Веб-қолданбалар үшін заманауи глитч-морфизм UI компоненттер кітапханасы.",
-                "projects.flashcard.desc": "Ақылды карточкалар генерациясы және интервалды қайталау оқытусы үшін MCP сервері.",
-                "stats.label": "// Статистика",
-                "stats.title": "Сандарда",
-                "stats.description": "Менің жолым мен үлестерімнің шолуы.",
-                "stats.projects": "Жобалар",
-                "stats.languages": "Тілдер",
-                "stats.tools": "Жасалған құралдар",
-                "stats.lines": "Мың код жолы",
-                "timeline.label": "// Жол",
-                "timeline.title": "Оқу хронологиясы",
-                "timeline.description": "Бірінші код жолынан бүгінге дейінгі бағдарламалау жолым.",
-                "timeline.2022.title": "Бастама",
-                "timeline.2022.desc": "Python және негізгі бағдарламалау ұғымдарын үйрене бастадым. Бірінші скриптер мен автоматтандыру құралдарын жасадым.",
-                "timeline.2023.title": "Тереңірек",
-                "timeline.2023.desc": "Go және C++ үйрендім. Linux ішкі құрылымын зерттедім және қауіпсіздік құралдарын жасай бастадым. Open source-ке алғашқы үлестер.",
-                "timeline.2024.title": "Жүйелік бағдарламалау",
-                "timeline.2024.desc": "Rust және eBPF-ге бойladым. CoreEDR және SpectreShield жасадым. Киберқауіпсіздік және кері инжинеринг білімін тереңдеттім.",
-                "timeline.2025.title": "ЖИ және масштаб",
-                "timeline.2025.desc": "AgentMesh және Hermes Studio арқылы ЖИ/ML зерттедім. Контейнер рантаймдарын жасадым және таралған жүйелерді зерттедім.",
-                "timeline.2026.title": "Қазіргі фокус",
-                "timeline.2026.desc": "ThreatForge SOC платформасын жасау, қауіпсіздік зерттеуіне үлес қосу және ЖИ агенттерін дамыту.",
-                "contact.label": "// Байланыс",
-                "contact.title": "Байланысыңыз",
-                "contact.description": "Жобаңыз бар немесе ынтымақтасқыңыз келе ме? Сөйлесейік.",
-                "contact.namePlaceholder": "Сіздің атыңыз",
-                "contact.emailPlaceholder": "Сіздің Email",
-                "contact.subjectPlaceholder": "Тақырып",
-                "contact.messagePlaceholder": "Сіздің хабарламаңыз",
-                "contact.send": "Жіберу",
-                "contact.locationLabel": "Орналасқан жері",
-                "contact.locationValue": "Қазақстан",
-                "contact.emailLabel": "Email",
-                "contact.githubLabel": "GitHub",
-                "footer.copyright": "© 2026 Сәтүәрб. Барлық құқықтар қорғалған."
-            }
-        };
+/* Typing */
+(function(){
+var tl={en:["Systems Programmer & Security Researcher","Building security tools and AI agents","Low-level programming enthusiast from Kazakhstan","Open source contributor","Exploring the depths of systems programming"],ru:["\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c","\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438","\u042d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442 \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430","\u041a\u043e\u043d\u0442\u0440\u0438\u0431\u044c\u044e\u0442\u043e\u0440","\u0418\u0441\u0441\u043b\u0435\u0434\u0443\u044e \u0433\u043b\u0443\u0431\u0438\u043d\u044b"],kz:["\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","\u041a\u04d9\u043f\u0430\u043b\u0434\u044b\u043b\u044b\u043c\u0435\u043d \u0416\u0418 \u0430\u0433\u0435\u043d\u0442\u0442\u0435\u0440\u0456\u043d","\u0411\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b \u044d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442\u044b","Open source","\u0416\u04af\u0439\u0435\u043b\u0456\u043a"]};
+var el=document.getElementById('typed'),li=0,ci=0,del=false;
+function type(){var lines=tl[lang]||tl.en;var line=lines[li];
+if(del){el.textContent=line.substring(0,ci-1);ci--}else{el.textContent=line.substring(0,ci+1);ci++}
+var spd=del?30:60;
+if(!del&&ci===line.length){spd=2000;del=true}else if(del&&ci===0){del=false;li=(li+1)%lines.length;spd=500}
+setTimeout(type,spd)}
+type();
+})();
 
-        // ==========================================
-        // LANGUAGE SWITCHING
-        // ==========================================
-        let currentLang = localStorage.getItem('lang') || 'en';
+/* Nav scroll */
+var nav=document.getElementById('nav');
+window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>50)});
+var secs=document.querySelectorAll('section'),nLinks=document.querySelectorAll('.nav-links a');
+window.addEventListener('scroll',function(){var c='';secs.forEach(function(s){if(window.scrollY>=s.offsetTop-150)c=s.id});nLinks.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')==='#'+c)})});
 
-        function setLanguage(lang) {
-            currentLang = lang;
-            localStorage.setItem('lang', lang);
+/* Hamburger */
+var burger=document.getElementById('burger'),mob=document.getElementById('mobilenav');
+burger.addEventListener('click',function(){burger.classList.toggle('on');mob.classList.toggle('on')});
+mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){burger.classList.remove('on');mob.classList.remove('on')})});
 
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.getAttribute('data-i18n');
-                if (translations[lang] && translations[lang][key]) {
-                    el.textContent = translations[lang][key];
-                }
-            });
+/* Reveal */
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.1});
+document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
 
-            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-                const key = el.getAttribute('data-i18n-placeholder');
-                if (translations[lang] && translations[lang][key]) {
-                    el.placeholder = translations[lang][key];
-                }
-            });
+/* Progress bars */
+var pObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.style.width=e.target.getAttribute('data-w')+'%'})},{threshold:0.5});
+document.querySelectorAll('.prog-fill').forEach(function(el){pObs.observe(el)});
 
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.toggle('active', btn.dataset.lang === lang);
-            });
+/* Counter */
+var cObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var el=e.target,tgt=parseInt(el.getAttribute('data-count')),cur=0,inc=tgt/60;
+var timer=setInterval(function(){cur+=inc;if(cur>=tgt){el.textContent=tgt;clearInterval(timer)}else{el.textContent=Math.floor(cur)}},30);cObs.unobserve(el)}})},{threshold:0.5});
+document.querySelectorAll('.stat-num').forEach(function(el){cObs.observe(el)});
 
-            document.documentElement.lang = lang;
-        }
-
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
-        });
-
-        setLanguage(currentLang);
-
-        // ==========================================
-        // LOADING SCREEN
-        // ==========================================
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('loading-screen').classList.add('hidden');
-            }, 2200);
-        });
-
-        // ==========================================
-        // THREE.JS HERO BACKGROUND
-        // ==========================================
-        (function initThreeJS() {
-            const canvas = document.getElementById('three-canvas');
-            const scene = new THREE.Scene();
-            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-
-            const geometry = new THREE.IcosahedronGeometry(2.5, 1);
-            const wireframe = new THREE.WireframeGeometry(geometry);
-            const lineMaterial = new THREE.LineBasicMaterial({ color: 0x6366f1, transparent: true, opacity: 0.6 });
-            const icosahedron = new THREE.LineSegments(wireframe, lineMaterial);
-            scene.add(icosahedron);
-
-            const particleCount = 500;
-            const positions = new Float32Array(particleCount * 3);
-            for (let i = 0; i < particleCount * 3; i++) {
-                positions[i] = (Math.random() - 0.5) * 20;
-            }
-            const particleGeometry = new THREE.BufferGeometry();
-            particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-            const particleMaterial = new THREE.PointsMaterial({ color: 0x6366f1, size: 0.03, transparent: true, opacity: 0.5 });
-            const particles = new THREE.Points(particleGeometry, particleMaterial);
-            scene.add(particles);
-
-            camera.position.z = 6;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                icosahedron.rotation.x += 0.003;
-                icosahedron.rotation.y += 0.005;
-                particles.rotation.y += 0.001;
-                renderer.render(scene, camera);
-            }
-            animate();
-
-            window.addEventListener('resize', () => {
-                camera.aspect = window.innerWidth / window.innerHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(window.innerWidth, window.innerHeight);
-            });
-        })();
-
-        // ==========================================
-        // TYPING EFFECT
-        // ==========================================
-        (function initTyping() {
-            const taglines = {
-                en: [
-                    "Systems Programmer & Security Researcher",
-                    "Building security tools and AI agents",
-                    "15-year-old hacker from Kazakhstan",
-                    "Low-level programming enthusiast",
-                    "Open source contributor"
-                ],
-                ru: [
-                    "Системный программист и исследователь безопасности",
-                    "Создаю инструменты безопасности и ИИ агентов",
-                    "15-летний хакер из Казахстана",
-                    "Энтузиаст низкоуровневого программирования",
-                    "Контрибьютор open source"
-                ],
-                kz: [
-                    "Жүйелік бағдарламашы және қауіпсіздік зерттеушісі",
-                    "Қауіпсіздік құралдары мен ЖИ агенттерін жасаймын",
-                    "Қазақстаннан 15 жастағы хакер",
-                    "Төменгі деңгейлі бағдарламалау энтузиасты",
-                    "Open source үлескері"
-                ]
-            };
-
-            const element = document.getElementById('typing-text');
-            let lineIndex = 0;
-            let charIndex = 0;
-            let isDeleting = false;
-
-            function type() {
-                const currentLines = taglines[currentLang] || taglines.en;
-                const currentLine = currentLines[lineIndex];
-
-                if (isDeleting) {
-                    element.textContent = currentLine.substring(0, charIndex - 1);
-                    charIndex--;
-                } else {
-                    element.textContent = currentLine.substring(0, charIndex + 1);
-                    charIndex++;
-                }
-
-                let speed = isDeleting ? 30 : 60;
-
-                if (!isDeleting && charIndex === currentLine.length) {
-                    speed = 2000;
-                    isDeleting = true;
-                } else if (isDeleting && charIndex === 0) {
-                    isDeleting = false;
-                    lineIndex = (lineIndex + 1) % currentLines.length;
-                    speed = 500;
-                }
-
-                setTimeout(type, speed);
-            }
-            type();
-        })();
-
-        // ==========================================
-        // NAVBAR SCROLL
-        // ==========================================
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            navbar.classList.toggle('scrolled', window.scrollY > 50);
-        });
-
-        // Active nav link on scroll
-        const sections = document.querySelectorAll('section');
-        const navLinks = document.querySelectorAll('.nav-links a');
-        window.addEventListener('scroll', () => {
-            let current = '';
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop - 150;
-                if (window.scrollY >= sectionTop) {
-                    current = section.getAttribute('id');
-                }
-            });
-            navLinks.forEach(link => {
-                link.classList.remove('active');
-                if (link.getAttribute('href') === `#${current}`) {
-                    link.classList.add('active');
-                }
-            });
-        });
-
-        // ==========================================
-        // MOBILE MENU
-        // ==========================================
-        const hamburger = document.getElementById('hamburger');
-        const mobileMenu = document.getElementById('mobile-menu');
-        hamburger.addEventListener('click', () => {
-            hamburger.classList.toggle('active');
-            mobileMenu.classList.toggle('active');
-        });
-        mobileMenu.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                hamburger.classList.remove('active');
-                mobileMenu.classList.remove('active');
-            });
-        });
-
-        // ==========================================
-        // SCROLL ANIMATIONS (Intersection Observer)
-        // ==========================================
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-
-        document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-
-        // ==========================================
-        // PROGRESS BAR ANIMATION
-        // ==========================================
-        const progressObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const fill = entry.target;
-                    const width = fill.getAttribute('data-width');
-                    fill.style.width = width + '%';
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.progress-fill').forEach(el => progressObserver.observe(el));
-
-        // ==========================================
-        // STATS COUNTER ANIMATION
-        // ==========================================
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const el = entry.target;
-                    const target = parseInt(el.getAttribute('data-count'));
-                    let current = 0;
-                    const increment = target / 60;
-                    const timer = setInterval(() => {
-                        current += increment;
-                        if (current >= target) {
-                            el.textContent = target;
-                            clearInterval(timer);
-                        } else {
-                            el.textContent = Math.floor(current);
-                        }
-                    }, 30);
-                    counterObserver.unobserve(el);
-                }
-            });
-        }, { threshold: 0.5 });
-
-        document.querySelectorAll('.stat-number').forEach(el => counterObserver.observe(el));
-
-        // ==========================================
-        // PROJECT FILTERING
-        // ==========================================
-        document.querySelectorAll('.filter-btn').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-                btn.classList.add('active');
-                const filter = btn.getAttribute('data-filter');
-                document.querySelectorAll('.project-card').forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = '';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
-            });
-        });
-
-        // ==========================================
-        // CONTACT FORM (prevent default)
-        // ==========================================
-        document.getElementById('contact-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert(currentLang === 'ru' ? 'Сообщение отправлено! (демо)' : currentLang === 'kz' ? 'Хабарлама жіберілді! (демо)' : 'Message sent! (demo)');
-        });
-    </script>
-
+/* Filter */
+document.querySelectorAll('.filter').forEach(function(btn){btn.addEventListener('click',function(){
+document.querySelectorAll('.filter').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');
+var f=btn.getAttribute('data-filter');
+document.querySelectorAll('.proj-card').forEach(function(c){c.style.display=(f==='all'||c.getAttribute('data-cat')===f)?'':'none'})})});
+})();
+</script>
 </body>
 </html>

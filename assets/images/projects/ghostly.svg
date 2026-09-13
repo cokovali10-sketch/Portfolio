@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0a0a1a"/>
+      <stop offset="100%" style="stop-color:#1a1a2e"/>
+    </linearGradient>
+    <linearGradient id="ghost" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#00ff88"/>
+      <stop offset="100%" style="stop-color:#00aa55"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="rgba(255,255,255,0.03)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="800" height="500" rx="16" fill="url(#bg)"/>
+  <rect width="800" height="500" rx="16" fill="url(#grid)"/>
+  <g transform="translate(400,200)" filter="url(#glow)">
+    <ellipse cx="0" cy="-20" rx="45" ry="50" fill="url(#ghost)" opacity="0.2"/>
+    <path d="M-45-20 Q-45-75 0-75 Q45-75 45-20 L45 40 Q35 30 25 40 Q15 30 5 40 Q-5 30-15 40 Q-25 30-35 40 L-45 40 Z" fill="none" stroke="url(#ghost)" stroke-width="3"/>
+    <circle cx="-15" cy="-30" r="6" fill="#00ff88"/>
+    <circle cx="15" cy="-30" r="6" fill="#00ff88"/>
+    <g transform="translate(65,30)">
+      <rect x="0" y="-40" width="8" height="40" fill="#00ff88" opacity="0.6" rx="2"/>
+      <rect x="14" y="-25" width="8" height="25" fill="#00ff88" opacity="0.5" rx="2"/>
+      <rect x="28" y="-55" width="8" height="55" fill="#00ff88" opacity="0.7" rx="2"/>
+      <rect x="42" y="-35" width="8" height="35" fill="#00ff88" opacity="0.4" rx="2"/>
+    </g>
+  </g>
+  <text x="400" y="370" text-anchor="middle" font-family="monospace" font-size="36" font-weight="bold" fill="#00ff88" filter="url(#glow)" letter-spacing="4">GHOSTLY</text>
+  <text x="400" y="400" text-anchor="middle" font-family="monospace" font-size="12" fill="rgba(0,255,136,0.5)" letter-spacing="6">NETWORK ANALYTICS</text>
+</svg>
