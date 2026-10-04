@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ali | Systems Programmer &amp; Security Researcher</title>
+    <title>Ali | Systems Programmer &amp; Security Engineer</title>
     <meta name="description" content="Portfolio of Ali - Systems programmer from Kazakhstan building security tools, AI agents, and low-level software.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,10 +14,13 @@
         html { scroll-behavior: smooth; }
         body { font-family:'Inter',system-ui,sans-serif; background:var(--bg); color:var(--txt); overflow-x:hidden; line-height:1.65; }
         ::-webkit-scrollbar { width:5px; } ::-webkit-scrollbar-track { background:transparent; } ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
-        #loader { position:fixed; inset:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; transition:opacity 0.5s,visibility 0.5s; }
-        #loader.hide { opacity:0; visibility:hidden; }
+        #loader { position:fixed; inset:0; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:9999; transition:opacity 0.6s ease,visibility 0.6s ease; }
+        #loader.hide { opacity:0; visibility:hidden; pointer-events:none; }
         .loader-ring { width:56px; height:56px; border:2px solid var(--border); border-top-color:var(--accent); border-radius:50%; animation:spin 0.8s linear infinite; }
         .loader-text { margin-top:1.2rem; font-family:'JetBrains Mono',monospace; font-size:0.7rem; color:var(--txt3); letter-spacing:0.15em; text-transform:uppercase; }
+        .loader-progress { width:200px; height:3px; background:rgba(255,255,255,0.06); border-radius:2px; margin-top:1rem; overflow:hidden; }
+        .loader-bar { height:100%; background:linear-gradient(90deg,var(--accent),var(--accent2)); width:0%; transition:width 0.3s ease; border-radius:2px; }
+        .loader-pct { font-family:'JetBrains Mono',monospace; font-size:0.75rem; color:var(--accent); margin-top:0.5rem; min-width:3ch; text-align:center; }
         @keyframes spin { to { transform:rotate(360deg); } }
         .nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:0.9rem 2rem; transition:background 0.3s,backdrop-filter 0.3s; }
         .nav.scrolled { background:rgba(6,6,10,0.82); backdrop-filter:blur(16px); border-bottom:1px solid var(--border); }
@@ -41,8 +44,9 @@
         .mobile-nav a { text-decoration:none; color:var(--txt); font-size:1.4rem; font-weight:600; }
         .mobile-nav a:hover { color:var(--accent); }
         #hero { min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding:5rem 2rem 2rem; }
-        #hero-canvas { position:absolute; inset:0; z-index:0; }
-        .hero-content { position:relative; z-index:1; text-align:center; max-width:780px; }
+        #hero-canvas { position:fixed; inset:0; z-index:0; pointer-events:none; }
+        .hero-content { position:relative; z-index:10; text-align:center; max-width:780px; pointer-events:none; }
+        .hero-content .btn,.hero-content a { pointer-events:auto; }
         .hero-name { font-family:'JetBrains Mono',monospace; font-size:clamp(2.8rem,7vw,5.5rem); font-weight:800; letter-spacing:-0.03em; background:linear-gradient(135deg,var(--accent),var(--accent2),#06b6d4); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; margin-bottom:1rem; }
         .hero-tagline { font-size:clamp(1rem,2vw,1.2rem); color:var(--txt2); margin-bottom:2.5rem; min-height:1.8em; }
         .cursor { display:inline-block; width:2px; height:1.1em; background:var(--accent); margin-left:2px; vertical-align:text-bottom; animation:blink 1s step-end infinite; }
@@ -54,11 +58,12 @@
         .btn-p:hover { box-shadow:0 8px 32px var(--accent-g); transform:translateY(-2px); }
         .btn-o { background:transparent; color:var(--txt); border:1px solid var(--border); }
         .btn-o:hover { border-color:var(--accent); transform:translateY(-2px); }
-        .scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; animation:bob 2s ease-in-out infinite; }
+        .scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); display:flex; flex-direction:column; align-items:center; gap:0.4rem; animation:bob 2s ease-in-out infinite; z-index:10; }
         .scroll-hint span { font-size:0.65rem; color:var(--txt3); text-transform:uppercase; letter-spacing:0.12em; }
         .scroll-hint .arrow { width:16px; height:16px; border-right:1.5px solid var(--txt3); border-bottom:1.5px solid var(--txt3); transform:rotate(45deg); }
         @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(8px)} }
         section { padding:5rem 2rem; } .container { max-width:1100px; margin:0 auto; }
+        #about, #projects, #skills, #stats, #timeline, #contact, footer { background:rgba(6,6,10,0.95); }
         .sec-head { text-align:center; margin-bottom:3.5rem; }
         .sec-label { font-family:'JetBrains Mono',monospace; font-size:0.72rem; color:var(--accent); text-transform:uppercase; letter-spacing:0.18em; margin-bottom:0.6rem; }
         .sec-title { font-size:clamp(1.8rem,3.5vw,2.6rem); font-weight:800; }
@@ -149,358 +154,283 @@
         @media(max-width:768px){ .nav-links{display:none} .hamburger{display:flex} .about-grid{grid-template-columns:1fr;gap:2rem} .proj-grid{grid-template-columns:1fr} .stats-row{grid-template-columns:repeat(2,1fr)} .contact-grid{grid-template-columns:1fr} .footer-inner{flex-direction:column;gap:0.8rem;text-align:center} }
         @media(max-width:480px){ .stats-row{grid-template-columns:1fr} .hero-name{font-size:2.4rem} }
     </style>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+        }
+    }
+    </script>
 </head>
 <body>
-
-<div id="loader"><div class="loader-ring"></div><p class="loader-text" data-i18n="loading">Loading...</p></div>
-
-<nav class="nav" id="nav">
-    <div class="nav-inner">
-        <a href="#hero" class="nav-logo">A</a>
-        <ul class="nav-links">
-            <li><a href="#hero" class="active" data-i18n="nav.home">Home</a></li>
-            <li><a href="#about" data-i18n="nav.about">About</a></li>
-            <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
-            <li><a href="#skills" data-i18n="nav.skills">Skills</a></li>
-            <li><a href="#stats" data-i18n="nav.stats">Stats</a></li>
-            <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
-        </ul>
-        <div class="nav-right">
-            <div class="lang-bar">
-                <button class="lang-btn on" data-lang="en">EN</button>
-                <button class="lang-btn" data-lang="ru">RU</button>
-                <button class="lang-btn" data-lang="kz">KZ</button>
-            </div>
-            <button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button>
-        </div>
-    </div>
-</nav>
-
-<div class="mobile-nav" id="mobilenav">
-    <a href="#hero" data-i18n="nav.home">Home</a>
-    <a href="#about" data-i18n="nav.about">About</a>
-    <a href="#projects" data-i18n="nav.projects">Projects</a>
-    <a href="#skills" data-i18n="nav.skills">Skills</a>
-    <a href="#stats" data-i18n="nav.stats">Stats</a>
-    <a href="#contact" data-i18n="nav.contact">Contact</a>
-</div>
-
-<section id="hero">
-    <canvas id="hero-canvas"></canvas>
-    <div class="hero-content">
-        <h1 class="hero-name" data-i18n="hero.name">ALI</h1>
-        <p class="hero-tagline"><span id="typed"></span><span class="cursor"></span></p>
-        <div class="hero-btns">
-            <a href="#projects" class="btn btn-p" data-i18n="hero.viewProjects">View Projects</a>
-            <a href="https://github.com/cokovali10-sketch" target="_blank" class="btn btn-o">GitHub</a>
-        </div>
-    </div>
-    <div class="scroll-hint"><span data-i18n="hero.scroll">Scroll</span><div class="arrow"></div></div>
-</section>
-
-<section id="about">
-    <div class="container">
-        <div class="sec-head reveal">
-            <div class="sec-label" data-i18n="about.label">// About Me</div>
-            <h2 class="sec-title" data-i18n="about.title">Who I Am</h2>
-            <p class="sec-desc" data-i18n="about.desc">Systems programming, security research, and building tools that matter.</p>
-        </div>
-        <div class="about-grid">
-            <div class="about-img reveal">
-                <div style="text-align:center">
-                    <div style="font-size:3.5rem;margin-bottom:0.5rem">&#128187;</div>
-                    <div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--txt3)">~/Ali</div>
-                </div>
-            </div>
-            <div class="about-text reveal">
-                <h3 data-i18n="about.greeting">Hi, I'm Ali!</h3>
-                <p data-i18n="about.bio1">I'm a systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I build security tools, AI agents, and explore the depths of systems programming.</p>
-                <p data-i18n="about.bio2">My journey in programming started years ago, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.</p>
-                <div class="about-meta">
-                    <span><span class="ic">&#128205;</span> <span data-i18n="about.location">Kazakhstan</span></span>
-                    <span><span class="ic">&#128231;</span> cokovali10@gmail.com</span>
-                    <span><span class="ic">&#128222;</span> +7 747 257 93 44</span>
-                </div>
-                <div class="skill-chips">
-                    <div class="chip">&#128013; Python</div>
-                    <div class="chip">&#127919; Go</div>
-                    <div class="chip">&#129518; Rust</div>
-                    <div class="chip">&#9889; C++</div>
-                    <div class="chip">&#128309; TypeScript</div>
-                    <div class="chip">&#9749; Java</div>
-                    <div class="chip">&#128051; Docker</div>
-                    <div class="chip">&#128027; Linux</div>
-                    <div class="chip">&#128274; Security</div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="projects">
-    <div class="container">
-        <div class="sec-head reveal">
-            <div class="sec-label" data-i18n="projects.label">// Projects</div>
-            <h2 class="sec-title" data-i18n="projects.title">Featured Work</h2>
-            <p class="sec-desc" data-i18n="projects.desc">A collection of projects spanning security, AI, DevOps, and more.</p>
-        </div>
-        <div class="filters reveal">
-            <button class="filter on" data-filter="all" data-i18n="projects.all">All</button>
-            <button class="filter" data-filter="security" data-i18n="projects.security">Security</button>
-            <button class="filter" data-filter="ai" data-i18n="projects.ai">AI/ML</button>
-            <button class="filter" data-filter="devops" data-i18n="projects.devops">DevOps</button>
-            <button class="filter" data-filter="web" data-i18n="projects.web">Web</button>
-            <button class="filter" data-filter="tools" data-i18n="projects.tools">Tools</button>
-        </div>
-        <div class="proj-grid" id="proj-grid">
-            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128737;&#65039;</div><a href="https://github.com/cokovali10-sketch/ThreatForge" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">ThreatForge</h3><p class="proj-desc" data-i18n="proj.threatforge">Advanced SOC platform with threat intelligence and incident response capabilities.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">SOC</span><span class="proj-tag">10K Lines</span></div></div>
-            <div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#128123;</div><a href="https://github.com/cokovali10-sketch/Ghostly" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Ghostly</h3><p class="proj-desc" data-i18n="proj.ghostly">Powerful analytics platform for data visualization and insights generation.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Analytics</span><span class="proj-tag">12K Lines</span></div></div>
-            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#129302;</div><a href="https://github.com/cokovali10-sketch/hermes-studio" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Hermes Studio</h3><p class="proj-desc" data-i18n="proj.hermes">Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">AI</span><span class="proj-tag">202 Tools</span></div></div>
-            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128269;</div><a href="https://github.com/cokovali10-sketch/CoreEDR" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">CoreEDR</h3><p class="proj-desc" data-i18n="proj.coreedr">High-performance Endpoint Detection and Response solution built in Rust.</p><div class="proj-tags"><span class="proj-tag">Rust</span><span class="proj-tag">EDR</span><span class="proj-tag">Security</span></div></div>
-            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#9876;&#65039;</div><a href="https://github.com/cokovali10-sketch/SpectreShield" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">SpectreShield</h3><p class="proj-desc" data-i18n="proj.spectre">eBPF-based network security monitoring and threat detection framework.</p><div class="proj-tags"><span class="proj-tag">C</span><span class="proj-tag">eBPF</span><span class="proj-tag">Security</span></div></div>
-            <div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128230;</div><a href="https://github.com/cokovali10-sketch/NanoContainer" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">NanoContainer</h3><p class="proj-desc" data-i18n="proj.nano">Lightweight container runtime written in Go for minimal overhead deployment.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Containers</span><span class="proj-tag">DevOps</span></div></div>
-            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127963;&#65039;</div><a href="https://github.com/cokovali10-sketch/AegisRuntime" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">AegisRuntime</h3><p class="proj-desc" data-i18n="proj.aegis">Secure AI model sandboxing runtime for safe execution of untrusted models.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">AI</span><span class="proj-tag">Sandbox</span></div></div>
-            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128272;</div><a href="https://github.com/cokovali10-sketch/GoVault" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">GoVault</h3><p class="proj-desc" data-i18n="proj.govault">Encrypted file storage solution with zero-knowledge architecture in Go.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Encryption</span><span class="proj-tag">Storage</span></div></div>
-            <div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128270;</div><a href="https://github.com/cokovali10-sketch/GoPortScan" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">GoPortScan</h3><p class="proj-desc" data-i18n="proj.goportscan">High-speed concurrent port scanner with service fingerprinting capabilities.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Network</span><span class="proj-tag">Scanner</span></div></div>
-            <div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#128126;</div><a href="https://github.com/cokovali10-sketch/RetroTerm" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">RetroTerm</h3><p class="proj-desc" data-i18n="proj.retroterm">Terminal-based roguelike game with procedural generation and deep gameplay.</p><div class="proj-tags"><span class="proj-tag">C++</span><span class="proj-tag">Roguelike</span><span class="proj-tag">Game</span></div></div>
-            <div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128191;</div><a href="https://github.com/cokovali10-sketch/DiskScope" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">DiskScope</h3><p class="proj-desc" data-i18n="proj.diskscope">Visual disk space analyzer with detailed file system insights and cleanup tools.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">System</span><span class="proj-tag">Analyzer</span></div></div>
-            <div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128202;</div><a href="https://github.com/cokovali10-sketch/LogPulse" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">LogPulse</h3><p class="proj-desc" data-i18n="proj.logpulse">Real-time log analysis engine with anomaly detection and alerting system.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Logs</span><span class="proj-tag">Monitoring</span></div></div>
-            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127760;</div><a href="https://github.com/cokovali10-sketch/AgentMesh" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">AgentMesh</h3><p class="proj-desc" data-i18n="proj.agentmesh">Multi-agent AI orchestration framework for complex task decomposition.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Multi-Agent</span><span class="proj-tag">AI</span></div></div>
-            <div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#127918;</div><a href="https://github.com/cokovali10-sketch/Forge3D" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Forge3D</h3><p class="proj-desc" data-i18n="proj.forge3d">Custom 3D game engine with OpenGL rendering and entity component system.</p><div class="proj-tags"><span class="proj-tag">C++</span><span class="proj-tag">OpenGL</span><span class="proj-tag">Engine</span></div></div>
-            <div class="proj-card reveal" data-cat="web"><div class="proj-top"><div class="proj-icon">&#9749;</div><a href="https://github.com/cokovali10-sketch/caffeine-glass-ui" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">caffeine-glass-ui</h3><p class="proj-desc" data-i18n="proj.caffeine">Modern glassmorphism UI component library for web applications.</p><div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">UI/UX</span><span class="proj-tag">Library</span></div></div>
-            <div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127183;</div><a href="https://github.com/cokovali10-sketch/flashcard-mcp" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">flashcard-mcp</h3><p class="proj-desc" data-i18n="proj.flashcard">MCP server for intelligent flashcard generation and spaced repetition learning.</p><div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">MCP</span><span class="proj-tag">Education</span></div></div>
-        </div>
-    </div>
-</section>
-
-<section id="skills">
-    <div class="container">
-        <div class="sec-head reveal">
-            <div class="sec-label" data-i18n="skills.label">// Skills</div>
-            <h2 class="sec-title" data-i18n="skills.title">Technical Expertise</h2>
-            <p class="sec-desc" data-i18n="skills.desc">Proficiency levels across technologies and domains.</p>
-        </div>
-        <div class="skills-grid">
-            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128187;</span> <span data-i18n="skills.lang">Languages</span></h3>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Python</span><span class="prog-pct">92%</span></div><div class="prog-bar"><div class="prog-fill" data-w="92"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Go</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Rust</span><span class="prog-pct">75%</span></div><div class="prog-bar"><div class="prog-fill" data-w="75"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">C++</span><span class="prog-pct">80%</span></div><div class="prog-bar"><div class="prog-fill" data-w="80"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">TypeScript</span><span class="prog-pct">70%</span></div><div class="prog-bar"><div class="prog-fill" data-w="70"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Java</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" data-w="65"></div></div></div>
-            </div>
-            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128640;</span> <span data-i18n="skills.fw">Frameworks &amp; Libraries</span></h3>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Django / FastAPI</span><span class="prog-pct">88%</span></div><div class="prog-bar"><div class="prog-fill" data-w="88"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Gin / Fiber</span><span class="prog-pct">82%</span></div><div class="prog-bar"><div class="prog-fill" data-w="82"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Actix Web</span><span class="prog-pct">70%</span></div><div class="prog-bar"><div class="prog-fill" data-w="70"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">OpenGL / Vulkan</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" data-w="65"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">React / Next.js</span><span class="prog-pct">72%</span></div><div class="prog-bar"><div class="prog-fill" data-w="72"></div></div></div>
-            </div>
-            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128274;</span> <span data-i18n="skills.sec">Security</span></h3>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Reverse Engineering</span><span class="prog-pct">78%</span></div><div class="prog-bar"><div class="prog-fill" data-w="78"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Network Security</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Malware Analysis</span><span class="prog-pct">72%</span></div><div class="prog-bar"><div class="prog-fill" data-w="72"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">eBPF / Kernel</span><span class="prog-pct">68%</span></div><div class="prog-bar"><div class="prog-fill" data-w="68"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Cryptography</span><span class="prog-pct">75%</span></div><div class="prog-bar"><div class="prog-fill" data-w="75"></div></div></div>
-            </div>
-            <div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#9881;&#65039;</span> <span data-i18n="skills.devops">DevOps &amp; Tools</span></h3>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Docker / K8s</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Linux Admin</span><span class="prog-pct">92%</span></div><div class="prog-bar"><div class="prog-fill" data-w="92"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">CI/CD Pipelines</span><span class="prog-pct">80%</span></div><div class="prog-bar"><div class="prog-fill" data-w="80"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Git / GitHub</span><span class="prog-pct">95%</span></div><div class="prog-bar"><div class="prog-fill" data-w="95"></div></div></div>
-                <div class="prog-item"><div class="prog-head"><span class="prog-name">Nginx / Apache</span><span class="prog-pct">78%</span></div><div class="prog-bar"><div class="prog-fill" data-w="78"></div></div></div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<section id="stats">
-    <div class="container">
-        <div class="sec-head reveal">
-            <div class="sec-label" data-i18n="stats.label">// Stats</div>
-            <h2 class="sec-title" data-i18n="stats.title">By The Numbers</h2>
-            <p class="sec-desc" data-i18n="stats.desc">A snapshot of my journey.</p>
-        </div>
-        <div class="stats-row">
-            <div class="stat-card reveal"><div class="stat-ic">&#128193;</div><div class="stat-num" data-count="38">0</div><div class="stat-lbl" data-i18n="stats.projects">Projects</div></div>
-            <div class="stat-card reveal"><div class="stat-ic">&#128187;</div><div class="stat-num" data-count="6">0</div><div class="stat-lbl" data-i18n="stats.languages">Languages</div></div>
-            <div class="stat-card reveal"><div class="stat-ic">&#128736;&#65039;</div><div class="stat-num" data-count="202">0</div><div class="stat-lbl" data-i18n="stats.tools">Tools Built</div></div>
-            <div class="stat-card reveal"><div class="stat-ic">&#128221;</div><div class="stat-num" data-count="100">0</div><div class="stat-lbl" data-i18n="stats.lines">K+ Lines of Code</div></div>
-        </div>
-    </div>
-</section>
-
-<section id="timeline">
-    <div class="container">
-        <div class="sec-head reveal">
-            <div class="sec-label" data-i18n="timeline.label">// Journey</div>
-            <h2 class="sec-title" data-i18n="timeline.title">Learning Timeline</h2>
-            <p class="sec-desc" data-i18n="timeline.desc">My programming journey from first line of code to today.</p>
-        </div>
-        <div class="tl">
-            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2022</div><h4 class="tl-title" data-i18n="tl.2022.title">The Beginning</h4><p class="tl-desc" data-i18n="tl.2022.desc">Started learning Python and basic programming concepts. Built first simple scripts and automation tools.</p></div></div>
-            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2023</div><h4 class="tl-title" data-i18n="tl.2023.title">Diving Deeper</h4><p class="tl-desc" data-i18n="tl.2023.desc">Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.</p></div></div>
-            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2024</div><h4 class="tl-title" data-i18n="tl.2024.title">Systems Programming</h4><p class="tl-desc" data-i18n="tl.2024.desc">Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.</p></div></div>
-            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2025</div><h4 class="tl-title" data-i18n="tl.2025.title">AI &amp; Scale</h4><p class="tl-desc" data-i18n="tl.2025.desc">Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.</p></div></div>
-            <div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2026</div><h4 class="tl-title" data-i18n="tl.2026.title">Current Focus</h4><p class="tl-desc" data-i18n="tl.2026.desc">Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.</p></div></div>
-        </div>
-    </div>
-</section>
-
-<section id="contact">
-    <div class="container">
-        <div class="sec-head reveal">
-            <div class="sec-label" data-i18n="contact.label">// Contact</div>
-            <h2 class="sec-title" data-i18n="contact.title">Get In Touch</h2>
-            <p class="sec-desc" data-i18n="contact.desc">Have a project in mind or want to collaborate? Let's talk.</p>
-        </div>
-        <div class="contact-grid">
-            <form class="contact-form reveal" action="https://formspree.io/f/xpznvgle" method="POST">
-                <div class="field"><input type="text" name="name" placeholder="Your Name" required data-i18n-placeholder="contact.name"></div>
-                <div class="field"><input type="email" name="email" placeholder="Your Email" required data-i18n-placeholder="contact.email"></div>
-                <div class="field"><input type="text" name="subject" placeholder="Subject" data-i18n-placeholder="contact.subject"></div>
-                <div class="field"><textarea name="message" placeholder="Your Message" required data-i18n-placeholder="contact.message"></textarea></div>
-                <button type="submit" class="btn btn-p" style="align-self:flex-start" data-i18n="contact.send">Send Message</button>
-            </form>
-            <div class="info-cards reveal">
-                <div class="info-card"><div class="ic">&#128205;</div><div class="lbl" data-i18n="contact.locLabel">Location</div><div class="val" data-i18n="contact.locVal">Kazakhstan</div></div>
-                <div class="info-card"><div class="ic">&#128231;</div><div class="lbl" data-i18n="contact.emailLabel">Email</div><div class="val"><a href="mailto:cokovali10@gmail.com">cokovali10@gmail.com</a></div></div>
-                <div class="info-card"><div class="ic">&#128222;</div><div class="lbl" data-i18n="contact.phoneLabel">Phone</div><div class="val"><a href="tel:+77472579344">+7 747 257 93 44</a></div></div>
-                <div class="info-card"><div class="ic">&#128025;</div><div class="lbl" data-i18n="contact.ghLabel">GitHub</div><div class="val"><a href="https://github.com/cokovali10-sketch" target="_blank">github.com/cokovali10-sketch</a></div></div>
-                <div class="socials"><a href="https://github.com/cokovali10-sketch" target="_blank" class="social-btn" title="GitHub">&#128025;</a><a href="mailto:cokovali10@gmail.com" class="social-btn" title="Email">&#128231;</a></div>
-            </div>
-        </div>
-    </div>
-</section>
-
+<div id="loader"><div class="loader-ring"></div><p class="loader-text">Loading...</p><div class="loader-progress"><div class="loader-bar" id="loader-bar"></div></div><p class="loader-pct" id="loader-pct">0%</p></div>
+<nav class="nav" id="nav"><div class="nav-inner"><a href="#hero" class="nav-logo">A</a><ul class="nav-links"><li><a href="#hero" class="active" data-i18n="nav.home">Home</a></li><li><a href="#about" data-i18n="nav.about">About</a></li><li><a href="#projects" data-i18n="nav.projects">Projects</a></li><li><a href="#skills" data-i18n="nav.skills">Skills</a></li><li><a href="#stats" data-i18n="nav.stats">Stats</a></li><li><a href="#contact" data-i18n="nav.contact">Contact</a></li></ul><div class="nav-right"><div class="lang-bar"><button class="lang-btn on" data-lang="en">EN</button><button class="lang-btn" data-lang="ru">RU</button><button class="lang-btn" data-lang="kz">KZ</button></div><button class="hamburger" id="burger" aria-label="Menu"><span></span><span></span><span></span></button></div></div></nav>
+<div class="mobile-nav" id="mobilenav"><a href="#hero" data-i18n="nav.home">Home</a><a href="#about" data-i18n="nav.about">About</a><a href="#projects" data-i18n="nav.projects">Projects</a><a href="#skills" data-i18n="nav.skills">Skills</a><a href="#stats" data-i18n="nav.stats">Stats</a><a href="#contact" data-i18n="nav.contact">Contact</a></div>
+<section id="hero"><canvas id="hero-canvas"></canvas><div class="hero-content"><h1 class="hero-name" data-i18n="hero.name">ALI</h1><p class="hero-tagline"><span id="typed"></span><span class="cursor"></span></p><div class="hero-btns"><a href="#projects" class="btn btn-p" data-i18n="hero.viewProjects">View Projects</a><a href="https://github.com/cokovali10-sketch" target="_blank" class="btn btn-o">GitHub</a></div></div><div class="scroll-hint"><span data-i18n="hero.scroll">Scroll</span><div class="arrow"></div></div></section>
+<section id="about"><div class="container"><div class="sec-head reveal"><div class="sec-label" data-i18n="about.label">// About Me</div><h2 class="sec-title" data-i18n="about.title">Who I Am</h2><p class="sec-desc" data-i18n="about.desc">Systems programming, security research, and building tools that matter.</p></div><div class="about-grid"><div class="about-img reveal"><div style="text-align:center"><div style="font-size:3.5rem;margin-bottom:0.5rem">&#128187;</div><div style="font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:var(--txt3)">~/Ali</div></div></div><div class="about-text reveal"><h3 data-i18n="about.greeting">Hi, I'm Ali!</h3><p data-i18n="about.bio1">I'm a systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I build security tools, AI agents, and explore the depths of systems programming.</p><p data-i18n="about.bio2">My journey in programming started years ago, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.</p><div class="about-meta"><span><span class="ic">&#128205;</span> <span data-i18n="about.location">Kazakhstan</span></span><span><span class="ic">&#128231;</span> cokovali10@gmail.com</span><span><span class="ic">&#128222;</span> +7 747 257 93 44</span></div><div class="skill-chips"><div class="chip">&#128013; Python</div><div class="chip">&#127919; Go</div><div class="chip">&#129518; Rust</div><div class="chip">&#9889; C++</div><div class="chip">&#128309; TypeScript</div><div class="chip">&#9749; Java</div><div class="chip">&#128051; Docker</div><div class="chip">&#128027; Linux</div><div class="chip">&#128274; Security</div></div></div></div></div></section>
+<section id="projects"><div class="container"><div class="sec-head reveal"><div class="sec-label" data-i18n="projects.label">// Projects</div><h2 class="sec-title" data-i18n="projects.title">Featured Work</h2><p class="sec-desc" data-i18n="projects.desc">A collection of projects spanning security, AI, DevOps, and more.</p></div><div class="filters reveal"><button class="filter on" data-filter="all" data-i18n="projects.all">All</button><button class="filter" data-filter="security" data-i18n="projects.security">Security</button><button class="filter" data-filter="ai" data-i18n="projects.ai">AI/ML</button><button class="filter" data-filter="devops" data-i18n="projects.devops">DevOps</button><button class="filter" data-filter="web" data-i18n="projects.web">Web</button><button class="filter" data-filter="tools" data-i18n="projects.tools">Tools</button></div><div class="proj-grid" id="proj-grid">
+<div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128737;&#65039;</div><a href="https://github.com/cokovali10-sketch/ThreatForge" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">ThreatForge</h3><p class="proj-desc" data-i18n="proj.threatforge">Advanced SOC platform with threat intelligence and incident response capabilities.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">SOC</span><span class="proj-tag">10K Lines</span></div></div>
+<div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#128123;</div><a href="https://github.com/cokovali10-sketch/Ghostly" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Ghostly</h3><p class="proj-desc" data-i18n="proj.ghostly">Powerful analytics platform for data visualization and insights generation.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Analytics</span><span class="proj-tag">12K Lines</span></div></div>
+<div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#129302;</div><a href="https://github.com/cokovali10-sketch/hermes-studio" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Hermes Studio</h3><p class="proj-desc" data-i18n="proj.hermes">Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">AI</span><span class="proj-tag">202 Tools</span></div></div>
+<div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128269;</div><a href="https://github.com/cokovali10-sketch/CoreEDR" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">CoreEDR</h3><p class="proj-desc" data-i18n="proj.coreedr">High-performance Endpoint Detection and Response solution built in Rust.</p><div class="proj-tags"><span class="proj-tag">Rust</span><span class="proj-tag">EDR</span><span class="proj-tag">Security</span></div></div>
+<div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#9876;&#65039;</div><a href="https://github.com/cokovali10-sketch/SpectreShield" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">SpectreShield</h3><p class="proj-desc" data-i18n="proj.spectre">eBPF-based network security monitoring and threat detection framework.</p><div class="proj-tags"><span class="proj-tag">C</span><span class="proj-tag">eBPF</span><span class="proj-tag">Security</span></div></div>
+<div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128230;</div><a href="https://github.com/cokovali10-sketch/NanoContainer" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">NanoContainer</h3><p class="proj-desc" data-i18n="proj.nano">Lightweight container runtime written in Go for minimal overhead deployment.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Containers</span><span class="proj-tag">DevOps</span></div></div>
+<div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127963;&#65039;</div><a href="https://github.com/cokovali10-sketch/AegisRuntime" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">AegisRuntime</h3><p class="proj-desc" data-i18n="proj.aegis">Secure AI model sandboxing runtime for safe execution of untrusted models.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">AI</span><span class="proj-tag">Sandbox</span></div></div>
+<div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128272;</div><a href="https://github.com/cokovali10-sketch/GoVault" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">GoVault</h3><p class="proj-desc" data-i18n="proj.govault">Encrypted file storage solution with zero-knowledge architecture in Go.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Encryption</span><span class="proj-tag">Storage</span></div></div>
+<div class="proj-card reveal" data-cat="security"><div class="proj-top"><div class="proj-icon">&#128270;</div><a href="https://github.com/cokovali10-sketch/GoPortScan" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">GoPortScan</h3><p class="proj-desc" data-i18n="proj.goportscan">High-speed concurrent port scanner with service fingerprinting capabilities.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Network</span><span class="proj-tag">Scanner</span></div></div>
+<div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#128126;</div><a href="https://github.com/cokovali10-sketch/RetroTerm" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">RetroTerm</h3><p class="proj-desc" data-i18n="proj.retroterm">Terminal-based roguelike game with procedural generation and deep gameplay.</p><div class="proj-tags"><span class="proj-tag">C++</span><span class="proj-tag">Roguelike</span><span class="proj-tag">Game</span></div></div>
+<div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128191;</div><a href="https://github.com/cokovali10-sketch/DiskScope" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">DiskScope</h3><p class="proj-desc" data-i18n="proj.diskscope">Visual disk space analyzer with detailed file system insights and cleanup tools.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">System</span><span class="proj-tag">Analyzer</span></div></div>
+<div class="proj-card reveal" data-cat="devops"><div class="proj-top"><div class="proj-icon">&#128202;</div><a href="https://github.com/cokovali10-sketch/LogPulse" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">LogPulse</h3><p class="proj-desc" data-i18n="proj.logpulse">Real-time log analysis engine with anomaly detection and alerting system.</p><div class="proj-tags"><span class="proj-tag">Go</span><span class="proj-tag">Logs</span><span class="proj-tag">Monitoring</span></div></div>
+<div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127760;</div><a href="https://github.com/cokovali10-sketch/AgentMesh" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">AgentMesh</h3><p class="proj-desc" data-i18n="proj.agentmesh">Multi-agent AI orchestration framework for complex task decomposition.</p><div class="proj-tags"><span class="proj-tag">Python</span><span class="proj-tag">Multi-Agent</span><span class="proj-tag">AI</span></div></div>
+<div class="proj-card reveal" data-cat="tools"><div class="proj-top"><div class="proj-icon">&#127918;</div><a href="https://github.com/cokovali10-sketch/Forge3D" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">Forge3D</h3><p class="proj-desc" data-i18n="proj.forge3d">Custom 3D game engine with OpenGL rendering and entity component system.</p><div class="proj-tags"><span class="proj-tag">C++</span><span class="proj-tag">OpenGL</span><span class="proj-tag">Engine</span></div></div>
+<div class="proj-card reveal" data-cat="web"><div class="proj-top"><div class="proj-icon">&#9749;</div><a href="https://github.com/cokovali10-sketch/caffeine-glass-ui" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">caffeine-glass-ui</h3><p class="proj-desc" data-i18n="proj.caffeine">Modern glassmorphism UI component library for web applications.</p><div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">UI/UX</span><span class="proj-tag">Library</span></div></div>
+<div class="proj-card reveal" data-cat="ai"><div class="proj-top"><div class="proj-icon">&#127183;</div><a href="https://github.com/cokovali10-sketch/flashcard-mcp" target="_blank" class="proj-link">GH</a></div><h3 class="proj-name">flashcard-mcp</h3><p class="proj-desc" data-i18n="proj.flashcard">MCP server for intelligent flashcard generation and spaced repetition learning.</p><div class="proj-tags"><span class="proj-tag">TypeScript</span><span class="proj-tag">MCP</span><span class="proj-tag">Education</span></div></div>
+</div></div></section>
+<section id="skills"><div class="container"><div class="sec-head reveal"><div class="sec-label" data-i18n="skills.label">// Skills</div><h2 class="sec-title" data-i18n="skills.title">Technical Expertise</h2><p class="sec-desc" data-i18n="skills.desc">Proficiency levels across technologies and domains.</p></div><div class="skills-grid">
+<div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128187;</span> <span data-i18n="skills.lang">Languages</span></h3><div class="prog-item"><div class="prog-head"><span class="prog-name">Python</span><span class="prog-pct">92%</span></div><div class="prog-bar"><div class="prog-fill" data-w="92"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Go</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Rust</span><span class="prog-pct">75%</span></div><div class="prog-bar"><div class="prog-fill" data-w="75"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">C++</span><span class="prog-pct">80%</span></div><div class="prog-bar"><div class="prog-fill" data-w="80"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">TypeScript</span><span class="prog-pct">70%</span></div><div class="prog-bar"><div class="prog-fill" data-w="70"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Java</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" data-w="65"></div></div></div></div>
+<div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128640;</span> <span data-i18n="skills.fw">Frameworks &amp; Libraries</span></h3><div class="prog-item"><div class="prog-head"><span class="prog-name">Django / FastAPI</span><span class="prog-pct">88%</span></div><div class="prog-bar"><div class="prog-fill" data-w="88"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Gin / Fiber</span><span class="prog-pct">82%</span></div><div class="prog-bar"><div class="prog-fill" data-w="82"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Actix Web</span><span class="prog-pct">70%</span></div><div class="prog-bar"><div class="prog-fill" data-w="70"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">OpenGL / Vulkan</span><span class="prog-pct">65%</span></div><div class="prog-bar"><div class="prog-fill" data-w="65"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">React / Next.js</span><span class="prog-pct">72%</span></div><div class="prog-bar"><div class="prog-fill" data-w="72"></div></div></div></div>
+<div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#128274;</span> <span data-i18n="skills.sec">Security</span></h3><div class="prog-item"><div class="prog-head"><span class="prog-name">Reverse Engineering</span><span class="prog-pct">78%</span></div><div class="prog-bar"><div class="prog-fill" data-w="78"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Network Security</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Malware Analysis</span><span class="prog-pct">72%</span></div><div class="prog-bar"><div class="prog-fill" data-w="72"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">eBPF / Kernel</span><span class="prog-pct">68%</span></div><div class="prog-bar"><div class="prog-fill" data-w="68"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Cryptography</span><span class="prog-pct">75%</span></div><div class="prog-bar"><div class="prog-fill" data-w="75"></div></div></div></div>
+<div class="skill-cat reveal"><h3 class="skill-cat-title"><span class="ic">&#9881;&#65039;</span> <span data-i18n="skills.devops">DevOps &amp; Tools</span></h3><div class="prog-item"><div class="prog-head"><span class="prog-name">Docker / K8s</span><span class="prog-pct">85%</span></div><div class="prog-bar"><div class="prog-fill" data-w="85"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Linux Admin</span><span class="prog-pct">92%</span></div><div class="prog-bar"><div class="prog-fill" data-w="92"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">CI/CD Pipelines</span><span class="prog-pct">80%</span></div><div class="prog-bar"><div class="prog-fill" data-w="80"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Git / GitHub</span><span class="prog-pct">95%</span></div><div class="prog-bar"><div class="prog-fill" data-w="95"></div></div></div><div class="prog-item"><div class="prog-head"><span class="prog-name">Nginx / Apache</span><span class="prog-pct">78%</span></div><div class="prog-bar"><div class="prog-fill" data-w="78"></div></div></div></div>
+</div></div></section>
+<section id="stats"><div class="container"><div class="sec-head reveal"><div class="sec-label" data-i18n="stats.label">// Stats</div><h2 class="sec-title" data-i18n="stats.title">By The Numbers</h2><p class="sec-desc" data-i18n="stats.desc">A snapshot of my journey.</p></div><div class="stats-row"><div class="stat-card reveal"><div class="stat-ic">&#128193;</div><div class="stat-num" data-count="38">0</div><div class="stat-lbl" data-i18n="stats.projects">Projects</div></div><div class="stat-card reveal"><div class="stat-ic">&#128187;</div><div class="stat-num" data-count="6">0</div><div class="stat-lbl" data-i18n="stats.languages">Languages</div></div><div class="stat-card reveal"><div class="stat-ic">&#128736;&#65039;</div><div class="stat-num" data-count="202">0</div><div class="stat-lbl" data-i18n="stats.tools">Tools Built</div></div><div class="stat-card reveal"><div class="stat-ic">&#128221;</div><div class="stat-num" data-count="100">0</div><div class="stat-lbl" data-i18n="stats.lines">K+ Lines of Code</div></div></div></div></section>
+<section id="timeline"><div class="container"><div class="sec-head reveal"><div class="sec-label" data-i18n="timeline.label">// Journey</div><h2 class="sec-title" data-i18n="timeline.title">Learning Timeline</h2><p class="sec-desc" data-i18n="timeline.desc">My programming journey from first line of code to today.</p></div><div class="tl">
+<div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2022</div><h4 class="tl-title" data-i18n="tl.2022.title">The Beginning</h4><p class="tl-desc" data-i18n="tl.2022.desc">Started learning Python and basic programming concepts. Built first simple scripts and automation tools.</p></div></div>
+<div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2023</div><h4 class="tl-title" data-i18n="tl.2023.title">Diving Deeper</h4><p class="tl-desc" data-i18n="tl.2023.desc">Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.</p></div></div>
+<div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2024</div><h4 class="tl-title" data-i18n="tl.2024.title">Systems Programming</h4><p class="tl-desc" data-i18n="tl.2024.desc">Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.</p></div></div>
+<div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2025</div><h4 class="tl-title" data-i18n="tl.2025.title">AI &amp; Scale</h4><p class="tl-desc" data-i18n="tl.2025.desc">Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.</p></div></div>
+<div class="tl-item reveal"><div class="tl-dot"></div><div class="tl-card"><div class="tl-year">2026</div><h4 class="tl-title" data-i18n="tl.2026.title">Current Focus</h4><p class="tl-desc" data-i18n="tl.2026.desc">Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.</p></div></div>
+</div></div></section>
+<section id="contact"><div class="container"><div class="sec-head reveal"><div class="sec-label" data-i18n="contact.label">// Contact</div><h2 class="sec-title" data-i18n="contact.title">Get In Touch</h2><p class="sec-desc" data-i18n="contact.desc">Have a project in mind or want to collaborate? Let's talk.</p></div><div class="contact-grid"><form class="contact-form reveal" action="https://formspree.io/f/xpznvgle" method="POST"><div class="field"><input type="text" name="name" placeholder="Your Name" required></div><div class="field"><input type="email" name="email" placeholder="Your Email" required></div><div class="field"><input type="text" name="subject" placeholder="Subject"></div><div class="field"><textarea name="message" placeholder="Your Message" required></textarea></div><button type="submit" class="btn btn-p" style="align-self:flex-start" data-i18n="contact.send">Send Message</button></form><div class="info-cards reveal"><div class="info-card"><div class="ic">&#128205;</div><div class="lbl" data-i18n="contact.locLabel">Location</div><div class="val" data-i18n="contact.locVal">Kazakhstan</div></div><div class="info-card"><div class="ic">&#128231;</div><div class="lbl" data-i18n="contact.emailLabel">Email</div><div class="val"><a href="mailto:cokovali10@gmail.com">cokovali10@gmail.com</a></div></div><div class="info-card"><div class="ic">&#128222;</div><div class="lbl" data-i18n="contact.phoneLabel">Phone</div><div class="val"><a href="tel:+77472579344">+7 747 257 93 44</a></div></div><div class="info-card"><div class="ic">&#128025;</div><div class="lbl" data-i18n="contact.ghLabel">GitHub</div><div class="val"><a href="https://github.com/cokovali10-sketch" target="_blank">github.com/cokovali10-sketch</a></div></div><div class="socials"><a href="https://github.com/cokovali10-sketch" target="_blank" class="social-btn" title="GitHub">&#128025;</a><a href="mailto:cokovali10@gmail.com" class="social-btn" title="Email">&#128231;</a></div></div></div></div></section>
 <footer><div class="footer-inner"><div class="footer-copy" data-i18n="footer.copy">&copy; 2026 Ali. All rights reserved.</div><div class="footer-links"><a href="https://github.com/cokovali10-sketch" target="_blank">GitHub</a><a href="mailto:cokovali10@gmail.com">Email</a></div><a href="#hero" class="top-btn" title="Top">&#8593;</a></div></footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-<script>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { EffectComposer } from 'three/addons/postprocessing/EffectComposer.js';
+import { RenderPass } from 'three/addons/postprocessing/RenderPass.js';
+import { UnrealBloomPass } from 'three/addons/postprocessing/UnrealBloomPass.js';
+
 (function(){
-var T={en:{loading:"Loading...","nav.home":"Home","nav.about":"About","nav.projects":"Projects","nav.skills":"Skills","nav.stats":"Stats","nav.contact":"Contact","hero.name":"ALI","hero.tagline1":"Systems Programmer & Security Researcher","hero.tagline2":"Building security tools and AI agents","hero.tagline3":"Low-level programming enthusiast from Kazakhstan","hero.tagline4":"Open source contributor","hero.tagline5":"Exploring the depths of systems programming","hero.viewProjects":"View Projects","hero.github":"GitHub","hero.scroll":"Scroll","about.label":"// About Me","about.title":"Who I Am","about.desc":"Systems programming, security research, and building tools that matter.","about.greeting":"Hi, I'm Ali!","about.bio1":"I'm a systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I build security tools, AI agents, and explore the depths of systems programming.","about.bio2":"My journey in programming started years ago, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.","about.location":"Kazakhstan","projects.label":"// Projects","projects.title":"Featured Work","projects.desc":"A collection of projects spanning security, AI, DevOps, and more.","projects.all":"All","projects.security":"Security","projects.ai":"AI/ML","projects.devops":"DevOps","projects.web":"Web","projects.tools":"Tools","proj.threatforge":"Advanced SOC platform with threat intelligence and incident response capabilities.","proj.ghostly":"Powerful analytics platform for data visualization and insights generation.","proj.hermes":"Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.","proj.coreedr":"High-performance Endpoint Detection and Response solution built in Rust.","proj.spectre":"eBPF-based network security monitoring and threat detection framework.","proj.nano":"Lightweight container runtime written in Go for minimal overhead deployment.","proj.aegis":"Secure AI model sandboxing runtime for safe execution of untrusted models.","proj.govault":"Encrypted file storage solution with zero-knowledge architecture in Go.","proj.goportscan":"High-speed concurrent port scanner with service fingerprinting capabilities.","proj.retroterm":"Terminal-based roguelike game with procedural generation and deep gameplay.","proj.diskscope":"Visual disk space analyzer with detailed file system insights and cleanup tools.","proj.logpulse":"Real-time log analysis engine with anomaly detection and alerting system.","proj.agentmesh":"Multi-agent AI orchestration framework for complex task decomposition.","proj.forge3d":"Custom 3D game engine with OpenGL rendering and entity component system.","proj.caffeine":"Modern glassmorphism UI component library for web applications.","proj.flashcard":"MCP server for intelligent flashcard generation and spaced repetition learning.","skills.label":"// Skills","skills.title":"Technical Expertise","skills.desc":"Proficiency levels across technologies and domains.","skills.lang":"Languages","skills.fw":"Frameworks & Libraries","skills.sec":"Security","skills.devops":"DevOps & Tools","stats.label":"// Stats","stats.title":"By The Numbers","stats.desc":"A snapshot of my journey.","stats.projects":"Projects","stats.languages":"Languages","stats.tools":"Tools Built","stats.lines":"K+ Lines of Code","timeline.label":"// Journey","timeline.title":"Learning Timeline","timeline.desc":"My programming journey from first line of code to today.","tl.2022.title":"The Beginning","tl.2022.desc":"Started learning Python and basic programming concepts. Built first simple scripts and automation tools.","tl.2023.title":"Diving Deeper","tl.2023.desc":"Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.","tl.2024.title":"Systems Programming","tl.2024.desc":"Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.","tl.2025.title":"AI & Scale","tl.2025.desc":"Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.","tl.2026.title":"Current Focus","tl.2026.desc":"Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.","contact.label":"// Contact","contact.title":"Get In Touch","contact.desc":"Have a project in mind or want to collaborate? Let's talk.","contact.name":"Your Name","contact.email":"Your Email","contact.subject":"Subject","contact.message":"Your Message","contact.send":"Send Message","contact.locLabel":"Location","contact.locVal":"Kazakhstan","contact.emailLabel":"Email","contact.phoneLabel":"Phone","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 Ali. All rights reserved."},
-ru:{loading:"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430...","nav.home":"\u0413\u043b\u0430\u0432\u043d\u0430\u044f","nav.about":"\u041e\u0431\u043e \u043c\u043d\u0435","nav.projects":"\u041f\u0440\u043e\u0435\u043a\u0442\u044b","nav.skills":"\u041d\u0430\u0432\u044b\u043a\u0438","nav.stats":"\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","nav.contact":"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b","hero.name":"\u0410\u041b\u0418","hero.tagline1":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438","hero.tagline2":"\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u0438 \u0418\u0418 \u0430\u0433\u0435\u043d\u0442\u043e\u0432","hero.tagline3":"\u042d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442 \u043d\u0438\u0437\u043a\u043e\u0443\u0440\u043e\u0432\u043d\u043e\u0433\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430","hero.tagline4":"\u041a\u043e\u043d\u0442\u0440\u0438\u0431\u044c\u044e\u0442\u043e\u0440 open source","hero.tagline5":"\u0418\u0441\u0441\u043b\u0435\u0434\u0443\u044e \u0433\u043b\u0443\u0431\u0438\u043d\u044b \u0441\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0433\u043e \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044f","hero.viewProjects":"\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0435\u043a\u0442\u044b","hero.github":"GitHub","hero.scroll":"\u0412\u043d\u0438\u0437","about.label":"// \u041e\u0431\u043e \u043c\u043d\u0435","about.title":"\u041a\u0442\u043e \u044f","about.desc":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435, \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435 \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438.","about.greeting":"\u041f\u0440\u0438\u0432\u0435\u0442, \u044f \u0410\u043b\u0438!","about.bio1":"\u042f \u0441\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430 \u0441 \u0433\u043b\u0443\u0431\u043e\u043a\u043e\u0439 \u0441\u0442\u0440\u0430\u0441\u0442\u044c\u044e \u043a \u043d\u0438\u0437\u043a\u043e\u0443\u0440\u043e\u0432\u043d\u043e\u043c\u0443 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u044e, \u043a\u0438\u0431\u0435\u0440\u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438 \u0438 \u0418\u0418.","about.bio2":"\u041c\u043e\u0439 \u043f\u0443\u0442\u044c \u0432 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0438 \u043d\u0430\u0447\u0430\u043b\u0441\u044f \u0434\u0430\u0432\u043d\u043e, \u0438 \u044f \u043b\u044e\u0431\u043b\u044e \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b.","about.location":"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d","projects.label":"// \u041f\u0440\u043e\u0435\u043a\u0442\u044b","projects.title":"\u0418\u0437\u0431\u0440\u0430\u043d\u043d\u044b\u0435 \u0440\u0430\u0431\u043e\u0442\u044b","projects.desc":"\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f \u043f\u0440\u043e\u0435\u043a\u0442\u043e\u0432.","projects.all":"\u0412\u0441\u0435","projects.security":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c","projects.ai":"\u0418\u0418/ML","projects.devops":"DevOps","projects.web":"\u0412\u0435\u0431","projects.tools":"\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b","proj.threatforge":"\u041f\u0440\u043e\u0434\u0432\u0438\u043d\u0443\u0442\u0430\u044f SOC \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.ghostly":"\u041c\u043e\u0449\u043d\u0430\u044f \u0430\u043d\u0430\u043b\u0438\u0442\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.hermes":"\u041a\u043e\u043c\u043f\u043b\u0435\u043a\u0441\u043d\u044b\u0439 \u043d\u0430\u0431\u043e\u0440 \u0418\u0418 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u043e\u0432.","proj.coreedr":"\u0412\u044b\u0441\u043e\u043a\u043e\u043f\u0440\u043e\u0438\u0437\u0432\u043e\u0434\u0438\u0442\u0435\u043b\u044c\u043d\u043e\u0435 EDR \u043d\u0430 Rust.","proj.spectre":"eBPF \u043d\u0435\u0433\u0456\u0437\u0431\u0435\u0433\u0456 \u043c\u043e\u043d\u0438\u0442\u043e\u0440\u0438\u043d\u0433 \u0444\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u044b.","proj.nano":"Go \u0442\u0456\u043b\u0456\u043d\u0434\u0435 \u0436\u0430\u0437\u044b\u043b\u0433\u0430\u043d \u043a\u043e\u043d\u0442\u0435\u0439\u043d\u0435\u0440 \u0440\u0430\u043d\u0442\u0430\u0439\u043c\u044b.","proj.aegis":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u0430\u044f \u0441\u0440\u0435\u0434\u0430 \u0432\u044b\u043f\u043e\u043b\u043d\u0435\u043d\u0438\u044f \u043c\u043e\u0434\u0435\u043b\u0435\u0439 \u0418\u0418.","proj.govault":"\u0428\u0438\u0444\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0435 \u0445\u0440\u0430\u043d\u0435\u043d\u0438\u0435 \u0444\u0430\u0439\u043b\u043e\u0432 \u043d\u0430 Go.","proj.goportscan":"\u0412\u044b\u0441\u043e\u043a\u043e\u0441\u043a\u043e\u0440\u043e\u0441\u0442\u043d\u043e\u0439 \u0441\u043a\u0430\u043d\u0435\u0440 \u043f\u043e\u0440\u0442\u043e\u0432.","proj.retroterm":"\u0420\u043e\u0433\u0430\u043b\u0438\u043a \u0432 \u0442\u0435\u0440\u043c\u0438\u043d\u0430\u043b\u0435.","proj.diskscope":"\u0410\u043d\u0430\u043b\u0438\u0437\u0430\u0442\u043e\u0440 \u0434\u0438\u0441\u043a\u043e\u0432\u043e\u0433\u043e \u043f\u0440\u043e\u0441\u0442\u0440\u0430\u043d\u0441\u0442\u0432\u0430.","proj.logpulse":"\u0414\u0432\u0438\u0436\u043e\u043a \u0430\u043d\u0430\u043b\u0438\u0437\u0430 \u043b\u043e\u0433\u043e\u0432.","proj.agentmesh":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a \u043c\u0443\u043b\u044c\u0442\u0438\u0430\u0433\u0435\u043d\u0442\u043d\u043e\u0439 \u0418\u0418.","proj.forge3d":"3D \u0438\u0433\u0440\u043e\u0432\u043e\u0439 \u0434\u0432\u0438\u0436\u043e\u043a.","proj.caffeine":"UI \u043a\u043e\u043c\u043f\u043e\u043d\u0435\u043d\u0442\u043e\u0432 \u043a\u0438\u0442\u0430\u043f\u0445\u0430\u0441\u044b.","proj.flashcard":"MCP \u0441\u0435\u0440\u0432\u0435\u0440 \u0434\u043b\u044f \u043e\u0431\u0443\u0447\u0435\u043d\u0438\u044f.","skills.label":"// \u041d\u0430\u0432\u044b\u043a\u0438","skills.title":"\u0422\u0435\u0445\u043d\u0438\u0447\u0435\u0441\u043a\u0430\u044f \u044d\u043a\u0441\u043f\u0435\u0440\u0442\u0438\u0437\u0430","skills.desc":"\u0423\u0440\u043e\u0432\u043d\u0438 \u0432\u043b\u0430\u0434\u0435\u043d\u0438\u044f.","skills.lang":"\u042f\u0437\u044b\u043a\u0438","skills.fw":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u0438","skills.sec":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c","skills.devops":"DevOps","stats.label":"// \u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","stats.title":"\u0426\u0438\u0444\u0440\u044b","stats.desc":"\u041e\u0431\u0437\u043e\u0440.","stats.projects":"\u041f\u0440\u043e\u0435\u043a\u0442\u044b","stats.languages":"\u042f\u0437\u044b\u043a\u0438","stats.tools":"\u0421\u043e\u0437\u0434\u0430\u043d\u043d\u044b\u0445","stats.lines":"\u0422\u044b\u0441. \u0441\u0442\u0440\u043e\u043a","timeline.label":"// \u041f\u0443\u0442\u044c","timeline.title":"\u0425\u0440\u043e\u043d\u043e\u043b\u043e\u0433\u0438\u044f","timeline.desc":"\u041c\u043e\u0439 \u043f\u0443\u0442\u044c.","tl.2022.title":"\u041d\u0430\u0447\u0430\u043b\u043e","tl.2022.desc":"\u041d\u0430\u0447\u0430\u043b \u0438\u0437\u0443\u0447\u0430\u0442\u044c Python.","tl.2023.title":"\u041f\u043e\u0433\u0440\u0443\u0436\u0435\u043d\u0438\u0435","tl.2023.desc":"\u0418\u0437\u0443\u0447\u0438\u043b Go \u0438 C++. \u041d\u0430\u0447\u0430\u043b \u0441\u043e\u0437\u0434\u0430\u0432\u0430\u0442\u044c \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b.","tl.2024.title":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435","tl.2024.desc":"Rust, eBPF. CoreEDR \u0438 SpectreShield.","tl.2025.title":"\u0418\u0418","tl.2025.desc":"AgentMesh \u0438 Hermes Studio.","tl.2026.title":"\u0422\u0435\u043a\u0443\u0449\u0438\u0439","tl.2026.desc":"ThreatForge SOC.","contact.label":"// \u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b","contact.title":"\u0421\u0432\u044f\u0436\u0438\u0442\u0435\u0441\u044c","contact.desc":"\u0414\u0430\u0432\u0430\u0439\u0442\u0435 \u043f\u043e\u0433\u043e\u0432\u043e\u0440\u0438\u043c.","contact.name":"\u0418\u043c\u044f","contact.email":"Email","contact.subject":"\u0422\u0435\u043c\u0430","contact.message":"\u0421\u043e\u043e\u0431\u0449\u0435\u043d\u0438\u0435","contact.send":"\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c","contact.locLabel":"\u041c\u0435\u0441\u0442\u043e","contact.locVal":"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d","contact.emailLabel":"Email","contact.phoneLabel":"\u0422\u0435\u043b\u0435\u0444\u043e\u043d","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 \u0410\u043b\u0438."},
-kz:{loading:"\u0416\u04af\u043a\u0442\u0435\u043b\u0443\u0434\u0435...","nav.home":"\u0411\u0430\u0441\u0442\u044b","nav.about":"\u041c\u0435\u043d \u0442\u0443\u0440\u0430\u043b\u044b","nav.projects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","nav.skills":"\u0414\u0430\u0433\u0434\u044b\u043b\u0430\u0440","nav.stats":"\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","nav.contact":"\u0411\u0430\u0439\u043b\u0430\u043d\u044b\u0441","hero.name":"\u0410\u041b\u0418","hero.tagline1":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","hero.tagline2":"\u041a\u04d9\u043f\u0430\u043b\u0434\u044b\u043b\u044b\u043c\u0435\u043d \u0416\u0418 \u0430\u0433\u0435\u043d\u0442\u0442\u0435\u0440\u0456\u043d","hero.tagline3":"\u0411\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b \u044d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442\u044b","hero.tagline4":"Open source","hero.tagline5":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a","hero.viewProjects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440\u0434\u044b","hero.github":"GitHub","hero.scroll":"\u0422\u04d9\u043c\u0435\u043d","about.label":"// \u041c\u0435\u043d \u0442\u0443\u0440\u0430\u043b\u044b","about.title":"\u041c\u0435\u043d \u043a\u0456\u043c\u043c\u0456\u043d","about.desc":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u043b\u0430\u0443.","about.greeting":"\u0421\u04d9\u043b\u0435\u043c, \u043c\u0435\u043d \u0410\u043b\u0438!","about.bio1":"\u041c\u0435\u043d \u049b\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d\u043d\u0430\u043d \u0436\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043c\u0430\u0448\u044b\u043c\u044b\u043d.","about.bio2":"\u041c\u0435\u043d\u0456\u043d \u0436\u043e\u043b\u044b\u043c \u0431\u0430\u0441\u0442\u0430\u043b\u0434\u044b.","about.location":"\u041a\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d","projects.label":"// \u0416\u043e\u0431\u0430\u043b\u0430\u0440","projects.title":"\u0422\u0430\u043d\u0434\u0430\u043b\u0433\u0430\u043d","projects.desc":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440 \u0436\u0438\u043d\u0430\u0433\u044b.","projects.all":"\u0411\u04d9\u0440\u0456","projects.security":"\u041a\u0430\u0443\u0456\u043f\u0441\u0456\u0437","projects.ai":"\u0416\u0418/ML","projects.devops":"DevOps","projects.web":"\u0412\u0435\u0431","projects.tools":"\u049a\u04b1\u0440\u0430\u043b","proj.threatforge":"SOC \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430\u0441\u044b.","proj.ghostly":"\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0430\u043b\u044b\u049b \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.hermes":"202 \u049b\u04b1\u0440\u0430\u043b\u043c\u0435\u043d \u0416\u0418.","proj.coreedr":"Rust EDR.","proj.spectre":"eBPF \u043a\u04d9\u043f\u0430\u043b\u0441\u044b\u0437\u0434\u044b\u043a.","proj.nano":"Go \u043a\u043e\u043d\u0442\u0435\u0439\u043d\u0435\u0440.","proj.aegis":"\u0416\u0418 \u043c\u043e\u0434\u0435\u043b\u0434\u0435\u0440\u0456\u043d \u043a\u043e\u0440\u0448\u0430\u0443.","proj.govault":"\u0428\u0438\u0444\u0440\u043b\u0435\u043d\u0433\u0435\u043d \u0444\u0430\u0439\u043b.","proj.goportscan":"\u041f\u043e\u0440\u0442 \u0441\u043a\u0430\u043d\u0435\u0440\u0456.","proj.retroterm":"\u0420\u043e\u0433\u0430\u043b\u0438\u043a.","proj.diskscope":"\u0414\u0438\u0441\u043a \u0442\u0430\u043b\u0434\u0430\u0443.","proj.logpulse":"\u041b\u043e\u0433 \u0442\u0430\u043b\u0434\u0430\u0443.","proj.agentmesh":"\u0416\u0438 \u043e\u0440\u043a\u0435\u0441\u0442\u0440\u0430\u0446\u0438\u044f.","proj.forge3d":"3D \u043e\u0439\u044b\u043d.","proj.caffeine":"UI \u043a\u0456\u0442\u0430\u043f\u0445\u0430.","proj.flashcard":"MCP \u0441\u0435\u0440\u0432\u0435\u0440\u0456.","skills.label":"// \u0414\u0430\u0433\u0434\u044b\u043b\u0430\u0440","skills.title":"\u0422\u0435\u0445\u043d\u0438\u043a\u0430\u043b\u044b\u043a","skills.desc":"\u041c\u0435\u043d\u0441\u0435\u0440\u0434\u0435\u0433\u0435\u0439\u043b\u0435\u0440\u0456.","skills.lang":"\u0422\u0456\u043b\u0434\u0435\u0440","skills.fw":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u0442\u0430\u0440","skills.sec":"\u041a\u0430\u0443\u0456\u043f\u0441\u0456\u0437","skills.devops":"DevOps","stats.label":"// \u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","stats.title":"\u0421\u0430\u043d\u0434\u0430\u0440","stats.desc":"\u0416\u043e\u043b.","stats.projects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","stats.languages":"\u0422\u0456\u043b\u0434\u0435\u0440","stats.tools":"\u049a\u04b1\u0440\u0430\u043b\u0434\u0430\u0440","stats.lines":"\u041c\u044b\u043d\u0433 \u043a\u043e\u0434","timeline.label":"// \u0416\u043e\u043b","timeline.title":"\u041e\u049b\u0443","timeline.desc":"\u0416\u043e\u043b\u044b\u043c.","tl.2022.title":"\u0411\u0430\u0441\u0442\u0430\u043c\u0430","tl.2022.desc":"Python.","tl.2023.title":"\u0422\u0435\u0440\u0435\u043d\u0456\u0440\u0435\u043a","tl.2023.desc":"Go \u0436\u04d9\u043d\u0435 C++.","tl.2024.title":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a","tl.2024.desc":"Rust \u0436\u04d9\u043d\u0435 eBPF.","tl.2025.title":"\u0416\u0418","tl.2025.desc":"AgentMesh \u0436\u04d9\u043d\u0435 Hermes Studio.","tl.2026.title":"\u041a\u0430\u0437\u0456\u0440\u0433\u0456","tl.2026.desc":"ThreatForge SOC.","contact.label":"// \u0411\u0430\u0439\u043b\u0430\u043d\u044b\u0441","contact.title":"\u0425\u0430\u0431\u0430\u0440\u043b\u0430\u0441\u044b\u043d\u044b\u0437","contact.desc":"\u0421\u04d9\u0439\u043b\u0435\u0441\u0435\u0439\u0456\u043a.","contact.name":"\u0410\u0442\u044b\u043d\u044b\u0437","contact.email":"Email","contact.subject":"\u0422\u0430\u049b\u044b\u0440\u044b\u043f","contact.message":"\u0425\u0430\u0431\u0430\u0440\u043b\u0430\u043c\u0430","contact.send":"\u0416\u0456\u0431\u0435\u0440\u0443","contact.locLabel":"\u041e\u0440\u043d\u0430\u043b\u044b","contact.locVal":"\u041a\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d","contact.emailLabel":"Email","contact.phoneLabel":"\u0422\u0435\u043b\u0435\u0444\u043e\u043d","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 \u0410\u043b\u0438."}};
-
-var lang=localStorage.getItem('lang')||'en';
-function setLang(l){lang=l;localStorage.setItem('lang',l);document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(T[l]&&T[l][k])e.textContent=T[l][k]});document.querySelectorAll('[data-i18n-placeholder]').forEach(function(e){var k=e.getAttribute('data-i18n-placeholder');if(T[l]&&T[l][k])e.placeholder=T[l][k]});document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('on',b.dataset.lang===l)});document.documentElement.lang=l}
-document.querySelectorAll('.lang-btn').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang)})});
-setLang(lang);
-
-window.addEventListener('load',function(){setTimeout(function(){document.getElementById('loader').classList.add('hide')},1800)});
-
-/* Three.js DNA Helix */
-(function(){
+var loaderBar=document.getElementById('loader-bar');
+var loaderPct=document.getElementById('loader-pct');
+var loaderEl=document.getElementById('loader');
 var canvas=document.getElementById('hero-canvas');
 var scene=new THREE.Scene();
-var camera=new THREE.PerspectiveCamera(60,window.innerWidth/window.innerHeight,0.1,1000);
-var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true});
+var camera=new THREE.PerspectiveCamera(50,window.innerWidth/window.innerHeight,0.1,1000);
+camera.position.set(0,0.5,6);
+
+var renderer=new THREE.WebGLRenderer({canvas:canvas,alpha:true,antialias:true,powerPreference:'high-performance'});
 renderer.setSize(window.innerWidth,window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.toneMapping=THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure=1.0;
+renderer.shadowMap.enabled=true;
+renderer.shadowMap.type=THREE.PCFSoftShadowMap;
 
-var mouse={x:0,y:0},target={x:0,y:0};
-document.addEventListener('mousemove',function(e){target.x=(e.clientX/window.innerWidth-0.5)*2;target.y=(e.clientY/window.innerHeight-0.5)*2});
+scene.fog=new THREE.FogExp2(0x06060a,0.04);
+scene.background=null;
 
-var helix=new THREE.Group();
-scene.add(helix);
+var composer=new EffectComposer(renderer);
+composer.addPass(new RenderPass(scene,camera));
+var bloomPass=new UnrealBloomPass(new THREE.Vector2(window.innerWidth,window.innerHeight),1.5,0.4,0.1);
+composer.addPass(bloomPass);
 
-var N=120,R=2,H=18,TW=1.2;
-var sGeo=new THREE.SphereGeometry(0.07,8,8);
-var m1=new THREE.MeshBasicMaterial({color:0x6366f1,transparent:true,opacity:0.85});
-var m2=new THREE.MeshBasicMaterial({color:0x06b6d4,transparent:true,opacity:0.85});
-var bMat=new THREE.MeshBasicMaterial({color:0x6366f1,transparent:true,opacity:0.2});
+var ambientLight=new THREE.AmbientLight(0x1a0a00,0.8);
+scene.add(ambientLight);
 
-var lp1=[],lp2=[];
-for(var i=0;i<N;i++){
-    var t=i/N,y=t*H-H/2,a=t*N*TW;
-    var p1=new THREE.Vector3(Math.cos(a)*R,y,Math.sin(a)*R);
-    var p2=new THREE.Vector3(Math.cos(a+Math.PI)*R,y,Math.sin(a+Math.PI)*R);
-    lp1.push(p1);lp2.push(p2);
-    var s1=new THREE.Mesh(sGeo,m1);s1.position.copy(p1);helix.add(s1);
-    var s2=new THREE.Mesh(sGeo,m2);s2.position.copy(p2);helix.add(s2);
-    if(i%4===0){
-        var dir=new THREE.Vector3().subVectors(p2,p1);var len=dir.length();
-        var bg=new THREE.CylinderGeometry(0.012,0.012,len,4);
-        var bond=new THREE.Mesh(bg,bMat);bond.position.copy(p1).add(dir.multiplyScalar(0.5));
-        bond.lookAt(p2);bond.rotateX(Math.PI/2);helix.add(bond);
-    }
+var dirLight=new THREE.DirectionalLight(0xff4400,3.0);
+dirLight.position.set(5,8,5);
+dirLight.castShadow=true;
+dirLight.shadow.mapSize.width=2048;
+dirLight.shadow.mapSize.height=2048;
+dirLight.shadow.camera.near=0.5;
+dirLight.shadow.camera.far=50;
+dirLight.shadow.camera.left=-10;
+dirLight.shadow.camera.right=10;
+dirLight.shadow.camera.top=10;
+dirLight.shadow.camera.bottom=-10;
+dirLight.shadow.bias=-0.0005;
+scene.add(dirLight);
+
+var dirLight2=new THREE.DirectionalLight(0xff2200,1.5);
+dirLight2.position.set(-5,6,-3);
+scene.add(dirLight2);
+
+var pointLight1=new THREE.PointLight(0xff6600,6,20);
+pointLight1.position.set(4,2,3);
+scene.add(pointLight1);
+
+var pointLight2=new THREE.PointLight(0xff3300,6,20);
+pointLight2.position.set(-4,2,-3);
+scene.add(pointLight2);
+
+var pointLight3=new THREE.PointLight(0xff0000,3,15);
+pointLight3.position.set(0,5,0);
+scene.add(pointLight3);
+
+var gridHelper=new THREE.GridHelper(40,60,0xff4400,0x1a0a00);
+gridHelper.position.y=-2;
+gridHelper.material.opacity=0.1;
+gridHelper.material.transparent=true;
+scene.add(gridHelper);
+
+var groundGeo=new THREE.PlaneGeometry(80,80);
+var groundMat=new THREE.MeshStandardMaterial({color:0x08080f,metalness:0.9,roughness:0.3,transparent:true,opacity:0.5});
+var ground=new THREE.Mesh(groundGeo,groundMat);
+ground.rotation.x=-Math.PI/2;
+ground.position.y=-2;
+ground.receiveShadow=true;
+scene.add(ground);
+
+var pCount=800;
+var pPositions=new Float32Array(pCount*3);
+var pVelocities=[];
+for(var i=0;i<pCount;i++){
+pPositions[i*3]=(Math.random()-0.5)*30;
+pPositions[i*3+1]=(Math.random()-0.5)*18;
+pPositions[i*3+2]=(Math.random()-0.5)*30;
+pVelocities.push({x:(Math.random()-0.5)*0.004,y:(Math.random()-0.5)*0.004,z:(Math.random()-0.5)*0.004});
+}
+var particleGeo=new THREE.BufferGeometry();
+particleGeo.setAttribute('position',new THREE.BufferAttribute(pPositions,3));
+var particleMat=new THREE.PointsMaterial({color:0xff4400,size:0.04,transparent:true,opacity:0.7,blending:THREE.AdditiveBlending,depthWrite:false});
+var particles=new THREE.Points(particleGeo,particleMat);
+scene.add(particles);
+
+var pCount2=300;
+var pPositions2=new Float32Array(pCount2*3);
+for(var i2=0;i2<pCount2;i2++){
+pPositions2[i2*3]=(Math.random()-0.5)*20;
+pPositions2[i2*3+1]=(Math.random()-0.5)*14;
+pPositions2[i2*3+2]=(Math.random()-0.5)*20;
+}
+var particleGeo2=new THREE.BufferGeometry();
+particleGeo2.setAttribute('position',new THREE.BufferAttribute(pPositions2,3));
+var particleMat2=new THREE.PointsMaterial({color:0xff0000,size:0.025,transparent:true,opacity:0.4,blending:THREE.AdditiveBlending,depthWrite:false});
+var particles2=new THREE.Points(particleGeo2,particleMat2);
+scene.add(particles2);
+
+var dragonModel=null;
+var dragonGroup=new THREE.Group();
+scene.add(dragonGroup);
+
+var gltfLoader=new GLTFLoader();
+gltfLoader.load('assets/models/dragon.glb',function(gltf){
+dragonModel=gltf.scene;
+dragonModel.traverse(function(child){
+if(child.isMesh){
+if(child.name.indexOf('Backdrop')>=0||child.name.indexOf('Cloth')>=0||child.name.indexOf('cloth')>=0){
+child.visible=false;return;
+}
+child.castShadow=true;
+child.receiveShadow=true;
+child.material=new THREE.MeshStandardMaterial({color:0xff3300,metalness:0.9,roughness:0.15,emissive:0xff2200,emissiveIntensity:0.4,envMapIntensity:2.5,side:THREE.FrontSide});
+child.material.needsUpdate=true;
+}
+});
+var box=new THREE.Box3().setFromObject(dragonModel);
+var center=box.getCenter(new THREE.Vector3());
+var size=box.getSize(new THREE.Vector3());
+var maxDim=Math.max(size.x,size.y,size.z);
+var scale=5.0/maxDim;
+dragonModel.scale.set(-scale,scale,scale);
+dragonModel.position.sub(center.multiplyScalar(scale));
+dragonGroup.add(dragonModel);
+},function(xhr){
+if(xhr.lengthComputable){
+var pct=Math.round((xhr.loaded/xhr.total)*100);
+loaderBar.style.width=pct+'%';
+loaderPct.textContent=pct+'%';
+}
+},function(error){
+console.error('Error loading dragon model:',error);
+loaderPct.textContent='Error loading model';
+});
+
+var scrollProgress=0;
+var targetScroll=0;
+window.addEventListener('scroll',function(){
+var maxScroll=document.documentElement.scrollHeight-window.innerHeight;
+targetScroll=maxScroll>0?window.scrollY/maxScroll:0;
+});
+
+var time=0;
+var baseCamZ=6;
+var baseDragonScale=1;
+function animate(){
+requestAnimationFrame(animate);
+time+=0.01;
+
+scrollProgress+=(targetScroll-scrollProgress)*0.05;
+
+if(dragonModel){
+dragonGroup.rotation.y=time*0.15;
+var breathe=1+Math.sin(time*1.2)*0.01;
+dragonGroup.scale.setScalar(breathe);
+dragonModel.position.y=Math.sin(time*0.6)*0.1;
 }
 
-var curve1=new THREE.CatmullRomCurve3(lp1);
-var curve2=new THREE.CatmullRomCurve3(lp2);
-var tubeGeo1=new THREE.TubeGeometry(curve1,200,0.025,6,false);
-var tubeGeo2=new THREE.TubeGeometry(curve2,200,0.025,6,false);
-var tubeMat=new THREE.LineBasicMaterial({color:0x6366f1,transparent:true,opacity:0.5});
-helix.add(new THREE.LineSegments(new THREE.WireframeGeometry(tubeGeo1),tubeMat));
-helix.add(new THREE.LineSegments(new THREE.WireframeGeometry(tubeGeo2),new THREE.LineBasicMaterial({color:0x06b6d4,transparent:true,opacity:0.5})));
+camera.position.z=baseCamZ+scrollProgress*8;
+camera.position.y=0.5+scrollProgress*2;
+camera.lookAt(0,0.5,0);
 
-var pCount=300,pPos=new Float32Array(pCount*3);
-for(var i=0;i<pCount*3;i++)pPos[i]=(Math.random()-0.5)*25;
-var pGeo=new THREE.BufferGeometry();
-pGeo.setAttribute('position',new THREE.BufferAttribute(pPos,3));
-scene.add(new THREE.Points(pGeo,new THREE.PointsMaterial({color:0x6366f1,size:0.025,transparent:true,opacity:0.4})));
+pointLight1.position.x=Math.cos(time*0.5)*5;
+pointLight1.position.z=Math.sin(time*0.5)*5;
+pointLight1.position.y=2+Math.sin(time*0.8)*1;
+pointLight2.position.x=Math.cos(time*0.5+Math.PI)*5;
+pointLight2.position.z=Math.sin(time*0.5+Math.PI)*5;
+pointLight2.position.y=2+Math.cos(time*0.8)*1;
+pointLight3.intensity=3+Math.sin(time*1.5)*1;
+bloomPass.strength=1.5+Math.sin(time*1.2)*0.2;
 
-camera.position.z=12;
-
-function animate(){
-    requestAnimationFrame(animate);
-    mouse.x+=(target.x-mouse.x)*0.05;
-    mouse.y+=(target.y-mouse.y)*0.05;
-    helix.rotation.y+=0.003;
-    helix.rotation.x=mouse.y*0.3;
-    helix.rotation.z=mouse.x*0.15;
-    renderer.render(scene,camera);
+particles.rotation.y+=0.0004;
+particles.rotation.x+=0.0001;
+var posArr=particleGeo.attributes.position.array;
+for(var i=0;i<pCount;i++){
+posArr[i*3]+=pVelocities[i].x;
+posArr[i*3+1]+=pVelocities[i].y;
+posArr[i*3+2]+=pVelocities[i].z;
+if(Math.abs(posArr[i*3])>15)pVelocities[i].x*=-1;
+if(Math.abs(posArr[i*3+1])>9)pVelocities[i].y*=-1;
+if(Math.abs(posArr[i*3+2])>15)pVelocities[i].z*=-1;
+}
+particleGeo.attributes.position.needsUpdate=true;
+particles2.rotation.y-=0.0003;
+composer.render();
 }
 animate();
 
+setTimeout(function(){loaderEl.classList.add('hide');},2200);
+
 window.addEventListener('resize',function(){
-    camera.aspect=window.innerWidth/window.innerHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth,window.innerHeight);
+var w=window.innerWidth;var h=window.innerHeight;
+camera.aspect=w/h;camera.updateProjectionMatrix();
+renderer.setSize(w,h);composer.setSize(w,h);
+bloomPass.resolution.set(w,h);
 });
 })();
+</script>
 
-/* Typing */
+<script>
 (function(){
-var tl={en:["Systems Programmer & Security Researcher","Building security tools and AI agents","Low-level programming enthusiast from Kazakhstan","Open source contributor","Exploring the depths of systems programming"],ru:["\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438 \u0438\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u0442\u0435\u043b\u044c","\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b \u0431\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u0438","\u042d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442 \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430","\u041a\u043e\u043d\u0442\u0440\u0438\u0431\u044c\u044e\u0442\u043e\u0440","\u0418\u0441\u0441\u043b\u0435\u0434\u0443\u044e \u0433\u043b\u0443\u0431\u0438\u043d\u044b"],kz:["\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","\u041a\u04d9\u043f\u0430\u043b\u0434\u044b\u043b\u044b\u043c\u0435\u043d \u0416\u0418 \u0430\u0433\u0435\u043d\u0442\u0442\u0435\u0440\u0456\u043d","\u0411\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b \u044d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442\u044b","Open source","\u0416\u04af\u0439\u0435\u043b\u0456\u043a"]};
-var el=document.getElementById('typed'),li=0,ci=0,del=false;
-function type(){var lines=tl[lang]||tl.en;var line=lines[li];
-if(del){el.textContent=line.substring(0,ci-1);ci--}else{el.textContent=line.substring(0,ci+1);ci++}
-var spd=del?30:60;
-if(!del&&ci===line.length){spd=2000;del=true}else if(del&&ci===0){del=false;li=(li+1)%lines.length;spd=500}
-setTimeout(type,spd)}
-type();
-})();
+var T={en:{loading:"Loading...","nav.home":"Home","nav.about":"About","nav.projects":"Projects","nav.skills":"Skills","nav.stats":"Stats","nav.contact":"Contact","hero.name":"ALI","hero.tagline1":"Systems Programmer & Security Engineer","hero.tagline2":"Building security tools and AI agents","hero.tagline3":"Low-level programming enthusiast from Kazakhstan","hero.tagline4":"Open source contributor","hero.tagline5":"Exploring the depths of systems programming","hero.viewProjects":"View Projects","hero.github":"GitHub","hero.scroll":"Scroll","about.label":"// About Me","about.title":"Who I Am","about.desc":"Systems programming, security research, and building tools that matter.","about.greeting":"Hi, I'm Ali!","about.bio1":"I'm a systems programmer from Kazakhstan with a deep passion for low-level programming, cybersecurity, and artificial intelligence. I build security tools, AI agents, and explore the depths of systems programming.","about.bio2":"My journey in programming started years ago, and I've been hooked ever since. I love creating tools that solve real-world problems and contribute to the open-source community.","about.location":"Kazakhstan","projects.label":"// Projects","projects.title":"Featured Work","projects.desc":"A collection of projects spanning security, AI, DevOps, and more.","projects.all":"All","projects.security":"Security","projects.ai":"AI/ML","projects.devops":"DevOps","projects.web":"Web","projects.tools":"Tools","proj.threatforge":"Advanced SOC platform with threat intelligence and incident response capabilities.","proj.ghostly":"Powerful analytics platform for data visualization and insights generation.","proj.hermes":"Comprehensive AI toolkit with 202 tools for automation and machine learning workflows.","proj.coreedr":"High-performance Endpoint Detection and Response solution built in Rust.","proj.spectre":"eBPF-based network security monitoring and threat detection framework.","proj.nano":"Lightweight container runtime written in Go for minimal overhead deployment.","proj.aegis":"Secure AI model sandboxing runtime for safe execution of untrusted models.","proj.govault":"Encrypted file storage solution with zero-knowledge architecture in Go.","proj.goportscan":"High-speed concurrent port scanner with service fingerprinting capabilities.","proj.retroterm":"Terminal-based roguelike game with procedural generation and deep gameplay.","proj.diskscope":"Visual disk space analyzer with detailed file system insights and cleanup tools.","proj.logpulse":"Real-time log analysis engine with anomaly detection and alerting system.","proj.agentmesh":"Multi-agent AI orchestration framework for complex task decomposition.","proj.forge3d":"Custom 3D game engine with OpenGL rendering and entity component system.","proj.caffeine":"Modern glassmorphism UI component library for web applications.","proj.flashcard":"MCP server for intelligent flashcard generation and spaced repetition learning.","skills.label":"// Skills","skills.title":"Technical Expertise","skills.desc":"Proficiency levels across technologies and domains.","skills.lang":"Languages","skills.fw":"Frameworks & Libraries","skills.sec":"Security","skills.devops":"DevOps & Tools","stats.label":"// Stats","stats.title":"By The Numbers","stats.desc":"A snapshot of my journey.","stats.projects":"Projects","stats.languages":"Languages","stats.tools":"Tools Built","stats.lines":"K+ Lines of Code","timeline.label":"// Journey","timeline.title":"Learning Timeline","timeline.desc":"My programming journey from first line of code to today.","tl.2022.title":"The Beginning","tl.2022.desc":"Started learning Python and basic programming concepts. Built first simple scripts and automation tools.","tl.2023.title":"Diving Deeper","tl.2023.desc":"Learned Go and C++. Explored Linux internals and started building security tools. First contributions to open source.","tl.2024.title":"Systems Programming","tl.2024.desc":"Dived into Rust and eBPF. Built CoreEDR and SpectreShield. Deepened knowledge in cybersecurity and reverse engineering.","tl.2025.title":"AI & Scale","tl.2025.desc":"Explored AI/ML with AgentMesh and Hermes Studio. Built container runtimes and explored distributed systems.","tl.2026.title":"Current Focus","tl.2026.desc":"Building ThreatForge SOC platform, contributing to security research, and pushing boundaries in AI agents.","contact.label":"// Contact","contact.title":"Get In Touch","contact.desc":"Have a project in mind or want to collaborate? Let's talk.","contact.send":"Send Message","contact.locLabel":"Location","contact.locVal":"Kazakhstan","contact.emailLabel":"Email","contact.phoneLabel":"Phone","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 Ali. All rights reserved."},
+ru:{loading:"\u0417\u0430\u0433\u0440\u0443\u0437\u043a\u0430...","nav.home":"\u0413\u043b\u0430\u0432\u043d\u0430\u044f","nav.about":"\u041e\u0431\u043e \u043c\u043d\u0435","nav.projects":"\u041f\u0440\u043e\u0435\u043a\u0442\u044b","nav.skills":"\u041d\u0430\u0432\u044b\u043a\u0438","nav.stats":"\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","nav.contact":"\u041a\u043e\u043d\u0442\u0430\u043a\u0442\u044b","hero.name":"\u0410\u041b\u0418","hero.tagline1":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438 \u0438\u043d\u0436\u0435\u043d\u0435\u0440","hero.tagline2":"\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b","hero.tagline3":"\u042d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442 \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430","hero.tagline4":"\u041a\u043e\u043d\u0442\u0440\u0438\u0431\u044c\u044e\u0442\u043e\u0440","hero.tagline5":"\u0418\u0441\u0441\u043b\u0435\u0434\u0443\u044e \u0433\u043b\u0443\u0431\u0438\u043d\u044b","hero.viewProjects":"\u0421\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u043f\u0440\u043e\u0435\u043a\u0442\u044b","hero.github":"GitHub","hero.scroll":"\u0412\u043d\u0438\u0437","about.label":"// \u041e\u0431\u043e \u043c\u043d\u0435","about.title":"\u041a\u0442\u043e \u044f","about.desc":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0440\u043e\u0432\u0430\u043d\u0438\u0435.","about.greeting":"\u041f\u0440\u0438\u0432\u0435\u0442, \u044f \u0410\u043b\u0438!","about.bio1":"\u042f \u0441\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442 \u0438\u0437 \u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d\u0430.","about.bio2":"\u041c\u043e\u044f \u043f\u0443\u0442\u044c \u043d\u0430\u0447\u0430\u043b\u0441\u044f \u0434\u0430\u0432\u043d\u043e.","about.location":"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d","projects.label":"// \u041f\u0440\u043e\u0435\u043a\u0442\u044b","projects.title":"\u041f\u0440\u043e\u0435\u043a\u0442\u044b","projects.desc":"\u041a\u043e\u043b\u043b\u0435\u043a\u0446\u0438\u044f.","projects.all":"\u0412\u0441\u0435","projects.security":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c","projects.ai":"\u0418\u0418/ML","projects.devops":"DevOps","projects.web":"\u0412\u0435\u0431","projects.tools":"\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b","proj.threatforge":"SOC \u043f\u043b\u0430\u0442\u0444\u043e\u0440\u043c\u0430.","proj.ghostly":"\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0430.","proj.hermes":"\u0418\u0418 \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442.","proj.coreedr":"EDR \u043d\u0430 Rust.","proj.spectre":"eBPF \u043c\u043e\u043d\u0438\u0442\u043e\u0440\u0438\u043d\u0433.","proj.nano":"Go \u043a\u043e\u043d\u0442\u0435\u0439\u043d\u0435\u0440.","proj.aegis":"\u0418\u0418 \u043c\u043e\u0434\u0435\u043b\u0438.","proj.govault":"\u0428\u0438\u0444\u0440\u043e\u0432\u0430\u043d\u043d\u043e\u0435 \u0445\u0440\u0430\u043d\u0438\u043b\u0438\u0449\u0435.","proj.goportscan":"\u041f\u043e\u0440\u0442 \u0441\u043a\u0430\u043d\u0435\u0440.","proj.retroterm":"\u0420\u043e\u0433\u0430\u043b\u0438\u043a.","proj.diskscope":"\u0410\u043d\u0430\u043b\u0438\u0437\u0430\u0442\u043e\u0440.","proj.logpulse":"\u0410\u043d\u0430\u043b\u0438\u0437 \u043b\u043e\u0433\u043e\u0432.","proj.agentmesh":"\u041c\u043d\u043e\u0433\u043e\u0430\u0433\u0435\u043d\u0442.","proj.forge3d":"3D \u0434\u0432\u0438\u0436\u043e\u043a.","proj.caffeine":"UI \u043a\u043e\u043c\u043f\u043e\u043d\u0435\u043d\u0442.","proj.flashcard":"\u0423\u0447\u0435\u0431\u043d\u044b\u0439 \u0441\u0435\u0440\u0432\u0435\u0440.","skills.label":"// \u041d\u0430\u0432\u044b\u043a\u0438","skills.title":"\u042d\u043a\u0441\u043f\u0435\u0440\u0442\u0438\u0437\u0430","skills.desc":"\u0423\u0440\u043e\u0432\u0435\u043d\u044c.","skills.lang":"\u042f\u0437\u044b\u043a\u0438","skills.fw":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u0438","skills.sec":"\u0411\u0435\u0437\u043e\u043f\u0430\u0441\u043d\u043e\u0441\u0442\u044c","skills.devops":"DevOps","stats.label":"// \u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","stats.title":"\u0426\u0438\u0444\u0440\u044b","stats.desc":"\u041c\u043e\u0439 \u043f\u0443\u0442\u044c.","stats.projects":"\u041f\u0440\u043e\u0435\u043a\u0442\u043e\u0432","stats.languages":"\u042f\u0437\u044b\u043a\u043e\u0432","stats.tools":"\u0418\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u043e\u0432","stats.lines":"K+ \u0441\u0442\u0440\u043e\u043a","timeline.label":"// \u041f\u0443\u0442\u044c","timeline.title":"\u0425\u0440\u043e\u043d\u0438\u043a\u0430","timeline.desc":"\u041f\u0443\u0442\u044c.","tl.2022.title":"\u041d\u0430\u0447\u0430\u043b\u043e","tl.2022.desc":"Python.","tl.2023.title":"\u0413\u043b\u0443\u0431\u0436\u0435","tl.2023.desc":"Go \u0438 C++.","tl.2024.title":"\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u043e\u0435","tl.2024.desc":"Rust \u0438 eBPF.","tl.2025.title":"\u0418\u0418","tl.2025.desc":"\u0418\u0441\u0441\u043b\u0435\u0434\u043e\u0432\u0430\u043d\u0438\u0435.","tl.2026.title":"\u0424\u043e\u043a\u0443\u0441","tl.2026.desc":"ThreatForge.","contact.label":"// \u041a\u043e\u043d\u0442\u0430\u043a\u0442","contact.title":"\u0421\u0432\u044f\u0437\u044c","contact.desc":"\u041f\u043e\u0433\u043e\u0432\u043e\u0440\u0438\u043c!","contact.send":"\u041e\u0442\u043f\u0440\u0430\u0432\u0438\u0442\u044c","contact.locLabel":"\u041b\u043e\u043a\u0430\u0446\u0438\u044f","contact.locVal":"\u041a\u0430\u0437\u0430\u0445\u0441\u0442\u0430\u043d","contact.emailLabel":"Email","contact.phoneLabel":"\u0422\u0435\u043b\u0435\u0444\u043e\u043d","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 Ali."},
+kz:{loading:"\u0416\u04af\u043a\u0442\u0435\u043b\u0443\u0434\u0435...","nav.home":"\u0411\u0430\u0441\u0442\u044b","nav.about":"\u041c\u0435\u043d \u0442\u0443\u0440\u0430\u043b\u044b","nav.projects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","nav.skills":"\u0414\u0430\u0433\u0434\u044b\u043b\u0430\u0440","nav.stats":"\u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","nav.contact":"\u0411\u0430\u0439\u043b\u0430\u043d\u044b\u0441","hero.name":"\u0410\u041b\u0418","hero.tagline1":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","hero.tagline2":"\u041a\u04d9\u043f\u0430\u043b\u0434\u044b\u043b\u044b\u043c\u0435\u043d","hero.tagline3":"\u0411\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","hero.tagline4":"Open source","hero.tagline5":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a","hero.viewProjects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","hero.github":"GitHub","hero.scroll":"\u0422\u04d9\u043c\u0435\u043d","about.label":"// \u041c\u0435\u043d \u0442\u0443\u0440\u0430\u043b\u044b","about.title":"\u041c\u0435\u043d \u043a\u0456\u043c\u043c\u0456\u043d","about.desc":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a.","about.greeting":"\u0421\u04d9\u043b\u0435\u043c!","about.bio1":"\u041c\u0435\u043d \u049b\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d\u043d\u0430\u043d.","about.bio2":"\u0416\u043e\u043b\u044b\u043c \u0431\u0430\u0441\u0442\u0430\u043b\u0434\u044b.","about.location":"\u041a\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d","projects.label":"// \u0416\u043e\u0431\u0430\u043b\u0430\u0440","projects.title":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","projects.desc":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440.","projects.all":"\u0411\u0430\u0440\u043b\u044b\u049b","projects.security":"\u049a\u0430\u0443\u043f\u0441\u0456\u0437\u0434\u0456\u043a","projects.ai":"\u0416\u0418/ML","projects.devops":"DevOps","projects.web":"\u0412\u0435\u0431","projects.tools":"\u049a\u0430\u0440\u0430\u043b\u044b\u043a\u0442\u0430\u0440","proj.threatforge":"SOC.","proj.ghostly":"\u0410\u043d\u0430\u043b\u0438\u0442\u0438\u043a\u0430.","proj.hermes":"\u0416\u0418.","proj.coreedr":"EDR.","proj.spectre":"eBPF.","proj.nano":"Go.","proj.aegis":"\u0416\u0418.","proj.govault":"\u0448\u0438\u0444\u0440.","proj.goportscan":"\u0441\u043a\u0430\u043d\u0435\u0440.","proj.retroterm":"\u043e\u0439\u044b\u043d.","proj.diskscope":"\u0442\u0430\u043b\u0434\u0430\u0443.","proj.logpulse":"\u043b\u043e\u0433.","proj.agentmesh":"\u0430\u0433\u0435\u043d\u0442.","proj.forge3d":"3D.","proj.caffeine":"UI.","proj.flashcard":"\u0441\u0435\u0440\u0432\u0435\u0440.","skills.label":"// \u0414\u0430\u0433\u0434\u044b\u043b\u0430\u0440","skills.title":"\u0422\u0435\u0445\u043d\u0438\u043a\u0430\u043b\u044b\u049b","skills.desc":"\u041c\u0430\u0445\u0430\u0440\u0435\u043c\u0435\u0442\u0442\u0435\u0440.","skills.lang":"\u0422\u0456\u043b\u0434\u0435\u0440","skills.fw":"\u0424\u0440\u0435\u0439\u043c\u0432\u043e\u0440\u043a\u0430\u043b\u0430\u0440","skills.sec":"\u049a\u0430\u0443\u043f\u0441\u0456\u0437\u0434\u0456\u043a","skills.devops":"DevOps","stats.label":"// \u0421\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043a\u0430","stats.title":"\u0426\u0430\u043d\u0434\u0430\u0440","stats.desc":"\u0416\u043e\u043b\u044b\u043c.","stats.projects":"\u0416\u043e\u0431\u0430\u043b\u0430\u0440","stats.languages":"\u0422\u0456\u043b\u0434\u0435\u0440","stats.tools":"\u049a\u0430\u0440\u0430\u043b\u044b\u043a\u0442\u0430\u0440","stats.lines":"K+ \u043a\u043e\u0434","timeline.label":"// \u0416\u043e\u043b","timeline.title":"\u0428\u0430\u0440\u0443\u044b","timeline.desc":"\u0416\u043e\u043b\u044b\u043c.","tl.2022.title":"\u0411\u0430\u0441\u0442\u0430\u0443","tl.2022.desc":"Python.","tl.2023.title":"\u0422\u0435\u0440\u0435\u043d\u0434\u0456","tl.2023.desc":"Go \u0436\u04d9\u043d\u0435 C++.","tl.2024.title":"\u0416\u04af\u0439\u0435\u043b\u0456\u043a","tl.2024.desc":"Rust \u0436\u04d9\u043d\u0435 eBPF.","tl.2025.title":"\u0416\u0418","tl.2025.desc":"\u0416\u0418.","tl.2026.title":"\u0424\u043e\u043a\u0443\u0441","tl.2026.desc":"ThreatForge.","contact.label":"// \u0411\u0430\u0439\u043b\u0430\u043d\u044b\u0441","contact.title":"\u0425\u0430\u0431\u0430\u0440\u043b\u0430\u0441\u0443","contact.desc":"\u0416\u043e\u0431\u0430 \u0431\u0430\u0440?","contact.send":"\u0416\u0456\u0431\u0435\u0440\u0443","contact.locLabel":"\u041e\u0440\u043d\u0430\u0443","contact.locVal":"\u041a\u0430\u0437\u0430\u049b\u0441\u0442\u0430\u043d","contact.emailLabel":"Email","contact.phoneLabel":"\u0422\u0435\u043b\u0435\u0444\u043e\u043d","contact.ghLabel":"GitHub","footer.copy":"\u00a9 2026 Ali."}};
+var lang=localStorage.getItem('lang')||'en';
+function setLang(l){lang=l;localStorage.setItem('lang',l);document.querySelectorAll('[data-i18n]').forEach(function(e){var k=e.getAttribute('data-i18n');if(T[l]&&T[l][k])e.textContent=T[l][k]});document.querySelectorAll('.lang-btn').forEach(function(b){b.classList.toggle('on',b.dataset.lang===l)});document.documentElement.lang=l}
+document.querySelectorAll('.lang-btn').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.lang)})});
+setLang(lang);
 
-/* Nav scroll */
-var nav=document.getElementById('nav');
-window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>50)});
-var secs=document.querySelectorAll('section'),nLinks=document.querySelectorAll('.nav-links a');
-window.addEventListener('scroll',function(){var c='';secs.forEach(function(s){if(window.scrollY>=s.offsetTop-150)c=s.id});nLinks.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')==='#'+c)})});
+(function(){var tl={en:["Systems Programmer & Security Engineer","Building security tools and AI agents","Low-level programming enthusiast from Kazakhstan","Open source contributor","Exploring the depths of systems programming"],ru:["\u0421\u0438\u0441\u0442\u0435\u043c\u043d\u044b\u0439 \u043f\u0440\u043e\u0433\u0440\u0430\u043c\u043c\u0438\u0441\u0442","\u0421\u043e\u0437\u0434\u0430\u044e \u0438\u043d\u0441\u0442\u0440\u0443\u043c\u0435\u043d\u0442\u044b","\u042d\u043d\u0442\u0443\u0437\u0438\u0430\u0441\u0442","\u041a\u043e\u043d\u0442\u0440\u0438\u0431\u044c\u044e\u0442\u043e\u0440","\u0418\u0441\u0441\u043b\u0435\u0434\u0443\u044e \u0433\u043b\u0443\u0431\u0438\u043d\u044b"],kz:["\u0416\u04af\u0439\u0435\u043b\u0456\u043a \u0431\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","\u041a\u04d9\u043f\u0430\u043b\u0434\u044b\u043b\u044b\u043c\u0435\u043d","\u0411\u0430\u0433\u0434\u0430\u0440\u043b\u0430\u043c\u0430\u0448\u044b","Open source","\u0416\u04af\u0439\u0435\u043b\u0456\u043a"]};var el=document.getElementById('typed'),li=0,ci=0,del=false;function type(){var lines=tl[lang]||tl.en;var line=lines[li];if(del){el.textContent=line.substring(0,ci-1);ci--}else{el.textContent=line.substring(0,ci+1);ci++}var spd=del?30:60;if(!del&&ci===line.length){spd=2000;del=true}else if(del&&ci===0){del=false;li=(li+1)%lines.length;spd=500}setTimeout(type,spd)}type()})();
 
-/* Hamburger */
-var burger=document.getElementById('burger'),mob=document.getElementById('mobilenav');
-burger.addEventListener('click',function(){burger.classList.toggle('on');mob.classList.toggle('on')});
-mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){burger.classList.remove('on');mob.classList.remove('on')})});
-
-/* Reveal */
-var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.1});
-document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
-
-/* Progress bars */
-var pObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.style.width=e.target.getAttribute('data-w')+'%'})},{threshold:0.5});
-document.querySelectorAll('.prog-fill').forEach(function(el){pObs.observe(el)});
-
-/* Counter */
-var cObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var el=e.target,tgt=parseInt(el.getAttribute('data-count')),cur=0,inc=tgt/60;
-var timer=setInterval(function(){cur+=inc;if(cur>=tgt){el.textContent=tgt;clearInterval(timer)}else{el.textContent=Math.floor(cur)}},30);cObs.unobserve(el)}})},{threshold:0.5});
-document.querySelectorAll('.stat-num').forEach(function(el){cObs.observe(el)});
-
-/* Filter */
-document.querySelectorAll('.filter').forEach(function(btn){btn.addEventListener('click',function(){
-document.querySelectorAll('.filter').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');
-var f=btn.getAttribute('data-filter');
-document.querySelectorAll('.proj-card').forEach(function(c){c.style.display=(f==='all'||c.getAttribute('data-cat')===f)?'':'none'})})});
+var nav=document.getElementById('nav');window.addEventListener('scroll',function(){nav.classList.toggle('scrolled',window.scrollY>50)});
+var secs=document.querySelectorAll('section'),nLinks=document.querySelectorAll('.nav-links a');window.addEventListener('scroll',function(){var c='';secs.forEach(function(s){if(window.scrollY>=s.offsetTop-150)c=s.id});nLinks.forEach(function(l){l.classList.toggle('active',l.getAttribute('href')==='#'+c)})});
+var burger=document.getElementById('burger'),mob=document.getElementById('mobilenav');burger.addEventListener('click',function(){burger.classList.toggle('on');mob.classList.toggle('on')});mob.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){burger.classList.remove('on');mob.classList.remove('on')})});
+var obs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.classList.add('vis')})},{threshold:0.1});document.querySelectorAll('.reveal').forEach(function(el){obs.observe(el)});
+var pObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting)e.target.style.width=e.target.getAttribute('data-w')+'%'})},{threshold:0.5});document.querySelectorAll('.prog-fill').forEach(function(el){pObs.observe(el)});
+var cObs=new IntersectionObserver(function(entries){entries.forEach(function(e){if(e.isIntersecting){var el=e.target,tgt=parseInt(el.getAttribute('data-count')),cur=0,inc=tgt/60;var timer=setInterval(function(){cur+=inc;if(cur>=tgt){el.textContent=tgt;clearInterval(timer)}else{el.textContent=Math.floor(cur)}},30);cObs.unobserve(el)}})},{threshold:0.5});document.querySelectorAll('.stat-num').forEach(function(el){cObs.observe(el)});
+document.querySelectorAll('.filter').forEach(function(btn){btn.addEventListener('click',function(){document.querySelectorAll('.filter').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');var f=btn.getAttribute('data-filter');document.querySelectorAll('.proj-card').forEach(function(c){c.style.display=(f==='all'||c.getAttribute('data-cat')===f)?'':'none'})})});
 })();
 </script>
 </body>
